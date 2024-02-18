@@ -1,0 +1,41 @@
+<!--
+`nuxeo-portal-search-pp-search-form`
+@group Nuxeo UI
+@element nuxeo-portal-search-pp-search-form
+-->
+<dom-module id="nuxeo-portal-search-pp-search-form">
+  <template>
+    <style include="nuxeo-styles"></style>
+    <nuxeo-input role="widget" value="{{params.system_fulltext}}" label="System Fulltext" type="text" name="system_fulltext"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{params.dublincore_title}}" label="Dublincore Title" type="text" name="dublincore_title"></nuxeo-input>
+    
+        <nuxeo-input role="widget" value="{{params.facetedKeyword_keywords_label}}" label="Keyword" type="text" name="facetedKeyword_keywords_label"></nuxeo-input>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-portal-search-pp-search-form',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @search portal-search-pp
+         */
+      params: {
+        type: Object,
+        value: {},
+        notify: true,
+      },
+
+      aggregations: {
+        type: Object,
+        value: {},
+        notify: true,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

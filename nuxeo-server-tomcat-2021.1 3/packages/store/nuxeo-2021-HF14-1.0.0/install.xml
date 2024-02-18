@@ -1,0 +1,6 @@
+<install>
+  <update upgradeOnly="true" file="${package.root}/install/bundlesupdate/nxserver/bundles" todir="${env.server.home}/nxserver/bundles" />
+  <copy overwrite="true" file="${package.root}/install/bin/nuxeo-launcher-2021.14.7-jar-with-dependencies.jar" tofile="${env.server.home}/bin/nuxeo-launcher.jar" />
+  <copy overwrite="true" file="${package.root}/templates" todir="${env.server.home}" />
+  <update upgradeOnly="true" file="${package.root}/install/libsupdate/lib" todir="${env.server.home}/lib" />
+</install>

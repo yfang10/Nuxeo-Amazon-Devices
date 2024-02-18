@@ -1,0 +1,496 @@
+<!--
+`nuxeo-device-searchpp-search-results`
+@group Nuxeo UI
+@element nuxeo-device-searchpp-search-results
+-->
+<dom-module id="nuxeo-device-searchpp-search-results">
+  <template>
+    <style include="nuxeo-styles">
+      nuxeo-data-table,
+      nuxeo-data-grid,
+      nuxeo-data-list,
+      nuxeo-justified-grid {
+        display: block;
+        position: relative;
+        min-height: calc(100vh - 130px - var(--nuxeo-app-top));
+      }
+
+      nuxeo-justified-grid {
+        height: calc(100vh - 10em);
+      }
+    </style>
+    <nuxeo-results name="device-searchpp" nx-provider="[[nxProvider]]" selected-items="{{selectedItems}}"
+      display-quick-filters="" display-sort="" sort-label="[[i18n('searchResults.sort.label')]]"
+      sort-options="[[sortOptions]]">
+
+      <nuxeo-data-grid class="results" empty-label="[[i18n('searchResults.noResults')]]" selection-enabled=""
+        sort-label="[[i18n('searchResults.sort.label')]]" icon="nuxeo:view-thumbnails" name="grid">
+        <template>
+          <nuxeo-document-grid-thumbnail tabindex$="{{tabIndex}}" selected$="{{selected}}" doc="[[item]]"
+            index="[[index]]" on-navigate="_navigate" selected-items="[[selectedItems]]">
+          </nuxeo-document-grid-thumbnail>
+        </template>
+      </nuxeo-data-grid>
+
+      <nuxeo-data-table role="widget" class="results" settings-enabled empty-label="[[i18n('searchResults.noResults')]]"
+        selection-enabled="" on-row-clicked="_navigate" display-quick-filters="" icon="nuxeo:view-list" name="table">
+
+        <nuxeo-data-table-column name="Title" field="dc:title" sort-by="dc:title.keyword" flex="100">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail>
+            <a class="ellipsis" href$="[[urlFor('browse', item.path)]]" on-click="_navigate">[[item.title]]</a>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Keywords" field="amzkeyword:keywords" hidden>
+          <template>
+            <amzd-keywords items="[[_getProp(item, 'amzkeyword:keywords')]]"></amzd-keywords>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Modified" field="dc:modified" sort-by="dc:modified" flex="50">
+          <template>
+            [[formatDate(item.properties.dc:modified)]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Last Contributor" field="dc:lastContributor" sort-by="dc:lastContributor"
+          flex="50">
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:lastContributor]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <!-- start Head new added -->
+        <nuxeo-data-table-column name="[[i18n('label.type')]]" field="type" flex="50">
+          <template>
+            <nuxeo-tag>[[item.type]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('label.state')]]" field="currentLifeCycleState" flex="50">
+          <template>
+            <span class="capitalize">[[item.state]]</span>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.version')]]" field="versionLabel" flex="50">
+          <template>
+            [[formatVersion(item)]]
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('label.dublincore.created')]]" field="dc:created" flex="50">
+          <template>
+            <nuxeo-date datetime="[[item.properties.dc:created]]"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.dublincore.author')]]" field="dc:creator" flex="50">
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:creator]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <!-- end Head new added -->
+        <!-- Start IP asset -->
+        <nuxeo-data-table-column name="Original Creator Role" field="amz:creator_role"
+          sort-by="[[_displaySort(document, 'amz:creator_role')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:creator_role')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Owner or Source" field="dc:publisher"
+          sort-by="[[_displaySort(document, 'dc:publisher')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'dc:publisher')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Distribute Content to Amazon Device Hub" field="approval:distribute_ADH"
+          sort-by="[[_displaySort(document, 'approval:distribute_ADH')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:distribute_ADH')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Distribute Selects for CXLab Use" field="approval:distribute_selects"
+          sort-by="[[_displaySort(document, 'approval:distribute_selects')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:distribute_selects')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Distribute Final Content for CXLab Use" field="approval:distribute_CXLabs"
+          sort-by="[[_displaySort(document, 'approval:distribute_CXLabs')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:distribute_CXLabs')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Tags" field="nxtags:tags" hidden>
+          <template>
+            <nuxeo-tags items="[[_getProp(item, 'nxtag:tags')]]"></nuxeo-tags>
+          </template>
+        </nuxeo-data-table-column>
+
+        <!-- end IP asset -->
+
+        <!-- New added -->
+        <nuxeo-data-table-column name="Asset Category" field="amz:asset_category"
+          sort-by="[[_displaySort(document, 'amz:asset_category')]]">
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:asset_category')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Codename" field="amz:codename"
+          sort-by="[[_displaySort(document, 'amz:codename')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:codename')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Marketing Streetname" field="amz:marketingStreetname"
+          sort-by="[[_displaySort(document, 'amz:marketingStreetname')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:marketingStreetname')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Description" field="dc:description"
+          sort-by="[[_displaySort(document, 'dc:description')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'dc:description')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="ASIN" field="amz:asin" sort-by="[[_displaySort(document, 'amz:asin')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:asin')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Project Number" field="amz:projectNumber"
+          sort-by="[[_displaySort(document, 'amz:projectNumber')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:projectNumber')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Product Type" field="product_search:product_type"
+          sort-by="[[_displaySort(document, 'product_search:product_type')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'product_search:product_type')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Product Line" field="product_search:pl"
+          sort-by="[[_displaySort(document, 'product_search:pl')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'product_search:pl')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Asset Type" field="amz:asset_type"
+          sort-by="[[_displaySort(document, 'amz:asset_type')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:asset_type')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Retail Asset Type" field="amz:retailAssetTypes"
+          sort-by="[[_displaySort(document, 'amz:retailAssetTypes')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:retailAssetTypes')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Placement" field="amz:placement"
+          sort-by="[[_displaySort(document, 'amz:placement')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:placement')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Standard Angles" field="amz:standardAngles"
+          sort-by="[[_displaySort(document, 'amz:standardAngles')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:standardAngles')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Format" field="dc:format" sort-by="[[_displaySort(document, 'dc:format')]]"
+          hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'dc:format')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Brand" field="product_search:brand"
+          sort-by="[[_displaySort(document, 'product_search:brand')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'product_search:brand')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Associated Event" field="amz:associatedEvent"
+          sort-by="[[_displaySort(document, 'amz:associatedEvent')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:associatedEvent')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Launch Collections" field="amz:launchcollection"
+          sort-by="[[_displaySort(document, 'amz:launchcollection')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:launchcollection')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Active Period" field="amz:activePeriod"
+          sort-by="[[_displaySort(document, 'amz:activePeriod')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:activePeriod')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Approved " field="approval:approved"
+          sort-by="[[_displaySort(document, 'approval:approved')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:approved')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Approval Date" field="approval:approved_date"
+          sort-by="[[_displaySort(document, 'approval:approved_date')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:approved_date')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Announce Date" field="approval:announce_date"
+          sort-by="[[_displaySort(document, 'approval:announce_date')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:announce_date')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Street Date" field="approval:street_date"
+          sort-by="[[_displaySort(document, 'approval:street_date')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:street_date')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Expiration Date" field="dc:expired"
+          sort-by="[[_displaySort(document, 'dc:expired')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'dc:expired')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Ownership" field="amz:Ownership"
+          sort-by="[[_displaySort(document, 'amz:Ownership')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:Ownership')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Status" field="amz:status" sort-by="[[_displaySort(document, 'amz:status')]]"
+          hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:status')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Is Retouched Version" field="amz:is_retouched_version"
+          sort-by="[[_displaySort(document, 'amz:is_retouched_version')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:is_retouched_version')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Usage Rights Statement" field="usage:usageRightsStatement"
+          sort-by="[[_displaySort(document, 'usage:usageRightsStatement')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:usageRightsStatement')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Talent" field="usage:talent" sort-by="[[_displaySort(document, 'usage:talent')]]"
+          hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:talent')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Rights Type" field="usage:rights_type"
+          sort-by="[[_displaySort(document, 'usage:rights_type')]]" hidden="">
+          <template>
+            <nuxeo-tag>
+              [[_getProp(item, 'usage:rights_type')]]
+            </nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Restrictions" field="usage:restrictions"
+          sort-by="[[_displaySort(document, 'usage:restrictions')]]" hidden="">
+          <template>
+            <nuxeo-tag>
+              [[_getProp(item, 'usage:restrictions')]]
+            </nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Producer" field="usage:producer"
+          sort-by="[[_displaySort(document, 'usage:producer')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:producer')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Project Manager" field="usage:projectManager"
+          sort-by="[[_displaySort(document, 'usage:projectManager')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:projectManager')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Creators" field="amz:original_creator_name"
+          sort-by="[[_displaySort(document, 'amz:original_creator_name')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:original_creator_name')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Access Permissions" field="usage:accessPermissions"
+          sort-by="[[_displaySort(document, 'usage:accessPermissions')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:accessPermissions')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Release Year" field="usage:releaseYears"
+          sort-by="[[_displaySort(document, 'usage:releaseYears')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:releaseYears')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Retail Asset Use " field="amz:retailAssetUse"
+          sort-by="[[_displaySort(document, 'amz:retailAssetUse')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:retailAssetUse')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Notes" field="amz:notes" sort-by="[[_displaySort(document, 'amz:notes')]]"
+          hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:notes')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Related Devices and Accessories" field="relations:product_devices"
+          sort-by="[[_displaySort(document, 'relations:product_devices')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'relations:product_devices')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Related Devices" field="relations:product"
+          sort-by="[[_displaySort(document, 'relations:product')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'relations:product')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Related Content" field="relations:referenceItem"
+          sort-by="[[_displaySort(document, 'relations:referenceItem')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'relations:referenceItem')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Distribution" field="approval:distribution"
+          sort-by="[[_displaySort(document, 'approval:distribution')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:distribution')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Approved Locations" field="usage:geography"
+          sort-by="[[_displaySort(document, 'usage:geography')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:geography')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Approved Languages" field="usage:language"
+          sort-by="[[_displaySort(document, 'usage:language')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:language')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Content Language" field="amz:language"
+          sort-by="[[_displaySort(document, 'amz:language')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:language')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <!-- End New added -->
+        <nuxeo-data-table-column name="Size" field="file:content.length" hidden>
+          <template>
+            <template is="dom-if" if="[[_showFolderCalcBtn(item)]]">
+              <amzd-calculate-folder-size input="[[item]]" icon="icons:cached" on-click="_onClick" />
+            </template>
+
+            <template is="dom-if" if="[[!_showFolderCalcBtn(item)]]">
+              <div>[[item.contextParameters.documentSize]]</div>
+            </template>
+          </template>
+        </nuxeo-data-table-column>
+
+      </nuxeo-data-table>
+
+    </nuxeo-results>
+  </template>
+  <script>
+    Polymer({
+      is: 'nuxeo-device-searchpp-search-results',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        nxProvider: Object,
+        sortOptions: {
+          type: Array,
+          value: []
+        }
+      },
+
+      attached: function () {
+        this.sortOptions = [
+          { field: 'dc:title', label: this.i18n('searchResults.sort.field.title'), order: 'asc' },
+          { field: 'dc:created', label: this.i18n('searchResults.sort.field.created'), order: 'asc', selected: true },
+          { field: 'dc:modified', label: this.i18n('searchResults.sort.field.modified'), order: 'desc' },
+          { field: 'dc:lastContributor', label: this.i18n('searchResults.sort.field.lastContributor'), order: 'asc' },
+          { field: 'state', label: this.i18n('searchResults.sort.field.state'), order: 'asc' },
+          { field: 'dc:coverage', label: this.i18n('searchResults.sort.field.coverage'), order: 'asc' }
+        ];
+      },
+
+      _navigate: function (e) {
+        this.fire('navigate', { doc: (e.model || e.detail).item, index: (e.model || e.detail).index });
+      },
+
+      _getProp(item, prop) {
+        const newRes = ['CreativeAsset', 'BrandAsset', 'ProductionAsset', 'ThreeDCreativeAsset', 'RetailExperienceAsset']
+        if (prop == 'product_search:pl' || prop == 'amz:retailAssetTypes' || prop == 'amz:language' || prop == 'usage:language' || prop == 'usage:geography') {
+          var locations = '';
+          if (item.properties && item.properties[prop]) {
+            for (var i = 0; i <= item.properties[prop].length - 1; i++) {
+              locations += item.properties[prop][i].properties.label + ', ';
+            }
+
+            return locations.substr(0, locations.length - 2);
+          }
+          return locations;
+
+        } else if (prop == 'relations:product_devices') {
+          if (newRes.indexOf(item.type) != -1) {
+            if (item.properties && item.properties[prop].length) {
+              return item.properties[prop].join()
+            }
+          }
+        } else if (prop == 'amzkeyword:keywords' || prop == 'nxtag:tags') {
+          if (item.properties && item.properties[prop]) {
+            const result = item.properties[prop].map(p => p.label)
+            return result.slice(0, 12)
+          }
+        } else if (prop == 'relations:product' || prop == 'relations:referenceItem') {
+          if (item.properties && item.properties[prop]) {
+            const result = item.properties[prop].map(p => p.title)
+            return result.slice(0, 12)
+          }
+        } else if (prop === 'usage:restrictions') {
+          if (newRes.indexOf(item.type) === -1) {
+            if (item.properties && item.properties['dc:rights']) {
+              return item.properties['dc:rights']
+            }
+          } else {
+            if (item.properties && item.properties[prop]) {
+              if (item.properties[prop].properties) {
+                return item.properties[prop].properties.label;
+              } else {
+                return item.properties[prop];
+              }
+            }
+          }
+        } else {
+          if (item.properties && item.properties[prop]) {
+            if (item.properties[prop].properties) {
+              return item.properties[prop].properties.label;
+            } else {
+              return item.properties[prop];
+            }
+          }
+        }
+      }
+
+    });
+  </script>
+</dom-module>

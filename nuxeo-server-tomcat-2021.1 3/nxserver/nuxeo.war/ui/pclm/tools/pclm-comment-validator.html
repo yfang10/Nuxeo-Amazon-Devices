@@ -1,0 +1,67 @@
+<!--
+`pclm-comment-validator`
+@group Nuxeo UI
+@element pclm-comment-validator
+-->
+<dom-module id="pclm-comment-validator">
+  <template>
+    <style include="nuxeo-styles">
+      .error {
+        display:none;
+      }
+      
+      :host([invalid]) .error {
+        display:block;
+        color: var(--paper-input-container-invalid-color, red);
+      }
+    </style>
+    <slot></slot>
+    <label class="error">[[i18n('label.comments.save.or.discard')]]</label>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-comment-validator',
+      behaviors: [Polymer.IronValidatableBehavior, Nuxeo.I18nBehavior],
+      properties: {},
+      
+      _getValidity: function() {
+        var nodes = this.shadowRoot.querySelector('slot').
+        	assignedNodes({flatten:true}).
+        	filter(element => element.localName === "nuxeo-document-comment-thread");
+        
+        if (nodes.length === 0) {
+          return true;
+        }
+        
+        var commentThreads = [nodes[0]];
+        
+        this._getAllThreadElements(commentThreads,commentThreads[0]);
+        
+        var hasUnsavedComments = false;
+        
+        commentThreads.forEach(function(commentThread) {
+          if (commentThread.reply!==undefined && commentThread.reply.length && commentThread.reply.length>=0) {
+            hasUnsavedComments = true;
+          } 
+        });
+                               
+      	return !hasUnsavedComments;
+      },
+      
+      _getAllThreadElements: function(elements,root) {
+        //get nuxeo-document-comment
+        var documentComments = root.shadowRoot.querySelectorAll('nuxeo-document-comment');
+        documentComments.forEach(function(documentComment) {
+          var threads = documentComment.shadowRoot.querySelectorAll('nuxeo-document-comment-thread');
+          threads.forEach(function(thread) {
+            elements.push(thread);
+            this._getAllThreadElements(elements,thread);
+          }.bind(this))
+        }.bind(this))
+      }
+      
+
+    });
+  </script>
+</dom-module>

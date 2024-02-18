@@ -1,0 +1,161 @@
+
+<dom-module id="add-to-favorites-collection">
+  <template>
+    <style include="nuxeo-action-button-styles">
+      :host([favorite]) paper-icon-button {
+        color: var(--icon-toggle-pressed-color, var(--nuxeo-action-color-activated));
+      }
+    </style>
+
+    <nuxeo-operation id="opAdd" op="Document.AddToFavorites" input="[[defaultDocuments]]"></nuxeo-operation>
+    <!-- <nuxeo-operation id="opRemove" op="Document.RemoveFromFavorites" input="[[defaultDocuments]]"></nuxeo-operation> -->
+    <!-- <nuxeo-operation id="opRemove" op="Document.RemoveFromFavorites" input="5f93b4b2-3d99-4755-b46e-45c540889b00,687afba8-c305-4a7f-adf2-fd0271faa34f"></nuxeo-operation> -->
+    <!-- <nuxeo-operation id="opRemove" op="Document.RemoveFromFavorites" input="[[document.uid]]"></nuxeo-operation> -->
+    <!-- <dom-if if="[[_isAvailable(document)]]">
+      <template> -->
+        <div class="action">
+          <paper-icon-button icon="[[icon]]" noink=""></paper-icon-button>
+          <span class="label" hidden$="[[!showLabel]]">[[_label]]</span>
+        </div>
+        <nuxeo-tooltip>[[_label]]</nuxeo-tooltip>
+      <!-- </template>
+    </dom-if> -->
+
+  </template>
+
+  <script>
+    {
+      /**
+       * A toggle button element for adding/removing a document from the favorites.
+       *
+       * Example:
+       *
+       *     <nuxeo-favorites-toggle-button document="[[document]]"></nuxeo-favorites-toggle-button>
+       *
+       * @appliesMixin Nuxeo.I18nBehavior
+       * @appliesMixin Nuxeo.FiltersBehavior
+       * @memberof Nuxeo
+       * @demo demo/nuxeo-favorites-toggle-button/index.html
+       */
+      class FavoritesToggleButton
+        extends Polymer.mixinBehaviors([Nuxeo.I18nBehavior, Nuxeo.FiltersBehavior], Nuxeo.Element) {
+
+        static get is() {
+          return 'add-to-favorites-collection';
+        }
+
+        static get properties() {
+          return {
+            /**
+             * Input document.
+             */
+            document: {
+              type: Object,
+              // observer: '_documentChanged',
+            },
+
+            documents: {
+              type: Array,
+              observer: '_documentsChanged',
+            },
+
+            defaultDocuments: {
+              type: Array,
+              value: []
+            },
+
+            /**
+             * Icon to use (iconset_name:icon_name).
+             */
+            icon: {
+              type: String,
+              value: 'nuxeo:favorites'
+            },
+
+            favorite: {
+              type: Boolean,
+              notify: true,
+              reflectToAttribute: true,
+            },
+
+            /**
+             * `true` if the action should display the label, `false` otherwise.
+             */
+            showLabel: {
+              type: Boolean,
+              value: false,
+            },
+
+            _label: {
+              type: String,
+              computed: '_computeLabel(favorite, i18n)',
+            },
+          };
+        }
+
+        ready() {
+          super.ready();
+          this.removeFromFavoritesHandler = (e) => {
+            if (this.document && e.detail.docUid && e.detail.docUid === this.document.uid) {
+              this.favorite = false;
+            }
+          };
+          window.addEventListener('removed-from-favorites', this.removeFromFavoritesHandler);
+          this.addEventListener('click', this._toggle);
+        }
+
+        disconnectedCallback() {
+          super.disconnectedCallback();
+          window.removeEventListener('removed-from-favorites', this.removeFromFavoritesHandler);
+          this.removeFromFavoritesHandler = null;
+        }
+
+        _isAvailable(doc) {
+          return this.isCollectionMember(doc);
+        }
+
+        _toggle() {
+          if (!this.favorite) {
+            this.$.opAdd.execute().then(() => {
+              this.dispatchEvent(new CustomEvent('added-to-favorites', {
+                composed: true,
+                bubbles: true,
+                detail: { doc: this.document },
+              }));
+              // this.favorite = true;
+            });
+          } 
+          // else {
+          //   this.$.opRemove.execute().then(() => {
+          //     this.dispatchEvent(new CustomEvent('removed-from-favorites', {
+          //       composed: true,
+          //       bubbles: true,
+          //       detail: { doc: this.document },
+          //     }));
+          //     this.favorite = false;
+          //   });
+          // }
+        }
+
+        _computeLabel(favorite) {
+          return this.i18n(`favoritesToggleButton.tooltip.${favorite ? 'remove' : 'add'}`);
+        }
+
+        _documentChanged() {
+          // this.favorite = this.isFavorite(this.document);
+          this.favorite = false
+        }
+
+        _documentsChanged() {
+          this.defaultDocuments =   this.documents.length ?  'docs:' + this.documents.map(function (doc) {
+              return doc.uid;
+            }).join(',') : null;
+        }
+      }
+
+      customElements.define(FavoritesToggleButton.is, FavoritesToggleButton);
+      Nuxeo.FavoritesToggleButton = FavoritesToggleButton;
+    }
+  </script>
+
+</dom-module>

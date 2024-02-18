@@ -1,0 +1,72 @@
+<!--
+`nuxeo-codename-create-layout`
+@group Nuxeo UI
+@element nuxeo-codename-create-layout
+-->
+<dom-module id="nuxeo-codename-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text"></nuxeo-input>
+
+    <nuxeo-document-suggestion role="widget" value="{{document.properties.codename:device}}" label="Device"></nuxeo-document-suggestion>
+
+    <nuxeo-input role="widget" value="{{document.properties.codename:market_name}}" label="Market Name" type="text"></nuxeo-input>
+
+    <nuxeo-user-suggestion role="widget" value="{{document.properties.codename:user_access}}" label="User Access" multiple="true" search-type="USER_GROUP_TYPE"></nuxeo-user-suggestion>
+
+
+    <nuxeo-data-table role="widget" label="Specific Names" items="{{document.properties.codename:specific_names}}" orderable="true" editable="true">
+
+
+      <nuxeo-data-table-column name="Name Type">
+        <template>
+          <nuxeo-directory-suggestion role="widget" value="[[item.name_type]]" label="Name Type" readonly="true" directory-name="CodnameTypes"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="Name Value">
+        <template>
+          [[item.name_value]]
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="Name Codename">
+        <template>
+          [[item.name_codename]]
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-form>
+        <template>
+          <nuxeo-directory-suggestion value="{{item.name_type}}" label="Name Type" directory-name="CodnameTypes"></nuxeo-directory-suggestion>
+          <nuxeo-input value="{{item.name_value}}" label="Name Value" type="text"></nuxeo-input>
+          <nuxeo-input value="{{item.name_codename}}" label="Name Codename" type="text"></nuxeo-input>
+        </template>
+      </nuxeo-data-table-form>
+    </nuxeo-data-table>
+    
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-codename-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype Codename
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

@@ -1,0 +1,66 @@
+<!--
+`amzd-amazon-metadata-layout`
+@group Nuxeo UI
+@element amzd-amazon-metadata-layout
+-->
+<dom-module id="amzd-amazon-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:retailAssetTypes}}" min-chars="0" label="Retail Asset Types" readonly="true" directory-name="amzRetailAssetTypes" role="widget" multiple="true"></nuxeo-directory-suggestion>
+
+    <div role="widget"><label>Original Creator Name</label><div>[[document.properties.amz:original_creator_name]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:creator_role]]" label="Creator Role" readonly="true" directory-name="roles" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-data-table role="widget" label="Additional Participants" items="{{document.properties.amz:additional_participants}}">
+
+      <nuxeo-data-table-column name="Name">
+        <template>
+          [[item.name]]
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="Role">
+        <template>
+          <nuxeo-directory-suggestion role="widget" value="[[item.role]]" readonly="true" directory-name="roles"></nuxeo-directory-suggestion>
+
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-form>
+        <template>
+          <nuxeo-input value="{{item.name}}" label="Name" type="text"></nuxeo-input>
+          <nuxeo-directory-suggestion value="{{item.role}}" label="Role" directory-name="roles"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-data-table-form>
+    </nuxeo-data-table>
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:language]]" label="Content Language" readonly="true" directory-name="Approved_Languages" role="widget" multiple></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:is_retouched_version]]" label="Is Retouched Version"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+
+    <div role="widget"><label>Preview Blob</label><nuxeo-file value="[[document.properties.amz:preview_blob]]" readonly="true"></nuxeo-file>
+    </div>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'amzd-amazon-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

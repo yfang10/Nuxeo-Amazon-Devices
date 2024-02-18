@@ -1,0 +1,25 @@
+<uninstall>
+  <rollback key="nxserver/lib/fontbox" pkgId="nuxeo-2021-HF11-1.0.0" version="2.0.24"/>
+  <rollback key="nxserver/lib/commons-compress" pkgId="nuxeo-2021-HF11-1.0.0" version="1.21"/>
+  <rollback key="nxserver/lib/pdfbox" pkgId="nuxeo-2021-HF11-1.0.0" version="2.0.24"/>
+  <rollback key="nxserver/lib/xstream" pkgId="nuxeo-2021-HF11-1.0.0" version="1.4.18"/>
+  <rollback key="nxserver/lib/mxparser" pkgId="nuxeo-2021-HF11-1.0.0" version="1.2.2"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF11-1.0.0/backup/617a8e189f5dcb2e728c0cf984348aa8_nuxeo.defaults" tofile="${env.server.home}/templates/redis/nuxeo.defaults" overwrite="true" md5="392ded4867a592daf4228f55d2f7d5ed"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF11-1.0.0/backup/9709729503cef7825cde8f68c67bc892_distribution.properties" tofile="${env.server.home}/templates/common/config/distribution.properties" overwrite="true" md5="fca29d92bc6314043cd33a1122a47e49"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF11-1.0.0/backup/b65a9e822d4bfb776e577fb7356981b7_aws-config.xml.nxftl" tofile="${env.server.home}/templates/aws/nxserver/config/aws-config.xml.nxftl" overwrite="true" md5="15fecfda52f20d22f1813d75044341d4"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF11-1.0.0/backup/28423b7c4a98968de6f887fb91ebec90_nuxeo.defaults" tofile="${env.server.home}/templates/aws/nuxeo.defaults" overwrite="true" md5="b54ebbae977ab1f6966bfaac1bf11287"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF11-1.0.0/backup/0db46d3e8f665e3627d2b130ae4fb9d4_nuxeo.defaults" tofile="${env.server.home}/templates/nuxeo.defaults" overwrite="true" md5="d55a6b29739d0fd33ec165c4a317005e"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF11-1.0.0/backup/bc598d2e0e7a175345a074bcefe21c44_nuxeo-launcher.jar" tofile="${env.server.home}/bin/nuxeo-launcher.jar" overwrite="true" md5="e87cdd6d0e1dbb931fccb3e91b658983"/>
+  <rollback key="nxserver/bundles/nuxeo-core-io" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage-mongodb" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-runtime-aws" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-runtime-redis" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage-dbs" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-automation-core" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-launcher-commons" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core-binarymanager-s3" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-routing-core" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core-management" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+  <rollback key="nxserver/bundles/nuxeo-elasticsearch-core" pkgId="nuxeo-2021-HF11-1.0.0" version="2021.11.4"/>
+</uninstall>

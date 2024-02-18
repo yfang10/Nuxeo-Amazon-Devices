@@ -1,0 +1,5 @@
+<install>
+  <update upgradeOnly="true" file="${package.root}/install/bundlesupdate/nxserver/bundles" todir="${env.server.home}/nxserver/bundles" />
+  <update upgradeOnly="true" file="${package.root}/install/bundlesupdate/nxserver/lib" todir="${env.server.home}/nxserver/lib" />
+  <copy overwrite="true" file="${package.root}/templates" todir="${env.server.home}" />
+</install>

@@ -1,0 +1,190 @@
+<!--
+`nuxeo-request-search-search-results`
+@group Nuxeo UI
+@element nuxeo-request-search-search-results
+-->
+<dom-module id="nuxeo-request-search-search-results">
+  <template>
+    <style include="nuxeo-styles">
+      nuxeo-data-table,
+      nuxeo-data-grid,
+      nuxeo-data-list,
+      nuxeo-justified-grid {
+        display: block;
+        position: relative;
+        min-height: calc(100vh - 130px - var(--nuxeo-app-top));
+      }
+      nuxeo-justified-grid {
+        height: calc(100vh - 10em);
+      }
+
+      .participants {
+        @apply --layout-vertical;
+        @apply --layout-flex;
+      }
+
+      .participant {
+        @apply --layout-horizontal;
+        @apply --layout-flex;
+      }
+
+      .nowrap {
+        white-space:nowrap;
+      }
+
+      .type {
+        margin-right:16px;
+      }
+
+    </style>
+    <nuxeo-results name="request-search" nx-provider="[[nxProvider]]" selected-items="{{selectedItems}}">
+
+      <nuxeo-data-table name="table" icon="nuxeo:view-list" class="results"
+                        settings-enabled
+                        empty-label="[[i18n('searchResults.noResults')]]"
+                        selection-enabled
+                        display-quick-filters
+                        on-row-clicked="_navigate">
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.title')]]"
+                                 field="dc:title" sort-by="dc:title" flex="100">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail>
+            <a class="ellipsis" href$="[[urlFor('browse', item.path)]]" on-click="_navigate">[[item.title]]</a>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.created')]]"
+                                 field="dc:created" sort-by="dc:created">
+          <template>
+            <nuxeo-date datetime="[[item.properties.dc:created]]"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.author')]]"
+                                 field="dc:creator" sort-by="dc:creator">
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:creator]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.modified')]]"
+                                 field="dc:modified" sort-by="dc:modified" hidden>
+          <template>
+            [[formatDate(item.properties.dc:modified)]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.lastContributor')]]"
+                                 field="dc:lastContributor" sort-by="dc:lastContributor" hidden>
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:lastContributor]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.request.purpose')]]"
+                                 field="request:purpose" sort-by="request:purpose" flex="50">
+          <template>
+            <div>[[item.properties.request:purpose]]</div>
+          </template>
+        </nuxeo-data-table-column>
+
+
+        <nuxeo-data-table-column name="[[i18n('label.request.deliverables')]]"
+                                 field="request:deliverables" flex="50"
+                                 sort-by="request:deliverables/type">
+          <template>
+            <div class="participants">
+              <dom-repeat items="{{item.properties.request:deliverables}}">
+                <template>
+                  <div class="participant">
+                    <span class="nowrap type">[[formatDirectory(item.type)]]</span>
+                    <div>[[item.description]]</div>
+                  </div>
+                </template>
+              </dom-repeat>
+            </div>
+          </template>
+        </nuxeo-data-table-column>
+
+
+        <nuxeo-data-table-column name="[[i18n('label.request.internal.participants')]]"
+                                 field="request:internal_participants" flex="50"
+                                 sort-by="request:internal_participants/username">
+          <template>
+            <div class="participants">
+              <dom-repeat items="{{item.properties.request:internal_participants}}">
+                <template>
+                  <div class="participant">
+                    <nuxeo-user-tag user="[[item.username]]"></nuxeo-user-tag>
+                    <span class="nowrap"> / [[formatDirectory(item.role)]]</span>
+                  </div>
+                </template>
+              </dom-repeat>
+            </div>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.request.external.participants')]]"
+                                 field="request:external_participants" flex="50"
+                                 sort-by="request:external_participants/name">
+          <template>
+            <div class="participants">
+              <dom-repeat items="{{item.properties.request:external_participants}}">
+                <template>
+                  <div class="participant">
+                    <span class="nowrap">[[item.name]] / [[formatDirectory(item.role)]]</span>
+                  </div>
+                </template>
+              </dom-repeat>
+            </div>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.request.additional_dates')]]"
+                                 field="request:additional_dates" flex="50"
+                                 sort-by="request:additional_dates/date">
+          <template>
+            <div class="participants">
+              <dom-repeat items="{{item.properties.request:additional_dates}}">
+                <template>
+                  <div class="participant">
+                    <span class="nowrap">[[formatDate(item.date)]] / [[item.type]]</span>
+                  </div>
+                </template>
+              </dom-repeat>
+            </div>
+          </template>
+        </nuxeo-data-table-column>
+
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.version')]]"
+                                 field="versionLabel" hidden>
+          <template>
+            [[formatVersion(item)]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.state')]]"
+                                 field="currentLifeCycleState" sort-by="ecm:currentLifeCycleState">
+          <template><span class="capitalize">[[formatLifecycleState(item.state)]]</span></template>
+        </nuxeo-data-table-column>
+
+      </nuxeo-data-table>
+
+    </nuxeo-results>
+  </template>
+  <script>
+  Polymer({
+    is: 'nuxeo-request-search-search-results',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      nxProvider: Object
+    },
+
+    _navigate: function(e) {
+      this.fire('navigate', {doc: (e.model || e.detail).item});
+    }
+  });
+  </script>
+</dom-module>

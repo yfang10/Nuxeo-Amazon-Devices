@@ -1,0 +1,86 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/behaviors/pclm-form-behavior.html">
+
+<!--
+`nuxeo-talent-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-talent-metadata-layout
+-->
+<dom-module id="nuxeo-talent-metadata-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <div role="widget">
+      <label>[[i18n('title')]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'dc:description')]]">
+      <label>[[i18n('label.dublincore.description')]]</label>
+      <div name="dc:description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'talent:alternate_name')]]">
+      <label>[[i18n('label.talent.alternate_name')]]</label>
+      <div name="talent:alternate_name">[[document.properties.talent:alternate_name]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'talent:affiliation')]]">
+      <label>[[i18n('label.talent.affiliation')]]</label>
+      <div name="talent:affiliation">[[document.properties.talent:affiliation]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'talent:memberOf')]]">
+      <label>[[i18n('label.talent.member_of')]]</label>
+      <div name="talent:memberOf">[[document.properties.talent:memberOf]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'talent:job_title')]]">
+      <label>[[i18n('label.talent.jobTitle')]]</label>
+      <div name="talent:job_title">[[document.properties.talent:job_title]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'talent:gender')]]">
+      <label>[[i18n('label.talent.gender')]]</label>
+      <div name="talent:gender">[[formatDirectory(document.properties.talent:gender)]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'talent:height')]]">
+      <label>[[i18n('label.talent.height')]]</label>
+      <div name="talent:height">[[document.properties.talent:height]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'talent:nationality')]]">
+      <label>[[i18n('label.talent.nationality')]]</label>
+      <div name="talent:nationality">[[document.properties.talent:nationality]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'talent:email')]]">
+      <label>[[i18n('label.talent.email')]]</label>
+      <div name="talent:email">[[document.properties.talent:email]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'talent:telephone_number')]]">
+      <label>[[i18n('label.talent.telephone')]]</label>
+      <div name="talent:telephone_number">[[document.properties.talent:telephone_number]]</div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-talent-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.PclmFormBehavior],
+      properties: {
+
+        /**
+         * @doctype Talent
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

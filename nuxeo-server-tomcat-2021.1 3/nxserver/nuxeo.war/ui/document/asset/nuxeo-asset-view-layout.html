@@ -1,0 +1,86 @@
+<!--
+`nuxeo-asset-view-layout`
+@group Nuxeo UI
+@element nuxeo-asset-view-layout
+-->
+<dom-module id="nuxeo-asset-view-layout">
+  <template>
+    <style>
+      nuxeo-document-viewer,
+      nuxeo-video-info,
+      nuxeo-video-conversions,
+      nuxeo-3d-preview,
+      nuxeo-3d-render-views,
+      nuxeo-3d-transmission-formats {
+        @apply --paper-card;
+      }
+    </style>
+    
+    <template is="dom-if" if="[[!_is3D(document)]]">
+      <nuxeo-document-viewer role="widget" document="[[document]]"></nuxeo-document-viewer>
+    </template>
+
+    <template is="dom-if" if="[[_isVideo(document)]]">
+      <nuxeo-video-info role="widget" document="[[document]]"></nuxeo-video-info>
+      <nuxeo-video-conversions role="widget" document="[[document]]" label="[[i18n('videoViewLayout.conversions')]]"></nuxeo-video-conversions>
+    </template>
+
+    <template is="dom-if" if="[[_isPicture(document)]]">
+      <div class="additional">
+        <nuxeo-card heading="[[i18n('pictureViewLayout.info')]]">
+          <nuxeo-picture-info role="widget" document="[[document]]"></nuxeo-picture-info>
+        </nuxeo-card>
+
+        <nuxeo-card heading="[[i18n('pictureViewLayout.formats')]]">
+          <nuxeo-picture-formats role="widget" document="[[document]]"></nuxeo-picture-formats>
+        </nuxeo-card>
+
+        <nuxeo-card heading="[[i18n('pictureViewLayout.exif')]]">
+          <pclm-exif-metadata role="widget" document="[[document]]"></pclm-exif-metadata>
+        </nuxeo-card>
+
+        <nuxeo-card heading="[[i18n('pictureViewLayout.iptc')]]">
+          <pclm-iptc-metadata role="widget" document="[[document]]"></pclm-iptc-metadata>
+        </nuxeo-card>
+      </div>
+    </template>
+    
+    <template is="dom-if" if="[[_is3D(document)]]">
+      <nuxeo-3d-preview document="{{document}}"></nuxeo-3d-preview>
+      <nuxeo-3d-render-views document="{{document}}"></nuxeo-3d-render-views>
+      <nuxeo-3d-transmission-formats document="{{document}}"></nuxeo-3d-transmission-formats>
+    </template>
+    
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-asset-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Asset
+         */
+        document: {
+          type: Object,
+        },
+
+      },
+
+      _isVideo: function(document){
+        return document && document.facets && document.facets.indexOf("Video")>=0;
+      },
+
+      _isPicture: function(document){
+        return document && document.facets && document.facets.indexOf("Picture")>=0;
+      },
+      
+      _is3D: function(document){
+        return document && document.facets && document.facets.indexOf("ThreeD")>=0;
+      }
+
+    });
+  </script>
+</dom-module>

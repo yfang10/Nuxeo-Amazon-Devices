@@ -1,0 +1,119 @@
+<dom-module id="nuxeo-customized-picture-format">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+
+      label {
+        opacity: .5;
+        min-width: 30%;
+        display: inline-block;
+      }
+
+      .item {
+        @apply --layout-horizontal;
+        @apply --layout-flex;
+        @apply --layout-justified;
+        line-height: 1.5em;
+      }
+
+      iron-icon {
+        @apply --nuxeo-action;
+      }
+
+      iron-icon:hover {
+        @apply --nuxeo-action-hover;
+      }
+
+    </style>
+    
+    
+    <h3>[[label]]</h3>
+    <div>
+     
+      <nuxeo-connection id="nxcon" user="{{user}}"></nuxeo-connection>
+      <nuxeo-operation id="op" input="[[document]]" op="AMZD.logEvent"></nuxeo-operation>
+   <nuxeo-resource id="user" path="/user"></nuxeo-resource>
+      
+      <template is="dom-repeat" items="[[_getAdditionalFormats(document)]]" as="item">
+        <div class="item">
+          
+          <label>[[item.name]]</label>
+          <span>[[item.dimensions]]</span>
+          <span>[[item.size]]</span>
+          <span>[[item.format]]</span>
+           
+          <nuxeo-filter document="[[document]]"user="[[user]]" permission="Download">
+          
+          <template>
+          <a id="download-[[index]]" on-tap="_logEvent" href="[[_getUrl(item.data)]]">
+            <iron-icon icon="nuxeo:download"></iron-icon>
+          </a>
+          <paper-tooltip for="download-[[index]]">[[i18n('pictureViewLayout.download.tooltip')]]</paper-tooltip>
+          </template>
+          
+          </nuxeo-filter>
+           
+        </div>
+      </template>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'nuxeo-customized-picture-format',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      label: String,
+      document: Object,
+      
+      },
+    
+   
+     ready() {
+      this.$.nxcon.connect().then((user) => {
+        this.user = user;
+        
+      });
+   },
+
+   _getUrl(href){
+    var url = new URL(href);
+    url.searchParams.append('clientReason', 'userDownload');
+    return url.href;
+   },
+    
+    _logEvent(e){
+      this.$.op.params = {
+          context: {input: this.document},
+          event: "downloaded",
+          category: "userDownload",
+          comment: e.currentTarget.href
+        };
+      
+      this.$.op.execute().then((res) => {
+        
+      });
+    },
+    
+    _getAdditionalFormats: function(document) {
+      
+           
+      return (document && document.properties['picture:views']) ? document.properties['picture:views']
+        .map(function(view) {
+          return {
+            name: view.description,
+            dimensions: view.width + ' x ' + view.height,
+            size: this.formatSize(view.content.length),
+            format: view.info.format,
+            data: view.content.data
+          };
+        }.bind(this)) : [];
+    }
+
+
+  });
+</script>

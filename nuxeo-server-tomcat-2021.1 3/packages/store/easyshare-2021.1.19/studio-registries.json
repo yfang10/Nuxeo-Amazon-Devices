@@ -1,0 +1,1 @@
+{"doctypes":{"EasyShareFolder": {"parent":"Folder","schemas":["dublincore","common","easysharefolder","uid"],"facets":["Collection","NotCollectionMember"]}},"schemas":{"easysharefolder":{"@prefix":"eshare","contactEmail":"string","shareComment":"string","hasNotification":"boolean"}}}

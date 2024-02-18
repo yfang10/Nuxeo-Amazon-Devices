@@ -1,0 +1,37 @@
+<!--
+`nuxeo-reportsfolder-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-reportsfolder-metadata-layout
+-->
+<dom-module id="nuxeo-reportsfolder-metadata-layout">
+  <template>
+    <style include="nuxeo-styles"></style>
+    <div role="widget">
+      <label>Title</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+</div>
+
+    <div role="widget">
+      <label>Description</label>
+      <div name="description">[[document.properties.dc:description]]</div>
+</div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-reportsfolder-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype ReportsFolder
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

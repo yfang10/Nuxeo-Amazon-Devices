@@ -1,0 +1,297 @@
+
+<dom-module id="iss-keyword-suggestion">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            :host([hidden]) {
+                display: none;
+            }
+        </style>
+        <nuxeo-selectivity id="s2" operation="[[operation]]" label="[[label]]" min-chars="[[minChars]]"
+            tagging$="[[allowNewKeywords]]" multiple params="[[params]]" placeholder="[[placeholder]]"
+            error-message="[[errorMessage]]" readonly="[[readonly]]" value="{{value}}"
+            selected-items="{{selectedItems}}" required="[[required]]" invalid="[[invalid]]"
+            new-entry-formatter="[[newEntryFormatter]]" result-formatter="[[resultFormatter]]" selection-formatter="[[selectionFormatter]]"
+            added-entry-handler="[[addedKeywordHandler]]" removed-entry-handler="[[removedKeywordHandler]]"
+            init-selection="[[initSelection]]" stay-open-on-select="[[stayOpenOnSelect]]">
+        </nuxeo-selectivity>
+        <nuxeo-operation id="addKeywordOp" op="Services.AddKeywordToDoc" input="[[document.uid]]"></nuxeo-operation>
+        <nuxeo-operation id="removeKeywordOp" op="Services.RemoveKeywordFromDoc" input="[[document.uid]]">
+        </nuxeo-operation>
+        <paper-toast id="toast"></paper-toast>
+
+        <nuxeo-connection id="nx" user="{{user}}"></nuxeo-connection>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'iss-keyword-suggestion',
+            behaviors: [Nuxeo.I18nBehavior, 
+            Nuxeo.IronFormElementBehavior, 
+            Nuxeo.IronValidatableBehavior, 
+            Nuxeo.RoutingBehavior],
+            properties: {
+                user: {
+                    type: Object
+                },
+
+                /*
+                 * Whether or not adding new keyword(s) is allowed.
+                 */
+                allowNewKeywords: {
+                    type: Boolean
+                },
+
+                /**
+                 * Label.
+                 */
+                label: String,
+
+                /**
+                 * Operation to call for suggestions.
+                 */
+                operation: {
+                    type: String,
+                    value: 'Keyword.Suggestion',
+                },
+
+                /**
+                 * Parameters for the operation.
+                 */
+                params: Object,
+
+                /**
+                 * The document to add / remove keywords from.
+                 */
+                document: {
+                    type: Object,
+                    observer: '_observeDocument',
+                },
+
+                /**
+                 * Selected value(s).
+                 */
+                value: {
+                    type: String,
+                    notify: true,
+                },
+
+                /**
+                 * Set to `true` for read only mode.
+                 */
+                readonly: {
+                    type: Boolean,
+                    computed: '_isReadOnly(user, document)'
+                },
+
+                /**
+                 * Minimum number of chars to trigger the suggestions.
+                 */
+                minChars: {
+                    type: Number,
+                    value: 1,
+                },
+
+                /**
+                 * Placeholder.
+                 */
+                placeholder: {
+                    type: String,
+                    computed: '_fillPlaceholder(document)'
+                },
+
+                /**
+                 * If true, the dropdown stays open after a selection is made.
+                 */
+                stayOpenOnSelect: {
+                    type: Boolean,
+                    value: false,
+                },
+
+                /**
+                 * Error message to show when `invalid` is true.
+                 */
+                errorMessage: String,
+
+                /**
+                 * Selected items.
+                 */
+                selectedItems: {
+                    type: Object,
+                    notify: true,
+                },
+              
+                 /**
+                 * Formatter for selected entries.
+                 */
+                selectionFormatter: {
+                    type: Function,
+                    value() {
+                        return this._selectionFormatter.bind(this);
+                    },
+                },
+
+                /**
+                 * Formatter for suggested entries.
+                 */
+                resultFormatter: {
+                    type: Function,
+                    value() {
+                        return this._resultFormatter.bind(this);
+                    },
+                },
+
+                /**
+                 * Formatter for initial selection.
+                 */
+                initSelection: {
+                    type: Function,
+                    value() {
+                        return this._initSelection.bind(this);
+                    },
+                },
+
+                /**
+                 * Formatter for new suggested entries.
+                 */
+                newEntryFormatter: {
+                    type: Function,
+                    value() {
+                        return this._newEntryFormatter.bind(this);
+                    },
+                },
+
+                /**
+                 * Handler called when a keyword is added.
+                 */
+                addedKeywordHandler: {
+                    type: Function,
+                    value() {
+                        return this._addedKeywordHandler.bind(this);
+                    },
+                },
+
+                /**
+                 * Handler called when a keyword is removed.
+                 */
+                removedKeywordHandler: {
+                    type: Function,
+                    value() {
+                        return this._removedKeywordHandler.bind(this);
+                    },
+                }
+            },
+
+            _fillPlaceholder(doc){
+                if (doc.isProxy){
+                    return ''
+                }else{
+                    return 'Add keywords to this document'
+                }
+            },
+
+            _isReadOnly(user, doc) {
+                if (doc && doc.isProxy) {
+                    return true
+                }
+
+                if (user) {
+                    return !user.isAdministrator && user.extendedGroups.map(group => group.name).indexOf(
+                        'Keyword_Mgmt') < 0
+                }
+
+                return false
+            },
+
+            /* Override method from Polymer.IronValidatableBehavior. */
+            _getValidity() {
+                return this.$.s2._getValidity()
+            },
+
+            _resultFormatter(keyword) {
+                if (keyword.newKeyword) {
+                    return `<span class='s2newKeyword'>+ ${this.$.s2.escapeHTML(keyword.displayLabel)}</span>`
+                }
+                return `<span class='s2existingKeyword'>${this.$.s2.escapeHTML(keyword.displayLabel)}</span>`
+            },
+          
+           _selectionFormatter(keyword) {
+                const searchParams = new URLSearchParams('');
+                searchParams.append('keyword', keyword.displayLabel)
+                return `<a href="${this.urlFor('search', 'full-dam-search-pp?' + searchParams.toString())}">
+                ${this.$.s2.escapeHTML(keyword.displayLabel)}</a >`;
+
+            },
+
+            _newEntryFormatter(term) {
+                return {
+                    id: term,
+                    displayLabel: term,
+                    newKeyword: true
+                };
+            },
+
+            _addedKeywordHandler(entry) {
+                if (this.document) {
+                    this.$.addKeywordOp.params = {
+                        keywords: [entry.id]
+                    };
+                    this.$.addKeywordOp.execute().then(() => {
+                        this.$.toast.hide()
+                        this.$.toast.text = this.i18n('keywords.addedToDocument', entry.id)
+                        this.$.toast.open()
+                        this.fire('document-updated')
+                    });
+                }
+            },
+
+            _removedKeywordHandler(entry) {
+                if (this.document) {
+                    this.$.removeKeywordOp.params = {
+                        keywords: [entry.id]
+                    };
+                    this.$.removeKeywordOp.execute().then(() => {
+                        this.$.toast.hide()
+                        this.$.toast.text = this.i18n('keywords.removedFromDocument', entry.id)
+                        this.$.toast.open()
+                        this.fire('document-updated')
+                    });
+                }
+            },
+
+            _initSelection(element, callback) {
+                return callback(
+                    this.value.map((entry) => {
+                        return {
+                            id: entry,
+                            displayLabel: entry
+                        };
+                    }),
+                );
+            },
+
+            _observeDocument() {
+                if (this.document) {
+                    if (this.document.properties && this.document.properties['isskeyword:keywords']){
+                        this.value = this.document.properties['isskeyword:keywords'].map(k => k.label)
+                    } else if (this.document.contextParameters && this.document.contextParameters.keywords) {
+                        this.value = this.document.contextParameters.keywords
+                    } else {
+                        this.value = []
+                        console.warn(
+                            'Cannot use nuxeo-keyword-element on a document that has no keyword in its contextParameters. ' +
+                            "Make sure you use the 'keywords' enricher to fetch the document",
+                        )
+                    }
+                } else {
+                    this.value = []
+                }
+            }
+
+        });
+    </script>
+</dom-module>

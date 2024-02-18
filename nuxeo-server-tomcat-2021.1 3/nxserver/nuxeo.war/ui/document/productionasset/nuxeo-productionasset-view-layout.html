@@ -1,0 +1,46 @@
+<!--
+`nuxeo-productionasset-view-layout`
+@group Nuxeo UI
+@element nuxeo-productionasset-view-layout
+-->
+<dom-module id="nuxeo-productionasset-view-layout">
+   <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-document-viewer role="widget" role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+    <nuxeo-video-info role="widget" role="widget" document="[[document]]"></nuxeo-video-info>
+
+    <nuxeo-video-conversions role="widget" role="widget" document="[[document]]" label="[[i18n(&#x27;videoViewLayout.conversions&#x27;)]]"></nuxeo-video-conversions>
+
+    <nuxeo-picture-info role="widget" role="widget" document="[[document]]"></nuxeo-picture-info>
+
+    <nuxeo-customized-picture-format role="widget" role="widget" document="[[document]]"></nuxeo-customized-picture-format>
+
+    <pclm-exif-metadata role="widget" role="widget" document="[[document]]"></pclm-exif-metadata>
+
+    <pclm-iptc-metadata role="widget" role="widget" document="[[document]]"></pclm-iptc-metadata>
+
+  </template>
+
+
+  <script>
+  Polymer({
+    is: 'nuxeo-productionasset-view-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype ProductionAsset
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

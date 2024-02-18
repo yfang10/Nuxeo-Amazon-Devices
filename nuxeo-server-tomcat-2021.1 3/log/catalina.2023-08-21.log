@@ -1,0 +1,27 @@
+2023-08-21 09:31:32 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-21 09:32:02 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[724]毫秒内初始化
+2023-08-21 09:33:05 信息 [main] org.apache.catalina.startup.Catalina.start [63036]毫秒后服务器启动
+2023-08-21 09:33:05 严重 [http-nio-0.0.0.0-8080-Acceptor] org.apache.tomcat.util.net.NioEndpoint.setSocketOptions 设置套接字选项时出错
+	java.net.SocketException: Invalid argument
+		at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+		at java.base/sun.nio.ch.Net.setSocketOption(Net.java:373)
+		at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:234)
+		at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:280)
+		at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:315)
+		at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:219)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:503)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:79)
+		at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:149)
+		at java.base/java.lang.Thread.run(Thread.java:834)
+2023-08-21 09:33:05 严重 [http-nio-0.0.0.0-8080-Acceptor] org.apache.tomcat.util.net.NioEndpoint.setSocketOptions 设置套接字选项时出错
+	java.net.SocketException: Invalid argument
+		at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+		at java.base/sun.nio.ch.Net.setSocketOption(Net.java:373)
+		at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:234)
+		at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:280)
+		at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:315)
+		at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:219)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:503)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:79)
+		at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:149)
+		at java.base/java.lang.Thread.run(Thread.java:834)

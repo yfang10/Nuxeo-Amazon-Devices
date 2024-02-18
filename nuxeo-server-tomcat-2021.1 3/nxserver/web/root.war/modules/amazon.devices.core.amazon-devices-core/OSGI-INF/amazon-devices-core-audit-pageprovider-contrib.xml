@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<component name="amazon.devices.core.audit.pageprovider.contrib">
+    <extension point="providers" target="org.nuxeo.ecm.platform.query.api.PageProviderService">
+
+        <genericPageProvider name="AUDIT_IN_DOCUMENTS"
+                             class="org.nuxeo.elasticsearch.audit.pageprovider.ESAuditPageProvider">
+            <property name="coreSession">#{documentManager}</property>
+            <property name="generateUIComments">false</property>
+            <whereClause docType="AmzdAuditSearch">
+                <predicate operator="BETWEEN" parameter="eventDate">
+                    <field name="startDate" schema="amzdauditsearch"/>
+                    <field name="endDate" schema="amzdauditsearch"/>
+                </predicate>
+                <predicate operator="=" parameter="category">
+                    <field name="eventCategory" schema="amzdauditsearch"/>
+                </predicate>
+                <predicate operator="IN" parameter="eventId">
+                    <field name="eventIds" schema="amzdauditsearch"/>
+                </predicate>
+                <predicate operator="IN" parameter="docUUID">
+                    <field name="targetDocumentsUUID" schema="amzdauditsearch"/>
+                </predicate>
+
+                <predicate operator="=" parameter="principalName">
+                    <field name="principalName" schema="basicauditsearch"/>
+                </predicate>
+            </whereClause>
+            <sort ascending="false" column="eventDate"/>
+            <pageSize>10</pageSize>
+            <maxPageSize>1000</maxPageSize>
+        </genericPageProvider>
+
+    </extension>
+</component>

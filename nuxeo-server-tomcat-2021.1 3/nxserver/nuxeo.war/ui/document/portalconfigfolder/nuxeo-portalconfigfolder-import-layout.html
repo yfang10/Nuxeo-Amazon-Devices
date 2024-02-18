@@ -1,0 +1,31 @@
+<!--
+`nuxeo-portalconfigfolder-import-layout`
+@group Nuxeo UI
+@element nuxeo-portalconfigfolder-import-layout
+-->
+<dom-module id="nuxeo-portalconfigfolder-import-layout">
+  <template>
+    <style include="nuxeo-styles"></style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true" name="title"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text" name="description"></nuxeo-input>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-portalconfigfolder-import-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype PortalConfigFolder
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

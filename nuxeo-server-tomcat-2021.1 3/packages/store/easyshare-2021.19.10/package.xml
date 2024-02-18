@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<package type="addon" name="easyshare" version="2021.19.10">
+  <title>EasyShare</title>
+  <description>The EasyShare addon enables filesharing from the repository for a limited period utilizing a simple hyperlink, which allows external users to access Nuxeo content without requiring an account or login.</description>
+  <vendor>Nuxeo</vendor>
+  <platforms>
+    <platform>lts-2021.19.10</platform>
+  </platforms>
+  <license>Apache 2.0</license>
+  <license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+</package>

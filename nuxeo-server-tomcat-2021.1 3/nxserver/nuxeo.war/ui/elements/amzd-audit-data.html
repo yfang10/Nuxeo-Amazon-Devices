@@ -1,0 +1,85 @@
+
+<dom-module id="amzd-audit-data">
+<script>
+    {
+    
+        class amzdAuditData extends Polymer.mixinBehaviors([Nuxeo.AggregateDataBehavior], Nuxeo.Element) {
+  
+        static get is() {
+          return 'amzd-audit-data';
+        }
+  
+        static get properties() {
+          return {
+            /**
+             * the name of the index
+             */
+            index: {
+              type: String,
+              value: 'audit',
+            },
+  
+            /**
+             * the name of the event to filter by
+             */
+            eventId: {
+              type: String,
+              value: '',
+            },
+  
+            /**
+             * Date field to use
+             */
+            // @override
+            dateField: {
+              type: String,
+              value: 'eventDate',
+            },
+          };
+        }
+  
+        static get observers() {
+          return [
+            '_query(eventId, where, startDate, endDate)',
+            '_aggregates(groupedBy, withRanges, withDateIntervals, metrics, metricsOperator, startDate, endDate)',
+          ];
+        }
+    
+        _query() {
+            console.log("执行Query")
+          const terms = [
+            {term: {eventId: this.eventId}},
+          ];
+  
+          if (this._dateRange) {
+            terms.push(this._dateRange);
+          }
+  
+          this.query = this._buildTerms(terms);
+        }
+
+        _buildTerms(terms) {
+            if (Array.isArray(this.where)) {
+                this.where.forEach(function(term) {
+                terms.push(term);
+                });
+            } else {
+                Object.keys(this.where).forEach(function(key) {
+                var term = {};
+                term[key] = this.where[key];
+                terms.push({term : term});
+                }, this);
+            }
+            return {bool: {must: terms}};
+        }
+
+      
+
+        
+      }
+      customElements.define(amzdAuditData.is, amzdAuditData);
+      Nuxeo.amzdAuditData = amzdAuditData;
+    }
+</script>
+</dom-module>
+ 

@@ -1,0 +1,35 @@
+<!--
+`nuxeo-useraccessfolder-import-layout`
+@group Nuxeo UI
+@element nuxeo-useraccessfolder-import-layout
+-->
+<dom-module id="nuxeo-useraccessfolder-import-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text"></nuxeo-input>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-useraccessfolder-import-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype UserAccessFolder
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

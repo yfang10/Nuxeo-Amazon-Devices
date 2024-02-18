@@ -1,0 +1,393 @@
+{
+    "properties": {
+        "ecm:isProxy": {
+            "type": "boolean"
+        },
+        "ecm:isVersion": {
+            "type": "boolean"
+        },
+        "dc:description": {
+            "copy_to": "all_field",
+            "fields": {
+                "fulltext": {
+                    "boost": 1.5,
+                    "type": "text",
+                    "analyzer": "fulltext"
+                }
+            },
+            "ignore_above": 32765,
+            "type": "keyword"
+        },
+        "ecm:mixinType": {
+            "ignore_above": 256,
+            "type": "keyword"
+        },
+        "ecm:binarytext": {
+            "copy_to": "all_field",
+            "type": "text",
+            "analyzer": "fulltext"
+        },
+        "product:product_id": {
+            "copy_to": "all_field",
+            "fields": {
+                "lowercase": {
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "fulltext": {
+                    "type": "text",
+                    "analyzer": "amzd_2_fulltext"
+                }
+            },
+            "type": "keyword"
+        },
+        "userAccess:fName": {
+            "copy_to": "all_field",
+            "fields": {
+                "lowercase": {
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "fulltext": {
+                    "type": "text",
+                    "analyzer": "amzd_3_fulltext"
+                }
+            },
+            "type": "keyword"
+        },
+        "userAccess:lName": {
+            "copy_to": "all_field",
+            "fields": {
+                "lowercase": {
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "fulltext": {
+                    "type": "text",
+                    "analyzer": "amzd_3_fulltext"
+                }
+            },
+            "type": "keyword"
+        },
+        "userAccess:email": {
+            "copy_to": "all_field",
+            "fields": {
+                "lowercase": {
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "fulltext": {
+                    "type": "text",
+                    "analyzer": "amzd_3_fulltext"
+                }
+            },
+            "type": "keyword"
+        },
+        "es:related_devices": {
+            "copy_to": "all_field",
+            "fields": {
+                "lowercase": {
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "fulltext": {
+                    "type": "text",
+                    "analyzer": "amzd_2_fulltext"
+                }
+            },
+            "type": "keyword"
+        },
+        "amz:original_creator_name": {
+          "copy_to": "all_field",
+          "fields": {
+              "lowercase": {
+                  "type": "text",
+                  "analyzer": "lowercase_analyzer"
+              },
+              "fulltext": {
+                  "type": "text",
+                  "analyzer": "amzd_3_fulltext"
+              }
+          },
+          "type": "keyword"
+        },
+        "dc:publisher": {
+            "copy_to": "all_field",
+            "fields": {
+                "lowercase": {
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "fulltext": {
+                    "type": "text",
+                    "analyzer": "amzd_3_fulltext"
+                }
+            },
+            "type": "keyword"
+        },
+        "codenames": {
+            "copy_to": "all_field",
+            "fields": {
+                "lowercase": {
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "fulltext": {
+                    "type": "text",
+                    "analyzer": "amzd_3_fulltext"
+                }
+            },
+            "type": "keyword"
+        },
+        "marketnames": {
+            "copy_to": "all_field",
+            "fields": {
+                "lowercase": {
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "fulltext": {
+                    "type": "text",
+                    "analyzer": "amzd_3_fulltext"
+                }
+            },
+            "type": "keyword"
+        },
+        "products": {
+          "properties": {
+            "title": {
+              "copy_to": "all_field",
+              "fields": {
+                  "lowercase": {
+                      "type": "text",
+                      "analyzer": "lowercase_analyzer"
+                  },
+                  "fulltext": {
+                      "type": "text",
+                      "analyzer": "amzd_3_fulltext"
+                  }
+              },
+              "type": "keyword"
+            },
+            "product_id": {
+              "copy_to": "all_field",
+              "fields": {
+                  "lowercase": {
+                      "type": "text",
+                      "analyzer": "lowercase_analyzer"
+                  },
+                  "fulltext": {
+                      "type": "text",
+                      "analyzer": "amzd_2_fulltext"
+                  }
+              },
+              "type": "keyword"
+            }
+          }
+        },
+        "related_project": {
+            "properties": {
+                "dc_title": {
+                    "copy_to": "all_field",
+                    "fields": {
+                        "lowercase": {
+                            "type": "text",
+                            "analyzer": "lowercase_analyzer"
+                        },
+                        "fulltext": {
+                            "type": "text",
+                            "analyzer": "amzd_3_fulltext"
+                        }
+                    },
+                    "type": "keyword"
+                },
+                "dc_expired": {
+                    "type": "date"
+                },
+                "amz_original_creator_name": {
+                    "copy_to": "all_field",
+                    "fields": {
+                        "lowercase": {
+                            "type": "text",
+                            "analyzer": "lowercase_analyzer"
+                        },
+                        "fulltext": {
+                            "type": "text",
+                            "analyzer": "amzd_3_fulltext"
+                        }
+                    },
+                    "type": "keyword"
+                },
+                "project_review_date": {
+                    "type": "date"
+                },
+                "project_delivery_date": {
+                    "type": "date"
+                },
+                "project_live_send_date": {
+                    "type": "date"
+                }
+            }
+        },
+        "dc:created": {
+            "type": "date"
+        },
+        "ecm:title": {
+            "ignore_above": 256,
+            "type": "keyword"
+        },
+        "ecm:currentLifeCycleState": {
+            "ignore_above": 256,
+            "type": "keyword"
+        },
+        "ecm:pos": {
+            "type": "integer"
+        },
+        "dc:creator": {
+            "ignore_above": 256,
+            "type": "keyword"
+        },
+        "ecm:versionVersionableId": {
+            "ignore_above": 256,
+            "type": "keyword"
+        },
+        "ecm:isLatestMajorVersion": {
+            "type": "boolean"
+        },
+        "ecm:isLatestVersion": {
+            "type": "boolean"
+        },
+        "dc:modified": {
+            "type": "date"
+        },
+        "ecm:path@depth": {
+            "type": "integer"
+        },
+        "all_field": {
+            "type": "text",
+            "analyzer": "fulltext"
+        },
+        "ecm:uuid": {
+            "ignore_above": 256,
+            "type": "keyword"
+        },
+        "dc:lastContributor": {
+            "ignore_above": 256,
+            "type": "keyword"
+        },
+        "dc:title": {
+            "copy_to": "all_field",
+            "fields": {
+                "ngram": {
+                    "type": "text",
+                    "analyzer": "ngram_analyzer"
+                },
+                "lowercase": {
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "fulltext": {
+                    "boost": 2,
+                    "type": "text",
+                    "analyzer": "fulltext"
+                }
+            },
+
+            "type": "keyword"
+        },
+        "ecm:isCheckedIn": {
+            "type": "boolean"
+        },
+        "note:note": {
+            "copy_to": "all_field",
+            "fields": {
+                "fulltext": {
+                    "type": "text",
+                    "analyzer": "fulltext"
+                }
+            },
+            "ignore_above": 256,
+            "type": "keyword"
+        },
+        "dc:expired": {
+            "type": "date"
+        },
+        "ecm:acl": {
+            "type": "keyword"
+        },
+        "ecm:primaryType": {
+            "ignore_above": 256,
+            "type": "keyword"
+        },
+        "common:icon": {
+            "index": false,
+            "type": "keyword"
+        },
+        "ecm:path": {
+            "fields": {
+                "children": {
+                    "search_analyzer": "keyword",
+                    "type": "text",
+                    "analyzer": "path_analyzer"
+                }
+            },
+            "type": "keyword"
+        },
+        "ecm:name": {
+            "copy_to": "all_field",
+            "ignore_above": 256,
+            "type": "keyword"
+        },
+        "amzkeyword:keywords": {
+            "properties": {
+                "label": {
+                    "ignore_above": 256,
+                    "fields": {
+                        "default": {
+                            "type": "text",
+                            "analyzer": "default"
+                        }
+                    },
+                    "type": "keyword"
+                }
+            }
+        }
+    },
+    "dynamic_templates": [
+        {
+            "no_thumbnail_template": {
+                "path_match": "thumb:thumbnail.*",
+                "mapping": {
+                    "index": false
+                }
+            }
+        },
+        {
+            "no_picture_template": {
+                "path_match": "picture:views.*",
+                "mapping": {
+                    "index": false
+                }
+            }
+        },
+        {
+            "strings": {
+                "match_mapping_type": "string",
+                "mapping": {
+                    "copy_to": "all_field",
+                    "ignore_above": 256,
+                    "type": "keyword"
+                }
+            }
+        },
+        {
+            "paths": {
+                "path_match": "ecm:path@level*",
+                "mapping": {
+                    "ignore_above": 32,
+                    "type": "keyword"
+                }
+            }
+        }
+    ]
+}

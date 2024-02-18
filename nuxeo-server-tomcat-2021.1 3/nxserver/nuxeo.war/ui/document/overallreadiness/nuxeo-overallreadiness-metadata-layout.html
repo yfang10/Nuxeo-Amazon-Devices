@@ -1,0 +1,52 @@
+<!--
+`nuxeo-overallreadiness-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-overallreadiness-metadata-layout
+-->
+<dom-module id="nuxeo-overallreadiness-metadata-layout">
+  <template>
+    <style include="nuxeo-styles"></style>
+    <div role="widget">
+      <label>Title</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Description</label>
+      <div name="description">[[document.properties.dc:description]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Sku Level</label>
+      <div name="skuLevel">[[document.properties.overallreadiness:skuLevel]]</div>
+    </div>
+    <div role="widget">
+      <label>Style Level</label>
+      <div name="styleLevel">[[document.properties.overallreadiness:styleLevel]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Remark</label>
+      <div name="remark">[[document.properties.overallreadiness:remark]]</div>
+    </div>
+
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-overallreadiness-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype OverallReadiness
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

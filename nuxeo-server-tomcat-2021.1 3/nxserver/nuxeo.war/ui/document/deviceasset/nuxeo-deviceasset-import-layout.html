@@ -1,0 +1,62 @@
+<link rel="import" href="../../elements/nuxeo-se-collapse.html">
+
+<!--
+`nuxeo-deviceasset-import-layout`
+@group Nuxeo UI
+@element nuxeo-deviceasset-import-layout
+-->
+<dom-module id="nuxeo-deviceasset-import-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+
+    <nuxeo-input value="{{document.properties.dc:title}}" label="Title" type="text" required="true" role="widget"></nuxeo-input>
+
+    <nuxeo-input value="{{document.properties.dc:description}}" label="Description" type="text" role="widget"></nuxeo-input>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:asset_category}}" label="Asset Category" directory-name="AssetCategory" role="widget" min-chars="0" on-value-changed="_clearAssetType"></nuxeo-directory-suggestion>
+
+    <template is="dom-if" if="{{document.properties.amz:asset_category}}">
+      <nuxeo-directory-suggestion id="assetType" value="{{document.properties.amz:asset_type}}" label="Asset Type" directory-name="{{document.properties.amz:asset_category}}" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+    </template>
+
+    <amzd-amazon-create-layout document="{{document}}"></amzd-amazon-create-layout>
+
+    <pclm-usage-edit-layout document="{{document}}"></pclm-usage-edit-layout>
+
+    <pclm-relations-edit-layout document="{{document}}"></pclm-relations-edit-layout>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.approval:distribute_ADH}}" label="Distribute Content to Amazon Device Hub" directory-name="Is_Retouched_Version" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.approval:distribute_selects}}" label="Distribute Selects for CXLab Use" directory-name="Is_Retouched_Version" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.approval:distribute_CXLabs}}" label="Distribute Final Content for CXLab Use" directory-name="Is_Retouched_Version" min-chars="0"></nuxeo-directory-suggestion>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-deviceasset-import-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype DeviceAsset
+         */
+      document: {
+        type: Object,
+      },
+
+    },
+
+    _clearAssetType: function(event){
+      // clear the value of asset_type selection
+      this.$$('#assetType').value = "";
+    }
+  });
+  </script>
+</dom-module>

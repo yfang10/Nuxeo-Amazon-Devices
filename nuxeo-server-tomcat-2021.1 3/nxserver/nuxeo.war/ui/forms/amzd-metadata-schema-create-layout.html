@@ -1,0 +1,342 @@
+<dom-module id="amzd-metadata-schema-create-layout">
+    <template>
+      <style>
+        *[role=widget] {
+          padding: 5px;
+        }
+        label {
+          font-weight: var(--nuxeo-label_-_font-weight);
+          text-decoration: var(--nuxeo-label_-_text-decoration);
+        }
+        label:after {
+          content: var(--nuxeo-label-after_-_content);
+        }
+      </style>
+  
+      <nuxeo-connection id="nxcon" user="{{user}}"></nuxeo-connection>
+      <nuxeo-resource id="user" path="/user"></nuxeo-resource>
+  
+       <nuxeo-se-collapse collapsestyle="[[collapsestyle]]" heading="IDENTIFIERS" headingstyle="[[headingstyle]]"
+      opened="{{opened}}">
+        <nuxeo-input value="{{document.properties.amz:codename}}" label="Codename" type="text"  role="widget"></nuxeo-input>
+        <nuxeo-input value="{{document.properties.amz:marketingStreetname}}" label="Marketing Streetname" type="text" role="widget"></nuxeo-input>
+        <nuxeo-input value="{{document.properties.dc:title}}" label="Title" type="text" required="true" role="widget"></nuxeo-input>
+        <nuxeo-input value="{{document.properties.dc:description}}" label="Description" type="text" role="widget"></nuxeo-input>
+        <nuxeo-input value="{{document.properties.amz:asin}}" label="ASIN" type="text" role="widget"></nuxeo-input>
+        <nuxeo-input value="{{document.properties.amz:projectNumber}}" label="Project Number" type="text" role="widget"></nuxeo-input>
+        <nuxeo-dropzone role="widget" label="[[i18n('file.content')]]" name="content" document="[[document]]"></nuxeo-dropzone>
+      </nuxeo-se-collapse>
+  
+    <nuxeo-se-collapse collapsestyle="[[collapsestyle]]" heading="TYPES" headingstyle="[[headingstyle]]"
+      opened="{{opened}}">
+        <nuxeo-directory-suggestion value="{{document.properties.product_search:product_type}}" label="Product Type" directory-name="Product_Type"  role="widget" min-chars="0"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion value="{{document.properties.product_search:pl}}" label="Product Line" directory-name="Product_Line" role="widget" multiple="true" min-chars="0"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion value="{{document.properties.amz:asset_type}}" label="Asset Type" directory-name="Asset_Type" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion value="{{document.properties.amz:retailAssetTypes}}" min-chars="0" label="Retail Asset Type" directory-name="Retail_Asset_Type" role="widget" multiple="true"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion value="{{document.properties.amz:placement}}" label="Placement" directory-name="Placement" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion value="{{document.properties.amz:standardAngles}}" label="Standard Angles" directory-name="Standard_Angles" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion value="{{document.properties.dc:format}}" label="Format" directory-name="Format" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+    </nuxeo-se-collapse>
+  
+   <nuxeo-se-collapse collapsestyle="[[collapsestyle]]" heading="BRAND AND CAMPAIGNS" headingstyle="[[headingstyle]]"
+        opened$="[[_false]]">
+      <nuxeo-directory-suggestion value="{{document.properties.product_search:brand}}" label="Brand" directory-name="Brand" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      <nuxeo-directory-suggestion value="{{document.properties.amz:associatedEvent}}" label="Associated Event" directory-name="Associated_Event" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      <nuxeo-directory-suggestion value="{{document.properties.amz:launchcollection}}" label="Launch Collections" directory-name="Launch_Collections" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      <nuxeo-directory-suggestion value="{{document.properties.amz:activePeriod}}" label="Active Period" directory-name="Active_Period" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      <nuxeo-directory-suggestion value="{{document.properties.approval:approved}}" label="Approved" directory-name="Approved" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      <nuxeo-date-picker value="{{document.properties.approval:approved_date}}" label="Approval Date" role="widget"></nuxeo-date-picker>
+      <nuxeo-date-picker value="{{document.properties.approval:announce_date}}" label="Announce Date" role="widget"></nuxeo-date-picker>
+      <nuxeo-date-picker value="{{document.properties.approval:street_date}}" label="Street Date" role="widget"></nuxeo-date-picker>
+      <nuxeo-date-picker value="{{document.properties.dc:expired}}" label="Expiration Date" role="widget"></nuxeo-date-picker>
+    </nuxeo-se-collapse>
+  
+  <nuxeo-se-collapse collapsestyle="[[collapsestyle]]" heading="USAGE RIGHTS" headingstyle="[[headingstyle]]"
+    opened$="[[_false]]">
+      <nuxeo-directory-suggestion value="{{document.properties.amz:Ownership}}" label="Ownership" directory-name="Ownership" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      <nuxeo-directory-suggestion value="{{document.properties.amz:status}}" label="Status" directory-name="Status" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      <nuxeo-directory-suggestion value="{{document.properties.amz:is_retouched_version}}" label="Is Retouched Version" directory-name="Is_Retouched_Version" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      <!-- <nuxeo-directory-suggestion value="{{document.properties.usage:usageRightsStatement}}" label="Usage Rights Statement" role="widget"></nuxeo-directory-suggestion> -->
+      <nuxeo-input value="{{document.properties.usage:usageRightsStatement}}" label="Usage Rights Statement" type="text" role="widget"></nuxeo-input>
+      <nuxeo-input value="{{document.properties.usage:talent}}" label="Talent" type="text" role="widget"></nuxeo-input>
+      <nuxeo-directory-suggestion value="{{document.properties.usage:rights_type}}" label="Rights Type" directory-name="Rights_Type" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      <nuxeo-directory-suggestion value="{{document.properties.usage:restrictions}}" label="Restrictions" directory-name="Restrictions" role="widget" min-chars="0" ></nuxeo-directory-suggestion>
+      <nuxeo-input value="{{document.properties.usage:producer}}" label="Producer" type="text" role="widget"></nuxeo-input>
+      <nuxeo-input value="{{document.properties.usage:projectManager}}" label="Project Manager" type="text" role="widget"></nuxeo-input>
+      <nuxeo-input value="{{document.properties.amz:original_creator_name}}" label="Creators" type="text" role="widget"></nuxeo-input>
+      <nuxeo-directory-suggestion value="{{document.properties.usage:accessPermissions}}" label="Access Permissions" directory-name="Access_Permissions" role="widget" min-chars="0" ></nuxeo-directory-suggestion>
+      <nuxeo-input value="{{document.properties.usage:releaseYears}}" label="Release Year" type="number" role="widget"></nuxeo-input>
+      <!-- <nuxeo-directory-suggestion value="{{document.properties.amz:retailAssetUse}}" label="Retail Asset Use" directory-name="Retail_Asset_Use" role="widget" min-chars="0" > </nuxeo-directory-suggestion> -->
+      <nuxeo-input  value="{{document.properties.amz:notes}}" label="Notes" type="text" role="widget"></nuxeo-input>
+  </nuxeo-se-collapse>
+  
+     <nuxeo-se-collapse collapsestyle="[[collapsestyle]]" heading="RELATED ASSETS" 
+    headingstyle="[[headingstyle]]" opened$="[[_false]]">
+    <!-- <amzd-document-suggestion role="widget" min-chars="0" value="{{document.properties.relations:product}}" label="Related Devices" readonly="true" multiple="true" page-provider="product-suggestions"></amzd-document-suggestion> -->
+      <nuxeo-directory-suggestion value="{{document.properties.relations:product_devices}}" label="Related Devices and Accessories" directory-name="Related_Devices_and_Accessories"   multiple="true" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      <amzd-document-suggestion role="widget" min-chars="0" value="{{document.properties.relations:product}}" label="Related Devices" multiple="true" page-provider="product-suggestions"></amzd-document-suggestion>
+      <nuxeo-document-suggestion role="widget" min-chars="0" page-provider="referenceItem-suggestions" value="{{document.properties.relations:referenceItem}}" label="Related Content" multiple="true" min-chars="0"></nuxeo-document-suggestion>
+      <nuxeo-directory-suggestion value="{{document.properties.approval:distribution}}" label="Distribution" directory-name="Distribution" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+    </nuxeo-se-collapse>
+  
+    <nuxeo-se-collapse collapsestyle="[[collapsestyle]]" heading="REGION" 
+    headingstyle="[[headingstyle]]" opened$="[[_false]]">
+    <nuxeo-directory-suggestion value="{{document.properties.usage:geography}}" label="Approved Locations" directory-name="Approved_Locations" multiple="true" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+    <nuxeo-directory-suggestion value="{{document.properties.usage:language}}" label="Approved Languages" directory-name="Approved_Languages" multiple="true" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+    <nuxeo-directory-suggestion value="{{document.properties.amz:language}}" label="Content Language" directory-name="Content_Language"  multiple="true" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+  </nuxeo-se-collapse>  
+  
+  
+      <!-- <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
+                         heading="[[i18n('label.collapseheaders.distribution')]]"
+                         headingstyle="[[headingstyle]]"
+                         opened$="[[_true]]"
+                         >
+        <nuxeo-directory-suggestion value="{{document.properties.approval:distribute_ADH}}" required="true" label="Distribute Content to Amazon Device Hub" directory-name="Is_Retouched_Version" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+  
+        <nuxeo-directory-suggestion value="{{document.properties.approval:distribute_selects}}" required="true" label="Distribute Selects for CXLab Use" directory-name="Is_Retouched_Version" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+  
+        <nuxeo-directory-suggestion value="{{document.properties.approval:distribute_CXLabs}}" required="true" label="Distribute Final Content for CXLab Use" directory-name="Is_Retouched_Version" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+      </nuxeo-se-collapse> -->
+  
+  
+      <nuxeo-filter document="[[document]]" user="[[user]]" group="administrators,Librarian">       
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_copy}}" value="{{document.properties.approval:has_copy}}" label="Has Copy Approval" directory-name="Is_Retouched_Version" role="widget" min-chars="0">
+          </nuxeo-directory-suggestion>  
+        </template>
+      </nuxeo-filter>
+  
+      <nuxeo-filter document="[[document]]" user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_requester}}" value="{{document.properties.approval:has_requester}}" label="Has Requester Approval" directory-name="Is_Retouched_Version" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+  
+      <nuxeo-filter document="[[document]]" user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_utterance}}" value="{{document.properties.approval:has_utterance}}" label="Has Utterance Approval" directory-name="Is_Retouched_Version" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+      <nuxeo-filter document="[[document]]" user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_legal}}" value="{{document.properties.approval:has_legal}}" label="Has Legal Approval" directory-name="Is_Retouched_Version" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+      <nuxeo-filter document="[[document]]" user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_tm}}" value="{{document.properties.approval:has_tm}}" label="Has Trademark Approval" directory-name="Is_Retouched_Version" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+      <nuxeo-filter document="[[document]]" user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_accessibility}}" value="{{document.properties.approval:has_accessibility}}" label="Has Accessibility Standards Approval" directory-name="Is_Retouched_Version" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+      <nuxeo-filter document="[[document]]" user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_retailer}}" value="{{document.properties.approval:has_retailer}}" label="Has Retailer Approval" directory-name="Is_Retouched_Version" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+    </template>
+  
+    <script>
+    Polymer({
+      is: 'amzd-metadata-schema-create-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+  
+        collapsestyle: {
+          type: String,
+          value: "border:0px solid #f5f5f5;margin-left:0em;"
+        },
+        headingstyle: {
+          type: String,
+          value: "font-size:1rem;font-weight:700;text-transform:uppercase;"
+        },
+        _false: {
+          type: Boolean,
+          value: false
+        },
+        _true: {
+          type: Boolean,
+          value: true
+        },
+        document: {
+          type: Object
+        },
+        isneed_copy:{
+          type: String,
+          computed:'_isneedcopy(document.properties.approval:need_copy)'
+        },
+        isneed_requester:{
+          type:String,
+          computed:'_isneedrequester(document.properties.approval:need_requester)'
+        },
+  
+        isneed_utterance:{
+          type: String,
+  
+          computed:'_isneedutterance(document.properties.approval:need_utterance)'
+        },
+        isneed_legal:{
+          type: String,
+          computed:'_isneedlegal(document.properties.approval:need_legal)'
+        },
+        isneed_tm:{
+          type: String,
+  
+          computed:'_isneedtm(document.properties.approval:need_tm)'
+        },
+        isneed_accessibility:{
+          type: String,
+  
+          computed:'_isneedaccessibility(document.properties.approval:need_accessibility)'
+        },
+        isneed_retailer:{
+          type: String,
+  
+          computed:'_isneedretailer(document.properties.approval:need_retailer)'
+        },
+        opened: {
+          type: Boolean,
+          value: true,
+          reflectToAttribute: true
+        }
+  
+      },
+      
+       attached: function () {
+        let datePickers = this.shadowRoot.querySelectorAll('nuxeo-date-picker');
+        if (datePickers) {
+          datePickers.forEach(datePicker => {
+            this._blur(datePicker.$.date);
+          });
+        }
+      },
+      _blur: function (ele) {
+        let inputField = ele.shadowRoot.querySelector('[part="input-field"]');
+        let toggleBtn = ele.shadowRoot.querySelector('[part="toggle-button"]');
+        if (inputField) {
+          inputField.onclick = e => this.blur();
+        }
+        if (toggleBtn) {
+          toggleBtn.onclick = e => this.blur();
+        }
+      },
+  
+      _isneedcopy: function(a) {
+        //a=this.document.properties["approval:need_copy"];
+  
+  
+        if(a === null || a === undefined)
+          return null;
+        a=this.document.properties["approval:need_copy"];
+        if(a==='No')
+          return null;
+        if(a.id==='No')
+          return null;
+        if(a.id==='Yes')
+          return a;
+        if(a==='Yes') 
+          return a;
+  
+      },
+  
+      _isneedrequester: function(a) {
+        if(a === null || a === undefined)
+          return null;
+        a=this.document.properties["approval:need_requester"];
+  
+        if(a==='No'||a===null)
+          return null;
+        if(a.id==='No'||a.id===null)
+          return null;
+        if(a.id==='Yes')
+          return a;
+        if(a==='Yes') 
+          return a;
+  
+      },
+      _isneedutterance: function(a) {
+        if(a === null || a === undefined)
+          return null;
+        a=this.document.properties["approval:need_utterance"];
+  
+        if(a==='No'||a===null)
+          return null;
+        if(a.id==='No'||a.id===null)
+          return null;
+        if(a.id==='Yes')
+          return a;
+        if(a==='Yes') 
+          return a;
+  
+      },
+      _isneedlegal: function(a) {
+        if(a === null || a === undefined)
+          return null;
+        a=this.document.properties["approval:need_legal"];
+        if(a==='No'||a===null)
+          return null;
+        if(a.id==='No'||a.id===null)
+          return null;
+        if(a.id==='Yes')
+          return a;
+        if(a==='Yes') 
+          return a;
+  
+      },
+      _isneedtm: function(a) {
+        if(a === null || a === undefined)
+          return null;
+        a=this.document.properties["approval:need_tm"];
+  
+        if(a==='No'||a===null)
+          return null;
+        if(a.id==='No'||a.id===null)
+          return null;
+        if(a.id==='Yes')
+          return a;
+        if(a==='Yes') 
+          return a;
+  
+      },
+      _isneedaccessibility: function(a) {
+        if(a === null || a === undefined)
+          return null;
+        a=this.document.properties["approval:need_accessibility"];
+  
+        if(a==='No'||a===null)
+          return null;
+        if(a.id==='No'||a.id===null)
+          return null;
+        if(a.id==='Yes')
+          return a;
+        if(a==='Yes') 
+          return a;
+  
+      },
+  
+      _isneedretailer: function(a) {
+        if(a === null || a === undefined)
+          return null;
+        a=this.document.properties["approval:need_retailer"];
+  
+        if(a==='No'||a===null)
+          return null;
+        if(a.id==='No'||a.id===null)
+          return null;
+        if(a.id==='Yes')
+          return a;
+        if(a==='Yes') 
+          return a;
+  
+      }
+  
+  
+    });
+  
+    </script>
+  </dom-module>
+  

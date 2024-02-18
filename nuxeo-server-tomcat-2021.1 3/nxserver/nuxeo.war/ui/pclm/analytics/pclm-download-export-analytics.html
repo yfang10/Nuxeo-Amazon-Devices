@@ -1,0 +1,272 @@
+<!--
+`pclm-download-export-analytics`
+@group Nuxeo UI
+@element pclm-download-export-analytics.html
+-->
+
+<link rel="import" href="../behaviors/pclm-analytics-dashboard-behavior.html">
+<link rel="import" href="../behaviors/pclm-analytics-format-behavior.html">
+<link rel="import" href="../styles/pclm-analytics-styles.html">
+<link rel="import" href="../styles/pclm-grid-styles.html">
+<link rel="import" href="../tools/pclm-es-bucket-docid-label-enricher.html">
+<dom-module id="pclm-download-export-analytics">
+  <template>
+    <style include="iron-flex iron-flex-alignment pclm-grid-styles pclm-analytics-styles">
+      .cell {
+        min-height: 300px;
+      }
+
+      paper-button {
+        color: var(--nx-button-primary_-_color);
+        background-color: var(--nx-button-primary_-_background-color);
+        border: var(--nx-button-primary_-_border);
+        width: 100px;
+        height: 45px;
+        margin-left: 40px;
+      }
+    </style>
+    <nuxeo-page-provider id="nxProvider" provider="Downloads-ReportingPP" page-size="40" aggregations="{{aggregations}}"
+      enrichers="thumbnail, permissions" params="[[params]]"
+      schemas="dublincore,common,uid,file,downloadrecord,files,usage,relations,product_search,amazon,approval"
+      headers='{ "X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label" }' fetch-aggregates>
+    </nuxeo-page-provider>
+
+    <nuxeo-operation id="opDownloadRecords" op="Document.Create" enrichers="thumbnail, permissions" params="[[params]]"
+      schemas="dublincore,common,uid,file,downloadrecord,files,usage,relations,product_search,amazon,approval,downloadrecords"
+      headers='{ "X-NXproperties": "*", "X-NXRepository": "default","X-NXVoidOperation":"false","Nuxeo-Transaction-Timeout":"3"}'>
+    </nuxeo-operation>
+
+    <div class="container">
+      <div class="layout horizontal wrap">
+        <nuxeo-card class="cell" style="display:flex;">
+          <div role="widget" style="flex:1;">
+            <amzd-form-checkbox-aggregation role="checkbox" value="{{params.downloadrecord_marketing_names_agg}}"
+              data="[[aggregations.downloadrecord_marketing_names_agg]]"
+              checkname="[[i18n('documentContentView.datatable.header.marketing_names')]]"></amzd-form-checkbox-aggregation>
+          </div>
+          <div role="widget" style="flex:1;">
+            <amzd-form-checkbox-aggregation role="checkbox" value="{{params.downloadrecord_retail_asset_types_agg}}"
+              data="[[aggregations.downloadrecord_retail_asset_types_agg]]" name="downloadrecord_retail_asset_types_agg"
+              checkname="[[i18n('documentContentView.datatable.header.retail_asset_types')]]"></amzd-form-checkbox-aggregation>
+          </div>
+        </nuxeo-card>
+        <nuxeo-card class="dates" heading="[[i18n('label.workflow.date.downloadDateRange')]]">
+          <div class="horizontal flex end-justified layout wrap">
+            <nuxeo-date-picker value="{{params.downloadrecord_event_date_min}}" label="[[i18n('label.date.interval.from')]]"
+              default-time="00:00:00" id="checkboxstartDate"></nuxeo-date-picker>
+
+            <nuxeo-date-picker value="{{params.downloadrecord_event_date_max}}" label="[[i18n('label.date.interval.to')]]"
+              on-value-changed="_changeDateEnd" default-time="23:59:59" id="checkboxendDate"></nuxeo-date-picker>
+            
+              <!-- <paper-icon-button class="refresh" icon="icons:refresh" on-tap="refresh"></paper-icon-button> -->
+          </div>
+        </nuxeo-card>
+      </div>
+    </div>
+
+    <nuxeo-results id="results" display-mode="table" name="[[document.uid]]" nx-provider="[[nxProvider]]"
+      selected-items="{{selectedItems}}" document="[[document]]" display-quick-filters
+      display-sort="[[_canSort(document, sortOptions)]]" sort-options="[[sortOptions]]" role="widget">
+
+      <nuxeo-data-table id="table" name="table" icon="nuxeo:view-list" class="results" settings-enabled>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.title')]]" field="dc:title"
+          sort-by="[[_displaySort(document, 'dc:title')]]" filter-by="dublincore_title" flex="50">
+          <template>
+            <nuxeo-tag>[[item.properties.dc:title]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.downloader')]]"
+          field="downloadrecord:downloader" flex="50" display-quick-filters>
+          <template>
+            <nuxeo-user-tag user="[[item.properties.downloadrecord:downloader]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.event_date')]]"
+          field="downloadrecord:event_date" flex="50" display-quick-filters>
+          <template>
+            <nuxeo-date datetime="[[item.properties.downloadrecord:event_date]]"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.marketing_names')]]"
+          field="downloadrecord:marketing_names" flex="50" display-quick-filters>
+          <template>
+            <nuxeo-tag>[[item.properties.downloadrecord:marketing_names]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.retail_asset_types')]]"
+          field="downloadrecord:retail_asset_types" flex="50" display-quick-filters>
+          <template>
+            <nuxeo-tag>[[item.properties.downloadrecord:retail_asset_types]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        
+        <!-- <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.retail_asset_use')]]"
+          field="amz:retailAssetUse" flex="50" display-quick-filters>
+          <template>
+            <nuxeo-tag>[[item.properties.amz:retailAssetUse.properties.label]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>         -->
+
+      </nuxeo-data-table>
+    </nuxeo-results>
+
+
+
+    <div class="footer"></div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-download-export-analytics',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        document: {
+          type: Object
+        },
+        /**
+       * `true` if the current element is visible, `false` otherwise.
+       */
+        visible: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * The currently selected items in the results view.
+         */
+        selectedItems: {
+          type: Array,
+          notify: true,
+        },
+        params: {
+          type: Object,
+          value: {},
+          // computed: '_computeParams(document)',
+          notify: true
+        },
+        /**
+         * The sort options.
+         */
+        sortOptions: {
+          type: Array,
+          computed: '_computeSortOptions()',
+        },
+        _dropTargetFilter: {
+          type: Function,
+          value() {
+            return this._dropTargetFilter.bind(this);
+          },
+        },
+        aggregations: {
+          type: Object,
+          value: {},
+          notify: true,
+        }
+      },
+      listeners: {
+        'iron-resize': '_computeVisible',
+      },
+
+      observers: [
+        '_refresh(params, visible)',
+        "_observerData(params.downloadrecord_marketing_names_agg,params.downloadrecord_retail_asset_types_agg,params.downloadrecord_event_date_min,params.downloadrecord_event_date_max)"
+      ],
+
+      attached() {
+        this.nxProvider = this.pageProvider;
+        this._fetchRes();
+        var viewModes = this.$.results.shadowRoot.querySelector('div[class="viewModes"]');
+        viewModes.hidden = true;
+      },
+
+      detached() {
+        this.nxProvider = null;
+      },
+
+      /**
+       * Gets the currently selected view.
+       */
+      get view() {
+        return this.$$('.results.iron-selected');
+      },
+
+      /**
+       * The `nuxeo-results` element.
+       */
+      get results() {
+        return this.$$('nuxeo-results');
+      },
+
+      /**
+       * The `nuxeo-page-provider` element.
+       */
+      get pageProvider() {
+        return this.$$('nuxeo-page-provider');
+      },
+
+      _navigate(e) {
+        this.fire('navigate', { doc: (e.model || e.detail).item });
+        e.stopPropagation();
+      },
+
+      _refresh() {
+        if (this.document && this.visible) {
+          this.results.fetch();
+        }
+      },
+
+      // function used by nuxeo-data-grid and nuxeo-data-table to check if a list item is a drop target
+      _dropTargetFilter(el, model) {
+        return model && (this.hasFacet(model.item, 'Folderish') || this.hasFacet(model.item, 'Collection'));
+      },
+
+      _computeVisible() {
+        this.visible = Boolean(this.offsetWidth || this.offsetHeight);
+      },
+
+      /**
+       * Table Data.
+       */
+      _observerData(esMarketNames, retailAssetTypes, startDate, endDate) {
+        let params = {
+          downloadrecord_marketing_names_agg: this.params.downloadrecord_marketing_names_agg,
+          downloadrecord_retail_asset_types_agg: this.params.downloadrecord_retail_asset_types_agg,
+          downloadrecord_event_date_min: this.params.downloadrecord_event_date_min,
+          downloadrecord_event_date_max: this.params.downloadrecord_event_date_max,
+          currentPageIndex: 0,
+          offset: 0,
+          pageSize: 40
+        }
+
+        this.$.nxProvider.params = params
+        this.$.table.fetch();
+      },
+
+
+       /**
+       * The `Document.Create` Api.
+       */
+      _fetchRes() {
+        let params = {
+          name: 'DownloadRecords',
+          type: 'DownloadRecords'
+        }
+        return this._fetch(this.$.opDownloadRecords, params);
+      },
+
+      _fetch(exec, params) {
+        exec.params = params;
+        exec.input = "/default-domain";
+        return exec.execute().then((response) => {
+          return response;
+        });
+      },
+
+    });
+  </script>
+</dom-module>

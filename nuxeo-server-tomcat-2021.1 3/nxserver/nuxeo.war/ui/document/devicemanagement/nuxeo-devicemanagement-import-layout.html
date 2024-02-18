@@ -1,0 +1,35 @@
+<!--
+`nuxeo-devicemanagement-import-layout`
+@group Nuxeo UI
+@element nuxeo-devicemanagement-import-layout
+-->
+<dom-module id="nuxeo-devicemanagement-import-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text"></nuxeo-input>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-devicemanagement-import-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype DeviceManagement
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

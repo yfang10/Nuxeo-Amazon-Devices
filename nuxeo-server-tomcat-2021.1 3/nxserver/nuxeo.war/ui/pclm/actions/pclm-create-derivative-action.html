@@ -1,0 +1,107 @@
+<!--
+`test`
+@group Nuxeo UI
+@element pclm-create-derivative-action
+-->
+
+<dom-module id="pclm-create-derivative-action">
+  <template>
+    <style include="nuxeo-action-button-styles">
+      .content {
+        @apply(--layout-vertical);
+      }
+    </style>
+
+    <nuxeo-operation id="translateOp" op="javascript.api_create_derivative"
+                     input="[[input]]" params="[[params]]">
+    </nuxeo-operation>
+
+    <div class="action" on-tap="_toggleDialog">
+      <paper-icon-button id="bt" icon="icons:content-copy"></paper-icon-button>
+      <span class="label" hidden$="[[!showLabel]]">[[i18n('label.action.create.derivative')]]</span>
+    </div>
+    <paper-tooltip for="bt">[[i18n('label.action.create.derivative')]]</paper-tooltip>
+
+    <nuxeo-dialog id="dialog" on-iron-overlay-closed="_dialogClosed" with-backdrop>
+      <h2>[[i18n('label.action.create.derivative')]]</h2>
+      <div class="content">
+        <iron-form id="form">
+          <form>
+            <nuxeo-input role="widget"
+                         label="[[i18n('label.action.create.derivative.params.name')]]"
+                         value="{{derivative_name}}"
+                         autofocus required>
+            </nuxeo-input>
+          </form>
+        </iron-form>
+      </div>
+      <div class="buttons">
+        <paper-button noink dialog-dismiss on-tap="_close">
+          [[i18n('label.dialog.button.cancel')]]
+        </paper-button>
+        <paper-button noink class="primary" on-tap="_do">
+          [[i18n('label.dialog.button.proceed')]]
+        </paper-button>
+      </div>
+    </nuxeo-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-create-derivative-action',
+      behaviors: [Nuxeo.I18nBehavior,Nuxeo.FiltersBehavior,Nuxeo.RoutingBehavior],
+      properties: {
+        document: {
+          type: Object,
+          observer: "_documentModified"
+        },
+
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        derivative_name: {
+          type: String
+        },
+
+        params: {
+          type: Object,
+          value: {}
+        }
+      },
+
+      _toggleDialog: function () {
+        this.$.dialog.toggle();
+      },
+
+      _do: function () {
+        if (!this.$.form.validate()) return;
+        this.params.derivative_name = this.derivative_name;
+        this.input = 'doc:'+this.document.uid;
+        this.$.translateOp.execute().then(function(response) {
+          this.fire('notify', { message: this.i18n('label.action.create.derivative.success') });
+          this._toggleDialog();
+        }.bind(this),function(error) {
+          this.fire('notify', { message: this.i18n('label.action.create.derivative.failure') });
+        }.bind(this));;
+      },
+
+      _close: function() {
+        // implement me
+      },
+
+      _dialogClosed: function() {
+        // implement me
+      },
+
+      _documentModified: function(document) {
+        if (document) {
+          this.derivative_name = "derivative-"+document.title;
+        }
+      }
+
+    });
+  </script>
+</dom-module>

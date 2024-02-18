@@ -1,0 +1,42 @@
+<!--
+`nuxeo-launchcollection-edit-layout`
+@group Nuxeo UI
+@element nuxeo-launchcollection-edit-layout
+-->
+<dom-module id="nuxeo-launchcollection-edit-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true" name="title"></nuxeo-input>
+    <nuxeo-input role="widget" value="{{document.properties.quickLink:subtitle}}" label="Subtitle" type="text" name="subtitle"></nuxeo-input>
+    <nuxeo-input role="widget" value="{{document.properties.quickLink:order}}" required="true" label="Order" type="number" min="1" name="order"></nuxeo-input>
+    <div role="widget">
+      <label>Active</label>
+      <paper-checkbox checked="{{document.properties.quickLink:active}}" name="active"></paper-checkbox>
+    </div>
+
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text" name="description"></nuxeo-input>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-launchcollection-edit-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype LaunchCollection
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

@@ -1,0 +1,250 @@
+<dom-module id="add-to-campaign-collection">
+  <template>
+    <style include="iron-flex iron-flex-alignment iron-flex-factors nuxeo-styles">
+      :host {
+        display: block;
+        @apply --layout-flex;
+        @apply --layout-horizontal;
+      }
+
+      .container {
+        margin: 2rem;
+        padding: 0 1rem 0 0;
+        display: inline-block;
+        @apply --layout-flex;
+        @apply --layout-vertical;
+      }
+
+      paper-menu-button {
+        --paper-menu-button: {
+          padding: 0;
+        };
+      }
+      paper-dropdown-menu{
+        display: flow-root;
+      }
+      paper-listbox {
+        --paper-listbox: {
+          padding: 0;
+        };
+      }
+
+      .versions,
+      .options {
+        margin-left: 3em;
+      }
+
+      label {
+        @apply --nuxeo-label;
+      }
+
+      .error {
+        border-left: 4px solid var(--nuxeo-warn-text);
+        color: var(--nuxeo-text-default);
+        padding-left: 8px;
+        margin-bottom: 8px;
+      }
+    </style>
+
+    <nuxeo-operation id="op" op="AddToPortalCollection" sync-indexing="">
+    </nuxeo-operation>
+
+    <nuxeo-document id="srcDoc">
+    </nuxeo-document>
+
+    <template is="dom-if" if="[[_isAvailable()]]">
+      <div class="action" on-tap="_toggleDialog">
+        <paper-icon-button id="publishButton" icon="[[icon]]" noink></paper-icon-button>
+        <span class="label" hidden$="[[!showLabel]]">[[label]]</span>
+        <nuxeo-tooltip>[[label]]</nuxeo-tooltip>
+      </div>
+    </template>
+
+    <nuxeo-dialog id="publishDialog" modal no-auto-focus>
+      <paper-dropdown-menu label="Please Choose Collection Type" >
+        <paper-listbox slot="dropdown-content">
+          <paper-item on-tap="_onSelected">Splash Config</paper-item>
+          <paper-item on-tap="_onSelected">Campaign Collection</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+      <template is="dom-if" if={{!hideCancel}}>
+        <div class="buttons horizontal end-justified layout" style="background-color: white">
+          <div class="flex start-justified">
+            <paper-button noink="" dialog-dismiss="" on-tap="_cancel">[[i18n('command.cancel')]]</paper-button>
+          </div>
+        </div>
+      </template>
+      
+      <template is="dom-if" if="{{showLC}}">
+        <div class="container">
+          <campaign-collection-suggestion id="targetLaunch" required="" label="Campaign Collection"
+            placeholder="Choose Campaign Collection To Add" selected-item="{{publishSpace}}"
+            min-chars="0" page-provider="portal-collection-search-pp">
+          </campaign-collection-suggestion>
+          <template is="dom-if" if="[[errorMessage]]">
+            <span class="horizontal layout error">[[errorMessage]]</span>
+          </template>
+          <div class="buttons horizontal end-justified layout">
+            <div class="flex start-justified">
+              <paper-button noink="" dialog-dismiss="" on-tap="_cancel">[[i18n('command.cancel')]]</paper-button>
+            </div>
+            <paper-button id="publish" noink="" class="primary" on-tap="_publish">
+              Add To Campaign Collection
+            </paper-button>
+          </div>
+        </div>
+      </template>
+      <template is="dom-if" if="{{showSC}}">
+        <campaign-collection-suggestion id="targetSplash" required="" label="Splash Config"
+          placeholder="Choose Splash Config To Add" selected-item="{{publishSpace}}"
+          min-chars="0" page-provider="splash-config-search-pp">
+        </campaign-collection-suggestion>
+        <template is="dom-if" if="[[errorMessage]]">
+          <span class="horizontal layout error">[[errorMessage]]</span>
+        </template>
+        <div class="buttons horizontal end-justified layout">
+          <div class="flex start-justified">
+            <paper-button noink="" dialog-dismiss="" on-tap="_cancel">[[i18n('command.cancel')]]</paper-button>
+          </div>
+          <paper-button id="publish" noink="" class="primary" on-tap="_publish">
+            Add To Splash Config
+          </paper-button>
+        </div>
+      </template>
+
+    </nuxeo-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'add-to-campaign-collection',
+      behaviors: [Nuxeo.I18nBehavior, Nuxeo.LayoutBehavior],
+      properties: {
+        /**
+         * Input document.
+         */
+        document: Object,
+
+        /**
+         * Input documents.
+         */
+        documents: Array,
+
+        publishSpace: Object,
+
+        selectedLocation: String,
+
+        choice: {
+          type: Array,
+          value: ['Splash Config', 'Campaign Collection']
+        },
+
+        hideCancel: {
+          type: Boolean,
+          value: false
+        },
+
+        showLC: {
+          type: Boolean,
+          value: false
+        },
+
+        showSC: {
+          type: Boolean,
+          value: false
+        },
+
+        _isMultiple: {
+          type: Boolean,
+          computed: '_computeMultiple(document, documents.length)'
+        },
+
+        icon: {
+            type: String,
+            value: 'editor:publish',
+        },
+        /**
+                 * Label to display in the action button.
+                 */
+        label: {
+          type: String,
+          value: 'Add To Launch Collection'
+        },
+        /**
+                 * `true` if the action should display the label, `false` otherwise.
+                 */
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+      },
+
+      _computeMultiple: function () {
+        return !!(this.documents && this.documents.length > 0);
+      },
+
+      _publish: function () {
+        var target = 'campaigncollection';
+        if(this.selectedLocation === 'Splash Config') {
+          target = 'splashconfig';
+        }
+        this.$.op.params = {
+          'collectionType': target,
+          'targetPortalCollection': this.publishSpace.uid
+        }
+        this.$.op.input = this._isMultiple ? 'docs:' + this.documents.map(function (doc) {
+          return doc.uid;
+        }).join(',') : this.document.uid;
+        this.$.op.execute().then(function () {
+          this.fire('notify', {
+            'message': this.i18n('collection.ui.add.success' + (this._isMultiple ? '.multiple' : ''))
+          });
+          this._isMultiple ? this.fire('navigate', { doc: this.publishSpace }) : this.fire('document-updated');
+          this.fire('nx-publish-success');
+          this.$.publishDialog.close();
+        }.bind(this)).catch(function (err) {
+          this.fire('notify', {
+            'message': this.i18n('collection.ui.add.error' + (this._isMultiple ? '.multiple' : ''))
+          });
+          throw err;
+          this.$.publishDialog.close();
+        }.bind(this));
+      },
+
+      _cancel: function () {
+        this.hideCancel = false;
+        this.showSC = false;
+        this.showLC = false;
+        this.publishSpace = null;
+        this.fire('cancel');
+        this.$.publishDialog.close();
+      },
+
+      _isAvailable() {
+          return true;
+      },
+
+      _toggleDialog() {
+          this.publishSpace = null;
+          this.$.publishDialog.toggle();
+      },
+
+      _onSelected(event) {
+        this.selectedLocation = event.srcElement.innerText;
+        this.hideCancel = true;
+        if(this.selectedLocation === 'Splash Config') {
+          this.showSC = true;
+          this.showLC = false;
+          this.publishSpace = null;
+        } else {
+          this.showSC = false;
+          this.showLC = true;
+          this.publishSpace = null;
+        }
+      }
+    });
+  </script>
+
+</dom-module>

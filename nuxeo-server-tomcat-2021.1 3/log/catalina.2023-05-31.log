@@ -1,0 +1,54 @@
+2023-05-31 08:34:33 警告 [main] org.apache.catalina.core.StandardServer.await 在调用accept()方法之后，侦听shutdown命令的套接字经历了意外的超时[51,160,401]毫秒。 这是bug 56684的一个例子？
+	java.net.SocketTimeoutException: Accept timed out
+		at java.base/java.net.PlainSocketImpl.socketAccept(Native Method)
+		at java.base/java.net.AbstractPlainSocketImpl.accept(AbstractPlainSocketImpl.java:474)
+		at java.base/java.net.ServerSocket.implAccept(ServerSocket.java:551)
+		at java.base/java.net.ServerSocket.accept(ServerSocket.java:519)
+		at org.apache.catalina.core.StandardServer.await(StandardServer.java:609)
+		at org.apache.catalina.startup.Catalina.await(Catalina.java:864)
+		at org.apache.catalina.startup.Catalina.start(Catalina.java:810)
+		at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+		at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+		at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+		at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:342)
+		at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:473)
+2023-05-31 11:15:31 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1118]毫秒内初始化
+2023-05-31 11:16:27 信息 [main] org.apache.catalina.startup.Catalina.start [56451]毫秒后服务器启动
+2023-05-31 13:59:02 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1181]毫秒内初始化
+2023-05-31 13:59:55 信息 [main] org.apache.catalina.startup.Catalina.start [53113]毫秒后服务器启动
+2023-05-31 15:00:49 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1110]毫秒内初始化
+2023-05-31 15:01:40 信息 [main] org.apache.catalina.startup.Catalina.start [50823]毫秒后服务器启动
+2023-05-31 15:46:46 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1107]毫秒内初始化
+2023-05-31 15:47:41 信息 [main] org.apache.catalina.startup.Catalina.start [55034]毫秒后服务器启动
+2023-05-31 16:43:06 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1177]毫秒内初始化
+2023-05-31 16:43:57 信息 [main] org.apache.catalina.startup.Catalina.start [51030]毫秒后服务器启动
+2023-05-31 16:56:16 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1099]毫秒内初始化
+2023-05-31 16:57:14 信息 [main] org.apache.catalina.startup.Catalina.start [57864]毫秒后服务器启动
+2023-05-31 17:15:37 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1182]毫秒内初始化
+2023-05-31 17:16:29 信息 [main] org.apache.catalina.startup.Catalina.start [52571]毫秒后服务器启动
+2023-05-31 18:44:08 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1335]毫秒内初始化
+2023-05-31 18:45:01 信息 [main] org.apache.catalina.startup.Catalina.start [52728]毫秒后服务器启动
+2023-05-31 18:52:50 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1115]毫秒内初始化
+2023-05-31 18:53:42 信息 [main] org.apache.catalina.startup.Catalina.start [51713]毫秒后服务器启动
+2023-05-31 20:27:33 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1179]毫秒内初始化
+2023-05-31 20:28:25 信息 [main] org.apache.catalina.startup.Catalina.start [51690]毫秒后服务器启动
+2023-05-31 21:43:54 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1119]毫秒内初始化
+2023-05-31 21:44:48 信息 [main] org.apache.catalina.startup.Catalina.start [54770]毫秒后服务器启动
+2023-05-31 22:19:44 警告 [main] org.apache.catalina.core.StandardServer.await 在调用accept()方法之后，侦听shutdown命令的套接字经历了意外的超时[2,095,274]毫秒。 这是bug 56684的一个例子？
+	java.net.SocketTimeoutException: Accept timed out
+		at java.base/java.net.PlainSocketImpl.socketAccept(Native Method)
+		at java.base/java.net.AbstractPlainSocketImpl.accept(AbstractPlainSocketImpl.java:474)
+		at java.base/java.net.ServerSocket.implAccept(ServerSocket.java:551)
+		at java.base/java.net.ServerSocket.accept(ServerSocket.java:519)
+		at org.apache.catalina.core.StandardServer.await(StandardServer.java:609)
+		at org.apache.catalina.startup.Catalina.await(Catalina.java:864)
+		at org.apache.catalina.startup.Catalina.start(Catalina.java:810)
+		at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+		at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+		at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+		at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:342)
+		at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:473)
+2023-05-31 22:23:43 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1063]毫秒内初始化
+2023-05-31 22:24:35 信息 [main] org.apache.catalina.startup.Catalina.start [52102]毫秒后服务器启动

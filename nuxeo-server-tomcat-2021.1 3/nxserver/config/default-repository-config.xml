@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<component name="default-repository-config">
+  <extension target="org.nuxeo.ecm.core.blob.BlobManager" point="configuration">
+    <blobprovider name="default">
+      <class>org.nuxeo.ecm.core.blob.binary.DefaultBinaryManager</class>
+      <property name="path">/Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/nxserver/data/binaries</property>
+      <property name="key"></property>
+    </blobprovider>
+  </extension>
+
+
+
+  <extension target="org.nuxeo.ecm.core.storage.sql.RepositoryService"
+    point="repository">
+    <repository name="default" label="label.default.repository">
+      <pool minPoolSize="0" maxPoolSize="20"
+        blockingTimeoutMillis="100" />
+      <noDDL>false</noDDL>
+      <ddlMode>execute</ddlMode>
+      <aclOptimizations enabled="true" readAclMaxSize="0"/>
+      <pathOptimizations enabled="true"/>
+      <idType>varchar</idType>
+      <changeTokenEnabled>true</changeTokenEnabled>
+      <indexing>
+        <!-- for H2 -->
+        <fulltext disabled="false"
+                  storedInBlob="false"
+                  searchDisabled="true">
+          <index name="default">
+            <!-- all props implied -->
+          </index>
+        </fulltext>
+      </indexing>
+      <usersSeparator key="," />
+    </repository>
+  </extension>
+
+  <extension target="org.nuxeo.runtime.kv.KeyValueService" point="configuration">
+    <store name="default" class="org.nuxeo.ecm.core.storage.sql.kv.SQLKeyValueStore">
+      <property name="datasource">jdbc/keyvaluestore</property>
+      <property name="table">kv</property>
+    </store>
+  </extension>
+
+
+</component>

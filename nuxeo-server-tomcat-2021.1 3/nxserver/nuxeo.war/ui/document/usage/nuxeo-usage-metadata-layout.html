@@ -1,0 +1,44 @@
+<link rel="import" href="../../pclm/forms/pclm-usage-view-layout.html">
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/behaviors/pclm-form-behavior.html">
+
+<!--
+`nuxeo-usage-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-usage-metadata-layout
+-->
+<dom-module id="nuxeo-usage-metadata-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <div role="widget">
+      <label>[[i18n('title')]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'dc:description')]]">
+      <label>[[i18n('label.dublincore.description')]]</label>
+      <div name="dc:description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    <pclm-usage-view-layout document="[[document]]"></pclm-usage-view-layout>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-usage-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.PclmFormBehavior],
+      properties: {
+
+        /**
+         * @doctype Usage
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

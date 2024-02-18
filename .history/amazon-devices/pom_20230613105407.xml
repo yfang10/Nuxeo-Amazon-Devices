@@ -1,0 +1,138 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.nuxeo</groupId>
+		<artifactId>nuxeo-parent</artifactId>
+		<version>2021.30.14</version>
+	</parent>
+
+	<groupId>amazon.devices</groupId>
+	<artifactId>amazon-devices-parent</artifactId>
+	<version>5.3.2-SNAPSHOT</version>
+	<name>Amazon devices parent</name>
+	<description>Amazon Devices DAM</description>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>amazon-devices-core</module>
+		<module>amazon-devices-keyword</module>
+		<module>amazon-devices-package</module>
+		<module>amazon-devices-web</module>
+		<module>amazon-devices-portal</module>
+	</modules>
+
+	<properties>
+		<nuxeo.skip.enforcer>true</nuxeo.skip.enforcer>
+		<nuxeo.target.version>2021.*</nuxeo.target.version>
+		<studio.project.version>develop-SNAPSHOT</studio.project.version>
+	</properties>
+
+	<scm/>
+	<licenses/>
+	<mailingLists/>
+	<issueManagement/>
+	<ciManagement/>
+	<developers/>
+	<distributionManagement/>
+
+	<repositories>
+		<repository>
+			<id>nuxeo-studio</id>
+			<url>https://connect.nuxeo.com/nuxeo/site/studio/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>maven-public</id>
+			<url>https://packages.nuxeo.com/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>maven-private</id>
+			<url>https://packages.nuxeo.com/repository/maven-private/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven-public</id>
+			<url>https://packages.nuxeo.com/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>amazon.devices</groupId>
+				<artifactId>amazon-devices-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>amazon.devices</groupId>
+				<artifactId>amazon-devices-keyword</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>amazon.devices</groupId>
+				<artifactId>amazon-devices-package</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>nuxeo-studio</groupId>
+				<artifactId>amazon-devices-global-dam</artifactId>
+				<version>${studio.project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>amazon.devices</groupId>
+				<artifactId>amazon-devices-web</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>amazon.devices</groupId>
+				<artifactId>amazon-devices-portal</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<distributionManagement>
+				<repository>
+					<id>external-releases</id>
+					<name>External Releases</name>
+					<url>
+						https://amazondevices-cicd-nexus.apps.prod.nuxeo.io/nexus/content/repositories/releases
+					</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+</project>

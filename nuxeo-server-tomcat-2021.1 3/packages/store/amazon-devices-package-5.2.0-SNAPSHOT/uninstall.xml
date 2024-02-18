@@ -1,0 +1,40 @@
+<uninstall>
+  <config rmtemplate="amazon-devices-package"/>
+  <delete file="${env.server.home}/templates/amazon-devices-saml-prod/config/metadata-idp.xml" md5="80b01869ba394e11f024b7e7e860b56c"/>
+  <delete file="${env.server.home}/templates/amazon-devices-saml-prod/config/saml-config.xml" md5="53e5c39d2c8e2d9d54aa3d2cfcbc41bf"/>
+  <delete file="${env.server.home}/templates/amazon-devices-saml-prod/nuxeo.defaults" md5="3eb51e70bb1c1ff5e01714363a1bb532"/>
+  <delete file="${env.server.home}/templates/amazon-devices-saml-uat/config/metadata-idp.xml" md5="daab5ab4d2432e5086f06ac1904cd261"/>
+  <delete file="${env.server.home}/templates/amazon-devices-saml-uat/config/saml-config.xml" md5="53e5c39d2c8e2d9d54aa3d2cfcbc41bf"/>
+  <delete file="${env.server.home}/templates/amazon-devices-saml-uat/nuxeo.defaults" md5="123dc75ade444cc42ed3c069a8c99657"/>
+  <delete file="${env.server.home}/templates/amazon-devices-saml-preprod/config/metadata-idp.xml" md5="ff7b879ae247f3167abe08f5b739d8cd"/>
+  <delete file="${env.server.home}/templates/amazon-devices-saml-preprod/config/saml-config.xml" md5="53e5c39d2c8e2d9d54aa3d2cfcbc41bf"/>
+  <delete file="${env.server.home}/templates/amazon-devices-saml-preprod/nuxeo.defaults" md5="0847a485c22156fbaef9bc09fec7e9f5"/>
+  <delete file="${env.server.home}/templates/amazon-devices-package/config/elasticsearch-doc-settings.json.nxftl" md5="3cb107f739ec79ce39aa381c1d3dc316"/>
+  <delete file="${env.server.home}/templates/amazon-devices-package/config/elasticsearch-doc-mapping.json" md5="86f93f4a99c36807cb4dfdd97ecf3162"/>
+  <delete file="${env.server.home}/templates/amazon-devices-package/nuxeo.defaults" md5="8a62bb7761e1032c2e5e83e290d64e8d"/>
+  <delete file="${env.server.home}/sdk/amazon-devices-package-test-artifacts.properties" md5="73e37d790f3e017604c0f790302948f4"/>
+  <delete file="${env.server.home}/sdk/amazon-devices-package-artifacts.properties" md5="ca9272d6e10b962cd58c131dc33edfc5"/>
+  <rollback key="nxserver/lib/commons-httpclient" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="3.1"/>
+  <rollback key="nxserver/lib/checker-qual" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="3.12.0"/>
+  <rollback key="nxserver/lib/neko-htmlunit" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="2.24"/>
+  <rollback key="nxserver/lib/bsh" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="2.0b6"/>
+  <rollback key="nxserver/lib/not-yet-commons-ssl" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="0.3.9"/>
+  <rollback key="nxserver/lib/opensaml" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="2.6.4"/>
+  <rollback key="nxserver/lib/xom" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="1.2.10"/>
+  <rollback key="nxserver/lib/velocity" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="1.7"/>
+  <rollback key="nxserver/lib/jackson-core-asl" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="1.8.1"/>
+  <rollback key="nxserver/lib/esapi" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="2.3.0.0"/>
+  <rollback key="nxserver/lib/openws" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="1.5.4"/>
+  <rollback key="nxserver/lib/xmltooling" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="1.4.4"/>
+  <rollback key="nxserver/lib/jackson-mapper-asl" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="1.8.1"/>
+  <rollback key="nxserver/lib/xmlsec" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="2.2.3"/>
+  <rollback key="nxserver/bundles/nuxeo-apt-extensions" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="1.0"/>
+  <rollback key="nxserver/bundles/amazon-devices-portal" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="5.2.0-SNAPSHOT"/>
+  <rollback key="nxserver/bundles/nuxeo-webengine-apt" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="1.2"/>
+  <rollback key="nxserver/bundles/amazon-devices-global-dam-acxl-271-20230531.122352" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="1-SNAPSHOT"/>
+  <rollback key="nxserver/bundles/amazon-devices-keyword" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="5.2.0-SNAPSHOT"/>
+  <rollback key="nxserver/bundles/amazon-devices-core" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="5.2.0-SNAPSHOT"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-login-saml2" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="2021.30.14"/>
+  <rollback key="nxserver/bundles/nuxeo-usermapper" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="2021.30.14"/>
+  <rollback key="nxserver/bundles/amazon-devices-web" pkgId="amazon-devices-package-5.2.0-SNAPSHOT" version="5.2.0-SNAPSHOT"/>
+</uninstall>

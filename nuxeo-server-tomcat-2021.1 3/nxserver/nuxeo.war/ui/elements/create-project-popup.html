@@ -1,0 +1,187 @@
+<!--
+`create-project-popup`
+@group Nuxeo UI
+@element create-project-popup
+-->
+<dom-module id="create-project-popup">
+  <template>
+
+    <nuxeo-operation id="op" op="[[operation]]" input="[[input]]" params="[[params]]"></nuxeo-operation>
+    <nuxeo-document id="docRequest" doc-path="[[targetPath]]"  response="{{emptyTemplate}}"></nuxeo-document>
+
+    <dom-if if="[[_isAvailable(document)]]">
+      <template>
+        <div class="action" on-tap="_toggleDialog">
+          <paper-icon-button id="bt" icon="[[icon]]"></paper-icon-button>
+          <paper-tooltip for="bt">[[label]]</paper-tooltip>
+           <span class="label" hidden$="[[!showLabel]]">[[i18n(label)]]</span>
+        </div>
+      </template>
+    </dom-if>
+
+    <nuxeo-dialog id="dialog" on-iron-overlay-closed="_dialogClosed" with-backdrop>
+      <div class="content">
+        <nuxeo-input value="{{title}}" label="Project Title" type="text" role="widget" required></nuxeo-input>
+
+        <nuxeo-document-suggestion role="widget" min-chars="0" value="{{projectTemplate}}" label="
+Project Template" page-provider="project-template-suggestion" params="[[pageProviderParams]]"></nuxeo-document-suggestion>
+      </div>
+      <div class="buttons">
+        <paper-button noink dialog-dismiss on-tap="_close">Cancel</paper-button>
+        <paper-button noink dialog-confirm class="primary" on-tap="_ok">Create Project</paper-button>
+      </div>
+    </nuxeo-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'create-project-popup',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.RoutingBehavior],
+      properties: {
+
+        /**
+         * Label to display in the action button.
+         */
+        label: {
+          type: String,
+          value: 'Action Label'
+        },
+
+        /**
+         * `true` if the action should display the label, `false` otherwise.
+         */
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        /**
+         * Icon to use (iconset_name:icon_name) in the action button.
+         */
+        icon: {
+          type: String,
+          value: 'iconset_name:icon_name'
+        },
+
+        parentDoc: {
+          type: Object,
+        },
+
+        document: {
+          type: Object,
+        },
+
+        projectTemplate: {
+          type: String,
+        },
+
+        emptyTemplate: {
+          type: Object,
+        },
+
+        title: {
+					type: String,
+        },
+
+        params: {
+          type: Object,
+          value: function() {
+            return {};
+          }
+        },
+
+        operation: {
+					type: String,
+          value: 'AMZD.CreateProjectOperation',
+        },
+
+        input: {
+					type: Object,
+        },
+
+        pageProviderParams: {
+					type: Object,
+          computed: '_computeParams(document)',
+        },
+
+        targetPath: {
+					type: String,
+        },
+      },
+
+      _toggleDialog: function() {
+        this.targetPath = this.document.contextParameters.firstAccessibleAncestor.path + "/TemplateLibrary/CreativeProjectTemplate";
+        this.$.docRequest.get().then((projectTemplate) => {
+          this.emptyTemplate = projectTemplate;
+          this.projectTemplate = projectTemplate.uid;
+        })
+        .catch((err) => {
+          throw err;
+        });
+
+        this.$.dialog.toggle();
+      },
+
+      /**
+       * Callback executed when the user presses the "Create Project" button.
+       */
+      _ok: function() {
+        this.params.template = this.projectTemplate;
+        if(this.title) {
+            this.params.title = this.title;
+        }
+        this.$.op.execute().then(function(response) {
+          if (response["entity-type"] == "exception") {
+            this.$.error.text = response.exception.originalMessage
+            this.$.error.open();
+            return;
+          }
+          page("/browse" + response.path);
+        }.bind(this))
+        .catch(function(error) {
+          this.$.error.text = error;
+          this.$.error.open();
+        }.bind(this));
+      },
+
+      /**
+       * Callback executed when the user presses the "close" button.
+       *
+       * Note that the "close" button already have a "dialog-dismiss" property that makes the button close the dialog
+       * when clicked. If you don't need to perform additional actions, this method is not needed.
+       */
+      _close: function() {
+        // implement me
+      },
+
+      /**
+       * Useful callback to execute some action after the dialog is closed. Can be removed if it's not necessary.
+       */
+      _dialogClosed: function() {
+        // implement me
+      },
+
+      _isAvailable(document) {
+        if (!document) {
+          return false;
+        }
+        // check if document parent is CreativeContent type or not
+        this.parentDoc = document.contextParameters.firstAccessibleAncestor;
+        if(this.parentDoc && this.parentDoc.type === 'CreativeContent') {
+          return true;
+        }
+
+        return false;
+      },
+
+      _computeParams(document) {
+        if (document && document.contextParameters.firstAccessibleAncestor) {
+          return { namedParameters: {system_path : document.contextParameters.firstAccessibleAncestor.path} };
+        }
+        return {};
+      },
+
+    });
+  </script>
+</dom-module>

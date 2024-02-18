@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<component name="amazon.devices.core.es.contrib">
+
+	<require>org.nuxeo.elasticsearch.ElasticSearchComponent.contrib
+	</require>
+	<!-- custom writer to be used with the dynamic mapper -->
+	<extension point="elasticSearchDocWriter"
+		target="org.nuxeo.elasticsearch.ElasticSearchComponent">
+		<writer class="amazon.devices.core.io.JsonESAmazonObjectWriter" />
+	</extension>
+</component>

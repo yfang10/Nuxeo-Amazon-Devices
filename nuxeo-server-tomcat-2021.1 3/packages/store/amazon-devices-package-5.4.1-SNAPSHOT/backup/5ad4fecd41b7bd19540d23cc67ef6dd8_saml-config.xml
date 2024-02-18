@@ -1,0 +1,38 @@
+<component name="amazon.devices.login.saml.auth">
+    <require>org.nuxeo.ecm.platform.ui.web.auth.WebEngineConfig</require>
+    <require>org.nuxeo.ecm.platform.ui.web.auth.defaultConfig</require>
+    <extension target="org.nuxeo.ecm.platform.ui.web.auth.service.PluggableAuthenticationService"
+               point="authenticators">
+        <authenticationPlugin name="SAML_AUTH" enabled="true"
+                              class="org.nuxeo.ecm.platform.auth.saml.SAMLAuthenticationProvider">
+            <loginModulePlugin>Trusting_LM</loginModulePlugin>
+            <needStartingURLSaving>true</needStartingURLSaving>
+            <parameters>
+                <parameter name="name">SSO</parameter>
+                <parameter name="metadata">nxserver/config/metadata-idp.xml</parameter>
+            </parameters>
+        </authenticationPlugin>
+    </extension>
+
+    <extension target="org.nuxeo.usermapper.service.UserMapperComponent" point="mapper">
+        <mapper name="saml" type="js">
+            <mapperScript>
+                searchAttributes.put("username", userObject.getNameID().getValue());
+                userAttributes.put("ssoMethod","saml");
+                userAttributes.put("email", userObject.getAttributeByName("EMAIL").getAttributeValues().get(0).value);
+                userAttributes.put("firstName", userObject.getAttributeByName("GIVEN_NAME").getAttributeValues().get(0).value);
+                userAttributes.put("lastName", userObject.getAttributeByName("FAMILY_NAME").getAttributeValues().get(0).value);
+            </mapperScript>
+        </mapper>
+    </extension>
+
+    <extension target="org.nuxeo.ecm.platform.ui.web.auth.service.PluggableAuthenticationService" point="chain">
+        <authenticationChain>
+            <plugins>
+                <plugin>BASIC_AUTH</plugin>
+                <plugin>FORM_AUTH</plugin>
+                <plugin>SAML_AUTH</plugin>
+            </plugins>
+        </authenticationChain>
+    </extension>
+</component>

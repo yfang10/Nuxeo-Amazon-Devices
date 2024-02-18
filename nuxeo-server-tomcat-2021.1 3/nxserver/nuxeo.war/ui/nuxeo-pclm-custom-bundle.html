@@ -1,0 +1,120 @@
+<link rel="import" href="pclm/analytics/pclm-search-analytics.html">
+<link rel="import" href="pclm/analytics/pclm-workflow-analytics.html">
+<link rel="import" href="pclm/analytics/pclm-asset-analytics.html">
+<link rel="import" href="pclm/analytics/pclm-user-analytics.html">
+<link rel="import" href="pclm/analytics/pclm-download-analytics.html">
+<link rel="import" href="pclm/analytics/pclm-upload-analytics.html">
+<link rel="import" href="pclm/analytics/pclm-download-export-analytics.html">
+<!--
+***
+CUSTOM CODE SPACE
+***
+Use this file to put any custom code you want to deploy on top of Studio's automatically generated configuration.
+-->
+
+<nuxeo-slot-content name="pictureDocumentViewPage" slot="DOCUMENT_VIEWS_PAGES" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="damSearchMenuButtons" slot="DRAWER_ITEMS" order="45" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="damSearchMenuButtons" slot="DRAWER_PAGES" disabled></nuxeo-slot-content>
+
+<nuxeo-slot-content name="analyticsDocumentDistributionItem" slot="ANALYTICS_ITEMS" order="10" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="analyticsDocumentDistributionPage" slot="ANALYTICS_PAGES" order="10" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="analyticsRepositoryItem" slot="ANALYTICS_ITEMS" order="20" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="analyticsRepositoryPage" slot="ANALYTICS_PAGES" order="20" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="analyticsSearchItem" slot="ANALYTICS_ITEMS" order="40" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="analyticsSearchPage" slot="ANALYTICS_PAGES" order="30" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="analyticsWorkflowItem" slot="ANALYTICS_ITEMS" order="40" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="analyticsWorkflowPage" slot="ANALYTICS_PAGES" order="40" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="analyticsdownloadExportItem" slot="ANALYTICS_ITEMS" order="50" disabled></nuxeo-slot-content>
+<nuxeo-slot-content name="analyticsdownloadExportPage" slot="ANALYTICS_PAGES" order="50" disabled></nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmAssetAnalyticsItem" slot="ANALYTICS_ITEMS" order="1">
+  <template>
+    <nuxeo-page-item name="document-distribution" label="analytics.asset"></nuxeo-page-item>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmAssetAnalyticsPage" slot="ANALYTICS_PAGES" order="1">
+  <template>
+    <pclm-asset-analytics name="document-distribution"></pclm-asset-analytics>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmUploadAnalyticsItem" slot="ANALYTICS_ITEMS" order="10">
+  <template>
+    <nuxeo-page-item name="upload" label="analytics.upload"></nuxeo-page-item>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmUploadAnalyticsPage" slot="ANALYTICS_PAGES" order="10">
+  <template>
+    <pclm-upload-analytics name="upload"></pclm-upload-analytics>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmDownloadAnalyticsItem" slot="ANALYTICS_ITEMS" order="11">
+  <template>
+    <nuxeo-page-item name="download" label="analytics.download"></nuxeo-page-item>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmDownloadAnalyticsPage" slot="ANALYTICS_PAGES" order="10">
+  <template>
+    <pclm-download-analytics name="download"></pclm-download-analytics>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmUserAnalyticsItem" slot="ANALYTICS_ITEMS" order="11">
+  <template>
+    <nuxeo-page-item name="user" label="analytics.user"></nuxeo-page-item>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmUserAnalyticsPage" slot="ANALYTICS_PAGES" order="12">
+  <template>
+    <pclm-user-analytics name="user"></pclm-user-analytics>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmWorkflowAnalyticsItem" slot="ANALYTICS_ITEMS" order="20">
+  <template>
+    <nuxeo-page-item name="process" label="analytics.workflow"></nuxeo-page-item>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmWorkflowAnalyticsPage" slot="ANALYTICS_PAGES" order="20" priority="100">
+  <template>
+    <pclm-workflow-analytics name="process"></pclm-workflow-analytics>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmAnalyticsSearchPageItem" slot="ANALYTICS_ITEMS" order="30">
+  <template>
+    <nuxeo-filter group="administrators" user="[[user]]">
+      <template>
+        <nuxeo-page-item name="search" label="analytics.search"></nuxeo-page-item>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="pclmAnalyticsSearchPage" slot="ANALYTICS_PAGES" order="30" priority="100">
+  <template>
+    <nuxeo-filter group="administrators" user="[[user]]">
+      <template>
+        <pclm-search-analytics name="search"></pclm-search-analytics>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="analyticsdownloadExportItem" slot="ANALYTICS_ITEMS" order="50">
+  <template>
+        <nuxeo-page-item name="export" label="Downloads Reporting"></nuxeo-page-item>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="analyticsdownloadExportPage" slot="ANALYTICS_PAGES" order="50" priority="100">
+  <template>
+        <pclm-download-export-analytics name="export"></pclm-download-export-analytics>
+  </template>
+</nuxeo-slot-content>

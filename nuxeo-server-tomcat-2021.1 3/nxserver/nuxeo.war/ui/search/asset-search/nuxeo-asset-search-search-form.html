@@ -1,0 +1,175 @@
+<!--
+`nuxeo-asset-search-search-form`
+@group Nuxeo UI
+@element nuxeo-asset-search-search-form
+-->
+<dom-module id="nuxeo-asset-search-search-form">
+  <template>
+    <style include="nuxeo-styles">
+      *[role=widget] {
+        margin-bottom: 16px;
+        display:block;
+      }
+    </style>
+
+    <nuxeo-input
+          role="widget"
+          id="searchInput"
+          type="search"
+          label="[[i18n('defaultSearch.fullText')]]"
+          value="{{searchTerm}}"
+          placeholder="[[i18n('defaultSearch.fullText.placeholder')]]"
+          autofocus
+          on-keydown="_checkForEnter">
+    </nuxeo-input>
+
+    <div role="widget">
+      <label>[[i18n('label.ui.aggregate.Product')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.relations_products_agg}}"
+        data="[[aggregations.relations_products_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('label.ui.aggregate.Talent')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.relations_talents_agg}}"
+        data="[[aggregations.relations_talents_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('label.ui.aggregate.Location')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.relations_locations_agg}}"
+        data="[[aggregations.relations_locations_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('label.ui.aggregate.Usage')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.relations_usages_agg}}"
+        data="[[aggregations.relations_usages_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('label.usage.channel')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.usage_channel_agg}}"
+        data="[[aggregations.usage_channel_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('label.usage.geography')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.usage_geography_agg}}"
+        data="[[aggregations.usage_geography_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('label.usage.rights_type')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.usage_rights_type_agg}}"
+        data="[[aggregations.usage_rights_type_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('label.state')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.system_currentLifeCycleState_agg}}"
+        data="[[aggregations.system_currentLifeCycleState_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('label.dublincore.language')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.dublincore_language_agg}}"
+        data="[[aggregations.dublincore_language_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('defaultSearch.tags')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.facetedTag_tags_label_agg}}"
+        data="[[aggregations.facetedTag_tags_label_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('assetsSearch.assetFormat')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.dublincore_format_agg}}"
+        data="[[aggregations.dublincore_format_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('label.dublincore.expire')]]</label>
+      <nuxeo-checkbox-aggregation data="[[aggregations.dublincore_expired_agg]]"
+        value="{{params.dublincore_expired_agg}}">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('defaultSearch.size')]]</label>
+      <nuxeo-checkbox-aggregation data="[[aggregations.file_content_length_agg]]"
+        value="{{params.file_content_length_agg}}" name="size">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-asset-search-search-form',
+      behaviors: [Nuxeo.LayoutBehavior, Nuxeo.I18nBehavior],
+      properties: {
+
+        /**
+         * @search asset-search
+         */
+        params: {
+          type: Object,
+          value: {},
+          notify: true,
+        },
+
+        aggregations: {
+          type: Object,
+          value: {},
+          notify: true,
+        },
+
+        searchTerm: {
+          type: String,
+          notify: true,
+        }
+
+      },
+
+      clear() {
+        this.searchTerm = '';
+        this._search();
+      },
+
+      _search() {
+        if (this.searchTerm) {
+          this.set('params.system_fulltext', this.formatFulltext(this.searchTerm));
+          this.set(
+            'params.highlight',
+            'dc:title.fulltext,ecm:binarytext,dc:description.fulltext,ecm:tag,note:note.fulltext,file:content.name',
+          );
+        } else if (this.params.system_fulltext) {
+          this.set('params.system_fulltext', '');
+          delete this.params.ecm_fulltext;
+          delete this.params.highlight;
+        }
+      },
+
+      _checkForEnter(e) {
+        if (e.keyCode === 13) {
+          this._search();
+        }
+      },
+
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,102 @@
+<!--
+`test`
+@group Nuxeo UI
+@element pclm-create-translation-action
+-->
+
+<dom-module id="pclm-create-translation-action">
+  <template>
+    <style include="nuxeo-action-button-styles">
+      .content {
+        @apply(--layout-vertical);
+      }
+    </style>
+
+    <nuxeo-operation id="translateOp" op="javascript.api_create_translation" 
+                     input="[[input]]" params="[[params]]">
+    </nuxeo-operation>
+
+    <div class="action" on-tap="_toggleDialog">
+      <paper-icon-button id="bt" icon="icons:translate"></paper-icon-button>
+      <span class="label" hidden$="[[!showLabel]]">[[i18n('label.action.create.translation')]]</span>
+    </div>
+    <paper-tooltip for="bt">[[i18n('label.action.create.translation')]]</paper-tooltip>
+
+    <nuxeo-dialog id="dialog" on-iron-overlay-closed="_dialogClosed" with-backdrop>
+      <h2>[[i18n('label.action.create.translation')]]</h2>
+      <div class="content">
+        <iron-form id="form">
+          <form>
+            <nuxeo-directory-suggestion role="widget" value="{{languages}}"
+                                        label="[[i18n('label.action.create.translation.params.languages')]]" 
+                                        directory-name="Approved_Languages" min-chars="0" required multiple>
+            </nuxeo-directory-suggestion>
+          </form>
+        </iron-form>
+      </div>
+      <div class="buttons">
+        <paper-button noink dialog-dismiss on-tap="_close">
+          [[i18n('label.dialog.button.cancel')]]
+        </paper-button>
+        <paper-button noink class="primary" on-tap="_do">
+          [[i18n('label.dialog.button.proceed')]]
+        </paper-button>
+      </div>
+    </nuxeo-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-create-translation-action',
+      behaviors: [Nuxeo.I18nBehavior,Nuxeo.FiltersBehavior,Nuxeo.RoutingBehavior],
+      properties: {
+        document: {
+          type: Object
+        },
+        
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        languages: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        },
+
+        params: {
+          type: Object,
+          value: {}
+        }
+      },
+
+      _toggleDialog: function () {
+        this.$.dialog.toggle();
+      },
+
+      _do: function () {
+        if (!this.$.form.validate()) return;
+        this.params.languages = JSON.stringify(this.languages);
+        this.input = 'doc:'+this.document.uid;
+        this.$.translateOp.execute().then(function(response) {
+          this.fire('notify', { message: this.i18n('label.action.create.translation.success') });
+          this._toggleDialog();
+        }.bind(this),function(error) {
+          this.fire('notify', { message: this.i18n('label.action.create.translation.failure') });
+        }.bind(this));;
+      },
+      
+      _close: function() {
+        // implement me
+      },
+
+      _dialogClosed: function() {
+        // implement me
+      }
+
+    });
+  </script>
+</dom-module>

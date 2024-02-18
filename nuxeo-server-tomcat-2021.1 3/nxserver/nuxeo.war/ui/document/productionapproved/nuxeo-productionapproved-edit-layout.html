@@ -1,0 +1,35 @@
+<!--
+`nuxeo-productionapproved-edit-layout`
+@group Nuxeo UI
+@element nuxeo-productionapproved-edit-layout
+-->
+<dom-module id="nuxeo-productionapproved-edit-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text"></nuxeo-input>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-productionapproved-edit-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype ProductionApproved
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

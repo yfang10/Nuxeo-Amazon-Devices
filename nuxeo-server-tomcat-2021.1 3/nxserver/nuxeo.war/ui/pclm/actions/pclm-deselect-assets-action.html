@@ -1,0 +1,80 @@
+<!--
+`pclm-deselect-assets-action`
+@group Nuxeo UI
+@element pclm-deselect-assets-action
+-->
+<dom-module id="pclm-deselect-assets-action">
+  <template>
+    <style include="nuxeo-action-button-styles">
+      /* Add your custom styles here */
+    </style>
+
+    <nuxeo-operation id="deselectOp" op="javascript.api_deselect_assets"
+                     input="[[input]]" params="[[params]]">
+    </nuxeo-operation>
+
+    <div class="action" on-tap="_run">
+      <paper-icon-button id="bt" icon="[[icon]]"></paper-icon-button>
+      <span class="label" hidden$="[[!showLabel]]">[[i18n(label)]]</span>
+    </div>
+    <paper-tooltip for="bt">[[i18n(label)]]</paper-tooltip>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-deselect-assets-action',
+      behaviors: [Nuxeo.I18nBehavior,Nuxeo.FiltersBehavior,Nuxeo.RoutingBehavior],
+      properties: {
+
+        document: {
+          type: Object
+        },
+
+        /**
+         * Label to display in the action button.
+         */
+        label: {
+          type: String,
+          value: 'label.action.deselect.asset'
+        },
+
+        /**
+         * `true` if the action should display the label, `false` otherwise.
+         */
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        /**
+         * Icon to use (iconset_name:icon_name) in the action button.
+         */
+        icon: {
+          type: String,
+          value: 'icons:block'
+        },
+
+        selection: {
+          type:Array
+        }
+      },
+
+      /**
+       * Callback executed when the user presses the action button.
+       */
+      _run: function() {
+        this.params = {
+          container: this.document.uid,
+        };
+        this.input = this.selection;
+        this.$.deselectOp.execute().then(function(response) {
+          this.fire('notify', { message: this.i18n('label.action.deselect.asset.success') });
+          this.fire('document-updated');
+        }.bind(this),function(error) {
+          this.fire('notify', { message: this.i18n('label.action.deselect.asset.failure') });
+        }.bind(this));;
+      }
+    });
+  </script>
+</dom-module>

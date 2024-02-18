@@ -1,0 +1,45 @@
+<link rel="import" href="../../elements/nuxeo-se-collapse.html">
+
+<!--
+`nuxeo-retailexperienceasset-edit-layout`
+@group Nuxeo UI
+@element nuxeo-retailexperienceasset-edit-layout
+-->
+<dom-module id="nuxeo-retailexperienceasset-edit-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <!-- <nuxeo-input value="{{document.properties.dc:title}}" label="Title" type="text" required="true" role="widget"></nuxeo-input>
+
+    <nuxeo-input value="{{document.properties.dc:description}}" label="Description" type="text" role="widget"></nuxeo-input>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:asset_category}}" label="Asset Category" directory-name="RetailExperience" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+
+
+    <amzd-amazon-create-layout document="{{document}}"></amzd-amazon-create-layout>
+
+    <pclm-usage-edit-layout document="{{document}}"></pclm-usage-edit-layout>
+
+    <pclm-relations-edit-layout document="{{document}}"></pclm-relations-edit-layout>-->
+
+   <!-- <amzd-approval-schema-edit-layout role="widget" document="{{document}}"></amzd-approval-schema-edit-layout>
+    <amzd-metadata-schema-edit-layout document="[[document]]"></amzd-metadata-schema-edit-layout>-->
+    <amzd-metadata-schema-edit-layout role="widget" document="{{document}}"></amzd-metadata-schema-edit-layout>
+  </template> 
+
+  <script>
+  Polymer({
+    is: 'nuxeo-retailexperienceasset-edit-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      document: {
+        type: Object,
+      },
+    }
+    
+  });
+  </script>
+</dom-module>

@@ -1,0 +1,119 @@
+<link rel="import" href="../../elements/nuxeo-se-collapse.html">
+
+<dom-module id="pclm-relations-view-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+      label {
+        font-weight: var(--nuxeo-label_-_font-weight);
+        text-decoration: var(--nuxeo-label_-_text-decoration);
+      }
+      label:after {
+        content: var(--nuxeo-label-after_-_content);
+      }
+    </style>
+    <nuxeo-connection id="nxcon" user="{{user}}"></nuxeo-connection>
+
+    <nuxeo-resource id="user" path="/user"></nuxeo-resource>
+     
+    <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
+                       heading="[[i18n('label.collapseheaders.relations')]]"
+                       headingstyle="[[headingstyle]]"
+                       opened$="[[_false]]"
+                       >
+      <nuxeo-filter document="[[document]]" user="[[user]]" expression="user.properties.groups.indexOf('vendor')<0 && user.properties.groups.indexOf('agency')<0 && user.properties.groups.indexOf('retail')<0">
+
+    <template>
+    <nuxeo-document-suggestion role="widget" min-chars="0" value="{{document.properties.relations:derivative_of}}" label="Derivative Of" readonly="true"></nuxeo-document-suggestion>
+    </template>
+         </nuxeo-filter>
+       <nuxeo-filter document="[[document]]" user="[[user]]" expression="user.properties.groups.indexOf('vendor')<0 && user.properties.groups.indexOf('agency')<0 && user.properties.groups.indexOf('retail')<0">
+
+    <template>
+    <nuxeo-document-suggestion role="widget" min-chars="0" value="{{document.properties.relations:translation_of}}" label="Translation Of" readonly="true"></nuxeo-document-suggestion>
+    </template>
+         </nuxeo-filter>
+    
+       <nuxeo-filter document="[[document]]" user="[[user]]" expression="user.properties.groups.indexOf('vendor')<0 && user.properties.groups.indexOf('agency')<0 && user.properties.groups.indexOf('retail')<0">
+
+    <template>
+      <nuxeo-document-suggestion role="widget" page-provider="referenceItem-suggestions"min-chars="0" value="{{document.properties.relations:referenceItem}}" label="
+Related Content" readonly="true" multiple="true"></nuxeo-document-suggestion>
+      </template>
+         </nuxeo-filter>
+      
+    <amzd-document-suggestion role="widget" min-chars="0" value="{{document.properties.relations:product}}" label="Related Devices" readonly="true" multiple="true" page-provider="product-suggestions"></amzd-document-suggestion>
+       <!--nuxeo-filter document="[[document]]" user="[[user]]" expression="user.properties.groups.indexOf('vendor')<0 && user.properties.groups.indexOf('agency')<0 && user.properties.groups.indexOf('retail')<0">
+
+    <template>
+    <nuxeo-document-suggestion role="widget" min-chars="0" value="{{document.properties.relations:locations}}" label="Related Locations" readonly="true" multiple="true" page-provider="location-suggestions"></nuxeo-document-suggestion>
+      </template>
+         </nuxeo-filter-->
+      <nuxeo-filter document="[[document]]" user="[[user]]" expression="user.properties.groups.indexOf('vendor')<0 && user.properties.groups.indexOf('agency')<0 && user.properties.groups.indexOf('retail')<0">
+
+    <template>
+   <nuxeo-document-suggestion role="widget" value="{{document.properties.relations:talent}}" multiple="true" label="Related Talent" min-chars="0" page-provider="talent-suggestions" readonly="true"></nuxeo-document-suggestion>
+      </template>
+         </nuxeo-filter>
+   <!--nuxeo-document-suggestion readonly="true" role="widget" min-chars="0" value="{{document.properties.relations:material}}" label="
+Materials and Shaders"></nuxeo-document-suggestion-->
+    <nuxeo-filter document="[[document]]" user="[[user]]" expression="user.properties.groups.indexOf('vendor')<0 && user.properties.groups.indexOf('agency')<0 && user.properties.groups.indexOf('retail')<0">
+
+    <template>
+        <nuxeo-document-suggestion role="widget" readonly="true" min-chars="0" value="{{document.properties.relations:workspaceLocation}}" label="Workspace Location"></nuxeo-document-suggestion>
+    </template>
+         </nuxeo-filter>
+    
+    </nuxeo-se-collapse>
+   
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-relations-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        title: {
+          type: String,
+          value: 'Title'
+        },
+
+        //You can use either @schema or @doctype annotation in your model
+        /**
+         * @schema dublincore
+         */
+        collapsestyle: {
+        type: String,
+        value: "border:0px solid #f5f5f5;margin-left:0em;"
+      },
+      headingstyle: {
+        type: String,
+        value: "font-size:1rem;font-weight:700;text-transform:uppercase;"
+      },
+      _false: {
+        type: Boolean,
+        value: false
+      },
+      _true: {
+        type: Boolean,
+        value: true
+      },
+       document: {
+          type: Object
+        }
+      },
+
+      _title: function() {
+        return this.document.properties['dc:title'];
+      },
+
+      _setTitle: function() {
+        this.$.title.label = this._title;
+      }
+
+    });
+  </script>
+</dom-module>

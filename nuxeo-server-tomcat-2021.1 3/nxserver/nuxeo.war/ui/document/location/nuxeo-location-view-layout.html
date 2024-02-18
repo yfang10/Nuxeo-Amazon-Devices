@@ -1,0 +1,35 @@
+<!--
+`nuxeo-location-view-layout`
+@group Nuxeo UI
+@element nuxeo-location-view-layout
+-->
+<dom-module id="nuxeo-location-view-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-document-viewer role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+    <nuxeo-document-attachments role="widget" document="[[document]]"></nuxeo-document-attachments>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-location-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Location
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

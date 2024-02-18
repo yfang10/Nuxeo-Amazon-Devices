@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.core.work.config.default" version="1.0">
+  <require>org.nuxeo.ecm.core.work.config</require>
+  <require>org.nuxeo.ecm.automation.core.impl.workmanager</require>
+  <require>org.nuxeo.ecm.collections.workmanager</require>
+  <require>org.nuxeo.ecm.platform.picture.workmanager</require>
+  <require>org.nuxeo.ecm.platform.video.workmanager</require>
+  <extension target="org.nuxeo.ecm.core.work.service" point="queues">
+    <queue id="common">
+      <name>Common Shared Queue for Nuxeo Works</name>
+      <maxThreads>4</maxThreads>
+      <category>aceStatusUpdatedListener</category>
+      <category>binary_metadata_work</category>
+      <category>blobManagerDeleteMarkedBlobsListener</category>
+      <category>checkedInCommentListener</category>
+      <category>cleanOpenTasksOnWorkflowDone</category>
+      <category>ConversionWork</category>
+      <category>CounterListener</category>
+      <category>deleteRoutingTaskListener</category>
+      <category>docRemovedCommentListener</category>
+      <category>documenttemplate-type-binding</category>
+      <category>findRetentionExpired</category>
+      <category>fulltextExtractor</category>
+      <category>notificationListener</category>
+      <category>nuxeoDriveGroupUpdateListener</category>
+      <category>nuxeoDriveVirtualEventLoggerListener</category>
+      <category>opchainpclistener</category>
+      <category>orphanVersionRemoverListener</category>
+      <category>permissionNotificationListener</category>
+      <category>removeDocumentRoutesForDeletedDocument</category>
+      <category>removeTasksForDeletedDocumentRoute</category>
+      <category>storedRenditionsCleanup</category>
+      <category>taggedVersionListener</category>
+      <category>triggerEsclationRules</category>
+      <category>unicityListener</category>
+      <category>UserProfileImporterWork</category>
+      <category>wopiDiscoveryRefreshListener</category>
+      <category>wopiLocksExpiration</category>
+      <category>workflowInstancesCleanup</category>
+    </queue>
+    <queue id="updateThumbListener">
+      <maxThreads>4</maxThreads>
+      <category>updateThumbListener</category>
+    </queue>
+    <queue id="raclupdate">
+      <name>Queue for DBS Read ACL update Works</name>
+      <maxThreads>4</maxThreads>
+      <category>security</category>
+    </queue>
+    <queue id="pictureViewsGeneration">
+      <maxThreads>2</maxThreads>
+      <category>pictureViewsGenerationListener</category>
+      <category>pictureViewsGeneration</category>
+    </queue>
+    <queue id="videoConversion">
+      <maxThreads>2</maxThreads>
+      <category>videoConversion</category>
+      <category>videoInfo</category>
+      <category>videoStoryboard</category>
+    </queue>
+  </extension>
+</component>
+

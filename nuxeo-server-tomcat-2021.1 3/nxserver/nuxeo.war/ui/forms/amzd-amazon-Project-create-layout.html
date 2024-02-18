@@ -1,0 +1,58 @@
+<!--
+`amzd-amazon-Project-create-layout`
+@group Nuxeo UI
+@element amzd-amazon-Project-create-layout
+-->
+<dom-module id="amzd-amazon-project-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <nuxeo-input value="{{document.properties.amz:original_creator_name}}" label="Original Creator Name" type="text" role="widget" min-chars="0"></nuxeo-input>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:creator_role}}" label="Original Creator Role" directory-name="roles" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-data-table role="widget" label="Additional Participants" items="{{document.properties.amz:additional_participants}}" orderable="true" editable="true">
+
+
+      <nuxeo-data-table-column name="Name">
+        <template>
+          [[item.name]]
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="Role">
+        <template>
+          <nuxeo-directory-suggestion role="widget" value="[[item.role]]" label="Role" readonly="true" directory-name="roles"></nuxeo-directory-suggestion>
+
+
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-form>
+        <template>
+          <nuxeo-input value="{{item.name}}" min-chars="0" label="Name" type="text"></nuxeo-input>
+          <nuxeo-directory-suggestion min-chars="0" value="{{item.role}}" label="Role" directory-name="roles"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-data-table-form>
+    </nuxeo-data-table>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'amzd-amazon-project-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      document: {
+        type: Object
+      }
+    }
+
+  });
+  </script>
+</dom-module>

@@ -1,0 +1,11 @@
+<uninstall>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF03-1.0.0/backup/9709729503cef7825cde8f68c67bc892_distribution.properties" tofile="${env.server.home}/templates/common/config/distribution.properties" overwrite="true" md5="cd0afe759a2bfa978b181e58e564a0ac"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF03-1.0.0/backup/0db46d3e8f665e3627d2b130ae4fb9d4_nuxeo.defaults" tofile="${env.server.home}/templates/nuxeo.defaults" overwrite="true" md5="4f2640af1873d77c1efb27a8c14f4978"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF03-1.0.0/backup/bc598d2e0e7a175345a074bcefe21c44_nuxeo-launcher.jar" tofile="${env.server.home}/bin/nuxeo-launcher.jar" overwrite="true" md5="1051ddd0c1e05c742fd632b63b2e962f"/>
+  <rollback key="nxserver/bundles/nuxeo-launcher-commons" pkgId="nuxeo-2021-HF03-1.0.0" version="2021.3.2"/>
+  <rollback key="nxserver/bundles/nuxeo-thumbnail" pkgId="nuxeo-2021-HF03-1.0.0" version="2021.3.2"/>
+  <rollback key="nxserver/bundles/nuxeo-core-binarymanager-s3" pkgId="nuxeo-2021-HF03-1.0.0" version="2021.3.2"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage-sql" pkgId="nuxeo-2021-HF03-1.0.0" version="2021.3.2"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage-dbs" pkgId="nuxeo-2021-HF03-1.0.0" version="2021.3.2"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-oauth" pkgId="nuxeo-2021-HF03-1.0.0" version="2021.3.2"/>
+</uninstall>

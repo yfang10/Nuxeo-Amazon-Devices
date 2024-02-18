@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.nuxeo.jsf.packages</groupId>
+    <artifactId>nuxeo-jsf-ui-packages</artifactId>
+    <version>2021.39.6</version>
+  </parent>
+
+  <artifactId>nuxeo-liveconnect-jsf-ui-package</artifactId>
+  <packaging>zip</packaging>
+  <name>Nuxeo Live Connect JSF UI Package</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.nuxeo.ecm.distribution</groupId>
+      <artifactId>nuxeo-nxr-server</artifactId>
+      <type>zip</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.distribution</groupId>
+      <artifactId>nuxeo-nxr-jsf-ui</artifactId>
+      <type>zip</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.nuxeo.ecm.liveconnect</groupId>
+      <artifactId>nuxeo-liveconnect-jsf-dependencies</artifactId>
+      <type>pom</type>
+    </dependency>
+  </dependencies>
+</project>

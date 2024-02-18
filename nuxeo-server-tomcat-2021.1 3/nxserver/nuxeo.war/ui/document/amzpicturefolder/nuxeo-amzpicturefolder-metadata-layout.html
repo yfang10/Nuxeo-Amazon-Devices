@@ -1,0 +1,41 @@
+<!--
+`nuxeo-amzpicturefolder-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-amzpicturefolder-metadata-layout
+-->
+<dom-module id="nuxeo-amzpicturefolder-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>[[i18n('label.dublincore.title')]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n('label.dublincore.description')]]</label>
+      <div name="description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-amzpicturefolder-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype AMZPictureFolder
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,58 @@
+<!--
+`amzd-fixture-participants-form`
+@group Nuxeo UI
+@element amzd-fixture-participants-form
+-->
+<dom-module id="amzd-fixture-participants-form">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <nuxeo-directory-suggestion id="role" role="widget"
+                                value="{{item.role}}"
+                                label="Role"
+                                directory-name="Access_Permissions"
+                                min-chars="0"></nuxeo-directory-suggestion>
+
+    <template is="dom-if" if="[[_isEqualTo(item.role, 'vendor')]]">
+    	<system-document-suggestion role="widget" value="{{item.company}}" label="Vendors"  min-chars="0" page-provider="vendors-suggestions" on-value-changed="_companyValueChanged"></system-document-suggestion>
+    </template>
+
+    <template is="dom-if" if="[[_isEqualTo(item.role, 'agency')]]">
+    	<system-document-suggestion role="widget" value="{{item.company}}" label="Agencies"  min-chars="0" page-provider="agencies-suggestions" on-value-changed="_companyValueChanged"></system-document-suggestion>
+    </template>
+
+    <template is="dom-if" if="[[_isEqualTo(item.role, 'retail')]]">
+    	<system-document-suggestion role="widget" value="{{item.company}}" label="Retailers"  min-chars="0" page-provider="retails-suggestions" on-value-changed="_companyValueChanged"></system-document-suggestion>
+    </template>
+
+    <system-document-suggestion role="widget" value="{{item.role_users}}" label="Role Users"  min-chars="0" page-provider="useraccess-suggestion" multiple="true" params="{{pageProviderParams}}"></system-document-suggestion>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'amzd-fixture-participants-form',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        item: {
+          type: Object,
+        },
+        pageProviderParams:{
+          type:Object,
+        }
+      },
+
+      _isEqualTo(title, string) {
+    		  return title == string;
+    	},
+
+      _companyValueChanged: function(e) {
+        this.pageProviderParams = { namedParameters: {system_parentId : e.detail.value}};
+      },
+    });
+  </script>
+</dom-module>

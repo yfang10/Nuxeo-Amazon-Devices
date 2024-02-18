@@ -1,0 +1,1 @@
+const ImageRenderer=(e,t,h,i,r,a,d)=>{if(a&&a.data){const e=document.createElement("img");e.src=a.data,d.width&&e.setAttribute("width",d.height),d.height&&e.setAttribute("height",d.height),Handsontable.Dom.empty(t),t.appendChild(e)}return t};export{ImageRenderer};

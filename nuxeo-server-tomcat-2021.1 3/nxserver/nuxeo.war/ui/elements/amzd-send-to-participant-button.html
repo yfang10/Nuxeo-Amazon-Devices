@@ -1,0 +1,364 @@
+<!--
+`amzd-send-to-participant-button`
+@group Nuxeo UI
+@element amzd-send-to-participant-button
+-->
+<dom-module id="amzd-send-to-participant-button">
+    <template>
+      <style>
+        *[role=widget] {
+          padding: 5px;
+        }
+      </style>
+  
+
+    <nuxeo-operation id="getParentProjectRequest" op="Repository.GetParentProject" input="[[input]]" response="[[parentProject]]"></nuxeo-operation>
+    <nuxeo-document id="projectDocRequest" doc-id="[[retailProject]]"  response="{{respRetailProject}}" enrichers="children"></nuxeo-document>
+    <nuxeo-document id="fixtureDocRequest" doc-id="[[fixture]]"  response="{{respFixture}}" ></nuxeo-document>
+    <nuxeo-operation id="userAccessDocRequest" op="Repository.GetUserAccessFolderByFixtureParticipant" params="{{userAccessFolderParams}}"></nuxeo-operation>
+    <nuxeo-operation id="op" op="Document.PublishToSection" sync-indexing=""></nuxeo-operation>
+
+        <div class="action" on-tap="_toggleDialog">
+          <paper-icon-button id="bt" icon="[[icon]]"></paper-icon-button>
+          <paper-tooltip for="bt">[[label]]</paper-tooltip>
+           <span class="label" hidden$="[[!showLabel]]">[[i18n(label)]]</span>
+        </div>
+     
+    <nuxeo-dialog id="dialog" on-iron-overlay-closed="_dialogClosed" with-backdrop>
+      <div class="content">
+        <nuxeo-document-suggestion role="widget" min-chars="0"  value="{{retailProject}}" label="
+Retail Experience Project" page-provider="retail-experience-projects-suggestions"></nuxeo-document-suggestion>
+     
+      <nuxeo-document-suggestion role="widget" min-chars="0"  value="{{fixture}}" label="
+      Fixture" page-provider="fixtures-suggestions" params="{{fixturePageProviderParams}}"></nuxeo-document-suggestion>
+          
+    <nuxeo-directory-suggestion id="roleDir" role="widget" value="{{role}}" label="Participant Type" directory-name="Access_Permissions" min-chars="0" query-results-filter="[[_filterRoles]]"></nuxeo-directory-suggestion>
+     
+    <system-document-suggestion id="companyDir" role="widget" value="{{company}}" label="Participant" min-chars="0"  
+    page-provider="companies-suggestions"></system-document-suggestion>
+
+    </div>
+    <div class="buttons">
+        <paper-button noink dialog-dismiss on-tap="_close">Cancel</paper-button>
+        <paper-button noink dialog-confirm class="primary" on-tap="_publish" disabled$="[[!_canPublish(document,documents,publishSpace)]]">Send</paper-button>
+    </div>
+    </nuxeo-dialog>
+
+    </template>
+    <script>
+        var rolesGlobal = null;
+        var companiesGlobal = null;
+        Polymer({
+            is: 'amzd-send-to-participant-button',
+            behaviors: [Nuxeo.LayoutBehavior, Nuxeo.RoutingBehavior],
+            properties: {
+                /**
+                 * Input document.
+                 */
+                document: Object,
+
+                /**
+                 * Input documents.
+                 */
+                documents: Array,
+
+                publishSpace: Object,
+                /**
+                 * Label to display in the action button.
+                 */
+                label: {
+                    type: String,
+                    value: 'Send to Participant'
+                },
+                /**
+                 * `true` if the action should display the label, `false` otherwise.
+                 */
+                showLabel: {
+                    type: Boolean,
+                    value: false,
+                },
+                /**
+                 * Icon to use (iconset_name:icon_name) in the action button.
+                 */
+                icon: {
+                    type: String,
+                    value: 'iconset_name:icon_name'
+                },
+                document: {
+                    type: Object,
+                },
+                respRetailProject: {
+                    type: Object,
+                },
+                respFixture: {
+                    type: Object,
+                },
+                retailProject: {
+                    type: String,
+                },
+                fixture: {
+                    type: String,
+                },
+                participants: {
+                    type: Array,
+                },
+                role: {
+                    type: String,
+                },
+                company: {
+                    type: String,
+                },
+                parentProject: {
+                    type: Object,
+                },
+                title: {
+                    type: String,
+                },
+                params: {
+                    type: Object,
+                    value: function() {
+                        return {};
+                    }
+                },
+                selectedRendition: {
+                    type: String,
+                    value: 'none',
+                },
+                userAccessFolderParams: {
+                    type: Object,
+                    computed: '_computeUserAccessFolderParams(fixture, company)'
+                },
+                input: {
+                    type: Object,
+                },
+                fixturePageProviderParams: {
+                    type: Object,
+                    computed: '_computeFixturePageProviderParams(respRetailProject)',
+                },
+               
+                _isMultiple: {
+                    type: Boolean,
+                    computed: '_computeMultiple(document, documents.length)'
+                }
+
+            },
+            observers: [
+                '_selectedProjectChanged(retailProject)',
+                '_selectedFixtureChanged(fixture)',
+                '_selectedRoleChanged(role)',
+                '_selectedCompanyChanged(company)',
+            ],
+
+            _computeMultiple: function() {
+                return !!(this.documents && this.documents.length > 0);
+            },
+            _selectedProjectChanged: function(retailProject) {
+                if (retailProject) {
+                    this.$.projectDocRequest.get().then((respRetailProject) => {
+                        let children = this.respRetailProject.contextParameters.children;
+
+                        let fixture;
+                        let fixtureCount = 0;
+                        children.entries.forEach((child) => {
+                            if (child.type == "Fixture") {
+                                fixture = child;
+                                fixtureCount = fixtureCount + 1;
+                            }
+                        });
+
+                        if (fixtureCount == 1) {
+                            this.fixture = fixture.uid;
+                        } else {
+                            this.fixture = "";
+                        }
+
+                    })
+                } else {
+                    this.respRetailProject = null;
+                    this.fixture = "";
+                }
+            },
+
+            _selectedFixtureChanged: function(fixture) {
+                if (fixture) {
+                    this.$.fixtureDocRequest.get().then((respFixture) => {
+
+                        let participants = respFixture.properties["fixture:participants"];
+                        if (participants.length == 0) {
+                            this.role = "";
+                        } else {
+                            this.participants = participants;
+                            let roles = participants.map(participant => participant.role).join().split(',')
+                            rolesGlobal = roles;
+                            if (new Set(roles).size == 1) {
+                                this.role = participants[0].role;
+                            } else {
+                                this.role = "";
+                            }
+                        }
+                    })
+                } else {
+                    this.respFixture = null;
+                    this.role = "";
+                }
+            },
+
+            _selectedRoleChanged: function(role) {
+                let companies = ["nonExistentId"];
+                if (role) {
+                    for (let i = 0, j = 0; i < this.participants.length; i++) {
+                        if (this.participants[i].role == role) {
+                            companies[j] = this.participants[i].company.replace("default:", "");
+                            j++;
+                        }
+                    }
+
+                    if (new Set(companies).size == 1) {
+                        this.company = companies[0];
+                    } else {
+                        this.company = "";
+                    }
+
+                } else {
+                    this.company = "";
+                }
+
+                this.$.companyDir.params = {
+                    namedParameters: {
+                        system_uuid: JSON.stringify(companies)
+                    }
+                };
+            },
+
+            _filterRoles: function(element, index, array) {
+                if (element) {
+                    return new Set(rolesGlobal).has(element.id);
+                }
+                return true;
+            },
+
+            _selectedCompanyChanged: function(company) {
+                if (company) {
+                    this.$.userAccessDocRequest.execute().then((response) => {
+                        this.publishSpace = response;
+                    }).catch((err) => {
+                        throw err;
+                    });
+                } else {
+                    this.publishSpace = null;
+                }
+
+            },
+
+            _toggleDialog: function() {
+                //check if in a project
+       
+                if (this.document && this.document.type == 'RetailExperienceProject') {
+                    this.retailProject = this.document.uid;
+                }else {
+                    if (this._isMultiple ){
+                      this.input = this.documents[0];
+                    };
+                    this.$.getParentProjectRequest.execute().then((parentProject) => {
+                        if (parentProject.type == 'RetailExperienceProject') {
+                            this.retailProject = parentProject.uid;
+                        }
+                    }).catch((err) => {
+                        throw err;
+                    });
+                }
+                this.$.dialog.toggle();
+            },
+
+            /**
+             * Callback executed when the user presses the "Send" button.
+             */
+            _publish() {
+                this.$.op.params = {
+                    target: this.publishSpace.uid,
+                    override: this.override,
+                    renditionName: null,
+                };
+                if (this.selectedRendition) {
+                    if (this.selectedRendition === 'default') {
+                        this.$.op.params.defaultRendition = true;
+                    } else if (this.selectedRendition !== 'none') {
+                        this.$.op.params.renditionName = this.selectedRendition;
+                    }
+                }
+                this.$.op.input = this._isMultiple ? `docs:${this.documents.map((doc) => doc.uid).join(',')}` : this.document.uid;
+                this.$.op
+                    .execute()
+                    .then(() => {
+                        this.fire('notify', {
+                            message: this.i18n(`publication.internal.publish.success${this._isMultiple ? '.multiple' : ''}`),
+                        });
+                        if (this._isMultiple) {
+                            var index = this.documents[0].path.lastIndexOf('/');
+                            var parentPath = this.documents[0].path.substring(0, index);
+                            var targetParent = parentPath.replace(this.path, this.publishSpace.path);
+                            this.navigateTo('browse', targetParent);
+                        } else {
+                            this.fire('document-updated');
+                        }
+                        this.fire('nx-publish-success');
+                    })
+                    .catch((err) => {
+                        this.fire('notify', {
+                            message: this.i18n(`publication.internal.publish.error${this._isMultiple ? '.multiple' : ''}`),
+                        });
+                        throw err;
+                    });
+            },
+
+            _canPublish() {
+                this.errorMessage = null;
+                if (!this.publishSpace) {
+                    return false;
+                }
+                return true;
+            },
+            /**
+             * Callback executed when the user presses the "close" button.
+             *
+             * Note that the "close" button already have a "dialog-dismiss" property that makes the button close the dialog
+             * when clicked. If you don't need to perform additional actions, this method is not needed.
+             */
+            _close: function() {
+                // implement me");
+                this.retailProject = "";
+                this.fixture = "";
+                this.participants = [];
+            },
+
+            /**
+             * Useful callback to execute some action after the dialog is closed. Can be removed if it's not necessary.
+             */
+            _dialogClosed: function() {
+                // implement me
+            },
+
+            _computeFixturePageProviderParams(respRetailProject) {
+                let path = "nonExistentPath";
+                if (respRetailProject) {
+                    path = respRetailProject.path;
+                }
+                return {
+                    namedParameters: {
+                        system_path: path
+                    }
+                };
+            },
+
+            _computeUserAccessFolderParams(fixture, company) {
+                if (fixture && company) {
+                    return {
+                        fixtureId: fixture,
+                        companyId: company
+                    };
+                }
+                return {};
+            }
+        });
+    </script>
+</dom-module>

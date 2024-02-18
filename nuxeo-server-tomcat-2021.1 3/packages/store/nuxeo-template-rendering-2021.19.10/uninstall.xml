@@ -1,0 +1,25 @@
+<uninstall>
+  <rollback key="nxserver/lib/fr.opensagres.xdocreport.converter" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.5"/>
+  <rollback key="nxserver/lib/fr.opensagres.xdocreport.template" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.5"/>
+  <rollback key="nxserver/lib/protobuf-java" pkgId="nuxeo-template-rendering-2021.19.10" version="3.7.1"/>
+  <rollback key="nxserver/lib/jxls-reader" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.6-NX02"/>
+  <rollback key="nxserver/lib/fr.opensagres.xdocreport.core" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.5"/>
+  <rollback key="nxserver/lib/jcl-over-slf4j" pkgId="nuxeo-template-rendering-2021.19.10" version="1.7.26"/>
+  <rollback key="nxserver/lib/jxls" pkgId="nuxeo-template-rendering-2021.19.10" version="2.8.1"/>
+  <rollback key="nxserver/lib/fr.opensagres.xdocreport.document.ods" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.5"/>
+  <rollback key="nxserver/lib/logback-core" pkgId="nuxeo-template-rendering-2021.19.10" version="1.2.3"/>
+  <rollback key="nxserver/lib/fr.opensagres.xdocreport.template.freemarker" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.5"/>
+  <rollback key="nxserver/lib/fr.opensagres.xdocreport.document" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.5"/>
+  <rollback key="nxserver/lib/commons-jexl3" pkgId="nuxeo-template-rendering-2021.19.10" version="3.1"/>
+  <rollback key="nxserver/lib/fr.opensagres.xdocreport.document.odt" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.5"/>
+  <rollback key="nxserver/lib/jxls-core" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.6-NX02"/>
+  <rollback key="nxserver/lib/fr.opensagres.xdocreport.remoting.resources" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.5"/>
+  <rollback key="nxserver/lib/jxls-poi" pkgId="nuxeo-template-rendering-2021.19.10" version="2.8.1"/>
+  <rollback key="nxserver/lib/fr.opensagres.xdocreport.document.docx" pkgId="nuxeo-template-rendering-2021.19.10" version="1.0.5"/>
+  <rollback key="nxserver/lib/commons-jexl" pkgId="nuxeo-template-rendering-2021.19.10" version="2.0.1"/>
+  <rollback key="nxserver/bundles/nuxeo-template-rendering-api" pkgId="nuxeo-template-rendering-2021.19.10" version="2021.19.10"/>
+  <rollback key="nxserver/bundles/nuxeo-template-rendering-core" pkgId="nuxeo-template-rendering-2021.19.10" version="2021.19.10"/>
+  <rollback key="nxserver/bundles/nuxeo-template-rendering-jxls" pkgId="nuxeo-template-rendering-2021.19.10" version="2021.19.10"/>
+  <rollback key="nxserver/bundles/nuxeo-template-rendering-xdocreport" pkgId="nuxeo-template-rendering-2021.19.10" version="2021.19.10"/>
+  <rollback key="nxserver/bundles/nuxeo-template-rendering-jaxrs" pkgId="nuxeo-template-rendering-2021.19.10" version="2021.19.10"/>
+</uninstall>

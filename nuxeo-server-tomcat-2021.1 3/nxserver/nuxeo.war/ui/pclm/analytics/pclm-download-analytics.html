@@ -1,0 +1,170 @@
+<!--
+`pclm-download-analytics`
+@group Nuxeo UI
+@element pclm-download-analytics.html
+-->
+
+<link rel="import" href="../behaviors/pclm-analytics-dashboard-behavior.html">
+<link rel="import" href="../behaviors/pclm-analytics-format-behavior.html">
+<link rel="import" href="../styles/pclm-analytics-styles.html">
+<link rel="import" href="../styles/pclm-grid-styles.html">
+<link rel="import" href="../tools/pclm-es-bucket-docid-label-enricher.html">
+
+<dom-module id="pclm-download-analytics">
+  <template>
+    <style include="iron-flex iron-flex-alignment pclm-grid-styles pclm-analytics-styles">
+      .cell {
+        min-height:300px;
+      }
+
+    </style>
+
+    <!-- number of asset downloads by day -->
+    <nuxeo-audit-data class="data"
+                      event-id="download"
+                      where="[[documentDownloadQuery]]"
+                      date-format="[[dateFormat]]"
+                      with-date-intervals="day"
+                      date-field="eventDate"
+                      start-date="[[startDate]]" end-date="[[endDate]]"
+                      data="{{downloadPerDay}}">
+    </nuxeo-audit-data>
+
+
+    <!-- Top Downloads -->
+    <nuxeo-audit-data class="data"
+                      event-id="download"
+                      where="[[documentDownloadQuery]]"
+                      grouped-by="docUUID"
+                      group-limit="50"
+                      start-date="[[startDate]]" end-date="[[endDate]]"
+                      data="{{downloads}}">
+    </nuxeo-audit-data>
+    <pclm-es-bucket-docid-label-enricher input="[[downloads]]" output="{{downloadedDocs}}">
+    </pclm-es-bucket-docid-label-enricher>
+
+    <!-- Top Downloader -->
+    <nuxeo-audit-data class="data"
+                      event-id="download"
+                      where="[[documentDownloadQuery]]"
+                      grouped-by="principalName"
+                      group-limit="50"
+                      start-date="[[startDate]]" end-date="[[endDate]]"
+                      data="{{downloader}}">
+    </nuxeo-audit-data>
+
+
+ <!-- Top Downloads by asset types -->
+ <!-- acxl-297-->
+<nuxeo-audit-data class="data"
+    event-id="download"
+    where="[[documentDownloadQuery]]"
+    grouped-by="extended.retailAssetTypes"
+    group-limit="50"
+    start-date="[[startDate]]" end-date="[[endDate]]"
+    data="{{downloadByAssetTypes}}">
+</nuxeo-audit-data>
+
+    <div class="container">
+
+      <div class="layout horizontal wrap">
+
+        <div class="row">
+          <nuxeo-card class="dates">
+            <div class="horizontal flex end-justified layout wrap">
+              <nuxeo-date-picker value="{{startDate}}"
+                                 label="[[i18n('label.date.interval.from')]]"
+                                 default-time="00:00:00"></nuxeo-date-picker>
+              <nuxeo-date-picker value="{{endDate}}"
+                                 label="[[i18n('label.date.interval.to')]]"
+                                 default-time="23:59:59"></nuxeo-date-picker>
+              <paper-icon-button class="refresh" icon="icons:refresh" on-tap="refresh"></paper-icon-button>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="row">
+          <nuxeo-card heading="[[i18n('analytics.downloads.per.day')]]">
+            <chart-line id="newApplicationChart"
+                        class="chart"
+                        labels="[[_formatDateLabels(downloadPerDay,'L')]]"
+                        values="[[_values(downloadPerDay)]]"
+                        options="[[defaultLineChartOptions]]">
+            </chart-line>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('repositoryAnalytics.topDownloads.heading')]]">
+            <template is="dom-if" if="[[!_isEmpty(downloads)]]">
+              <nuxeo-data-table items="[[downloadedDocs]]">
+                <nuxeo-data-table-column name="[[i18n('repositoryAnalytics.topDownloads.file')]]">
+                  <template>[[item.label]]</template>
+                </nuxeo-data-table-column>
+                <nuxeo-data-table-column name="[[i18n('repositoryAnalytics.topDownloads.downloads')]]">
+                  <template>[[item.value]]</template>
+                </nuxeo-data-table-column>
+              </nuxeo-data-table>
+            </template>
+            <template is="dom-if" if="[[_isEmpty(downloads)]]">
+              <div class="message">[[i18n('repositoryAnalytics.noResults')]]</div>
+            </template>
+          </nuxeo-card>
+        </div>
+
+        <!-- Top Downloads by Retail Asset Type-->
+        <div class="cell">
+          <nuxeo-card heading="Top Downloads by Retail Asset Type">
+            <template is="dom-if" if="[[!_isEmpty(downloadByAssetTypes)]]">
+              <nuxeo-data-table items="[[downloadByAssetTypes]]">
+                <nuxeo-data-table-column name="Asset Type">
+                  <template>[[item.key]]</template>
+                </nuxeo-data-table-column>
+                <nuxeo-data-table-column name="Downloads">
+                  <template>[[item.value]]</template>
+                </nuxeo-data-table-column>
+              </nuxeo-data-table>
+            </template>
+            <template is="dom-if" if="[[_isEmpty(downloadByAssetTypes)]]">
+              <div class="message">No results</div>
+            </template>
+          </nuxeo-card>
+        </div>
+        
+        
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.download.top.downloader.heading')]]">
+            <chart-bar class="chart"
+                       data="[[_formatSingleDatasetforBarChart(downloader,0)]]"
+                       options="[[defaultBarChartOptions]]">
+            </chart-bar>
+          </nuxeo-card>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer"></div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-download-analytics',
+      behaviors: [
+        Nuxeo.PclmAnalyticsDashboardBehavior,Nuxeo.PclmAnalyticsFormatBehavior,
+        Nuxeo.I18nBehavior
+      ],
+      properties: {
+        documentDownloadQuery: {
+          type: Object,
+          value: {
+            category: "eventDocumentCategory",
+            "extended.downloadReason": "download"
+          }
+        }
+      }
+
+    });
+  </script>
+</dom-module>

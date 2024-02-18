@@ -1,0 +1,59 @@
+<!--
+`amzd-amazon-Project-metadata-layout`
+@group Nuxeo UI
+@element amzd-amazon-Project-metadata-layout
+-->
+<dom-module id="amzd-amazon-project-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+   <div role="widget"><label>Original Creator Name</label><div>[[document.properties.amz:original_creator_name]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:creator_role]]" label="Creator Role" readonly="true" directory-name="roles" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-data-table role="widget" label="Additional Participants" items="{{document.properties.amz:additional_participants}}">
+
+
+      <nuxeo-data-table-column name="Name">
+        <template>
+          [[item.name]]
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="Role">
+        <template>
+          <nuxeo-directory-suggestion role="widget" value="[[item.role]]" readonly="true" directory-name="roles"></nuxeo-directory-suggestion>
+
+
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-form>
+        <template>
+          <nuxeo-input value="{{item.name}}" label="Name" type="text"></nuxeo-input>
+          <nuxeo-directory-suggestion value="{{item.role}}" label="Role" directory-name="roles"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-data-table-form>
+    </nuxeo-data-table>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'amzd-amazon-project-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      document: {
+        type: Object
+      }
+    }
+
+  });
+  </script>
+</dom-module>

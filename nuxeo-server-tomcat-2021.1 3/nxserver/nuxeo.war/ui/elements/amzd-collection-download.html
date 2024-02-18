@@ -1,0 +1,309 @@
+<!--
+`amzd-download-documents-button`
+@group Nuxeo UI
+@element amzd-download-documents-button
+-->
+<dom-module id="amzd-collection-download">
+  <template>
+    <style include="nuxeo-action-button-styles nuxeo-styles"></style>
+   <nuxeo-operation id="op" input="[[_input(document, documents)]]"  op="AMZD.logEvent"></nuxeo-operation>
+   
+    <!-- <nuxeo-operation-button
+      id="btn"
+      operation="Blob.BulkDownload"
+      input="[[_input(document, documents)]]"
+      params="[[_params(document, documents)]]"
+      icon="nuxeo:download"
+      label="bulkDownload.tooltip"
+      show-label$="[[showLabel]]"
+      error-label="bulkDownload.error"
+      async
+      download
+      hidden$="[[!_isAvailable(document, documents)]]"
+    ></nuxeo-operation-button> -->
+   <nuxeo-operation id="httpDownloadOp" op="AMZD.AssetBulkDownload" async="">
+    </nuxeo-operation>
+
+      <div hidden$="[[isHidden]]">
+      <div class="action" on-tap="_toggleDialog">
+        <paper-icon-button id="bt" icon="nuxeo:download"></paper-icon-button>
+        <paper-tooltip for="bt">Download</paper-tooltip>
+      </div>
+    </div>
+    
+   <!--  <paper-tooltip for="bt">[[Download]]</paper-tooltip>  -->
+   
+
+   <nuxeo-dialog id="SizeSelect" on-iron-overlay-closed="_dialogClosed" with-backdrop no-cancel-on-outside-click>
+      <h2>Assets Download</h2>
+      
+      <div>
+        <label class="lbl" required>Asset Size</label>
+        <paper-radio-group id="group" selected="group">
+        
+        <br>
+        <paper-radio-button id="Original" name="original">Original</paper-radio-button>
+        
+        <br>
+        <paper-radio-button id="Thumbnail" name="thumbnail">Thumbnail</paper-radio-button>
+       
+        <br>
+        <paper-radio-button id="Small"name="small" >Small </paper-radio-button>
+        
+        <br>
+        <paper-radio-button id="Medium" name="medium">Medium</paper-radio-button>
+        
+        <br>
+        <paper-radio-button id="Large" name="large">Large</paper-radio-button>
+        
+        
+        </paper-radio-group>
+    </div>
+
+      <div class="buttons">
+        <paper-button noink dialog-dismiss on-tap="_resetPopup">Close</paper-button>
+        <paper-button noink dialog-confirm class="primary" id = "submit" on-tap="_startHttpDownload">Submit</paper-button>
+      </div>
+    
+    </nuxeo-dialog>
+
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'amzd-collection-download',
+      behaviors: [Nuxeo.NotifyBehavior, Nuxeo.I18nBehavior, Nuxeo.FiltersBehavior],
+      properties: {
+        documents: {
+          type: Array,
+          notify: true,
+          value: [],
+        },
+        
+        size:{
+          type:Array,
+          value:[],
+        },
+
+        document: {
+          type: Object,
+          notify: true,
+        },
+         isHidden:{
+          type:Boolean,
+          value:false,
+        },
+
+        /**
+         * `true` if the action should display the label, `false` otherwise.
+         */
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+      },
+
+       observers: ['_typeRecognition(documents)'],
+
+      ready() {
+        //this.$.btn.addEventListener('poll-start', this._onPollStart.bind(this));
+        this.$.submit.addEventListener('click', this._onResponse.bind(this));
+      },
+
+      // _onPollStart() {
+      //   this.notify({ message: this.i18n('bulkDownload.preparing'), duration: 0, dismissible: true });
+      // },
+       _toggleDialog: function() {
+          //this._resetPopup();
+          // if selected items are all from TWS, then download them directly
+          this.$.SizeSelect.toggle();
+      },
+      _resetPopup: function() {
+        //this._resetChannels();
+        this.$.Original.checked = false;
+        this.$.Thumbnail.checked = false;
+        this.$.Small.checked = false;
+        this.$.Medium.checked = false;
+        this.$.Large.checked = false;
+
+        
+      },
+      _typeRecognition : function() {
+        var selectedItems = this.documents;
+        
+        for (var i = 0; i < selectedItems.length; i++) {
+          
+          if (selectedItems[i].facets.indexOf('Asset') == -1 ) {
+            
+            this.isHidden = true;
+            
+            return;
+          }
+        }
+        this.isHidden = false;
+      },
+      _isAvailable(document, docs) {
+        var doc = document? document: docs;
+        if(!doc || (doc instanceof Array && doc.length == 0)) {
+          return false;
+        }
+        if(!doc instanceof Array) {
+          return !(doc.contextParameters.permissions.indexOf("Download") == -1);
+        }
+        if(doc && doc.length > 0) {
+          var index = doc.findIndex(function(singleDoc){
+            return singleDoc.contextParameters.permissions.indexOf("Download") == -1;
+          })
+          if(index > -1) {
+            return false;
+          }
+        }
+        return true;
+      },
+             // Copy from nuxeo-operation-button to handle http bulk download
+        
+
+
+
+      _startHttpDownload()
+        {
+          
+          console.log(this.documents[0].facets);
+          var picture =[];
+          var size = "";
+          
+          for(var i=0;i<this.documents.length;i++){
+          
+          if(this.documents[i].facets.indexOf("Picture")>-1){
+            
+            for(var j=0;j<this.documents[i].properties["picture:views"].length;j++){
+               picture[j]=this.documents[i].properties["picture:views"][j].title;
+                 
+             }
+           
+          }
+        }
+
+        console.log(picture);
+        if(this.$.Original.checked){
+          size="OriginalJpeg";
+
+         }
+         else if(this.$.Thumbnail.checked){
+           size="Thumbnail";
+         }
+         else if(this.$.Small.checked){
+
+           size="Small";
+         }
+         else if(this.$.Medium.checked){
+
+           size="Medium";
+      
+         }
+         else if(this.$.Large.checked){
+   
+          size="FullHD";
+
+         }
+         else{
+            size="file:content";
+          }
+          
+          var downloadOp=this.$.httpDownloadOp;
+
+
+          downloadOp.input=this.documents;
+
+           this.$.httpDownloadOp.params = {
+                    picture: picture,
+                    size : size,
+                };
+          console.log(this.$.httpDownloadOp.params);
+
+          downloadOp.execute().then((response) => {
+            return this._download(response);
+          })
+            .catch((error) =>
+            {
+              this.dispatchEvent(new CustomEvent('notify',
+              {
+                composed: true,
+                bubbles: true,
+                detail: { message: this.errorLabel ? this.i18n(this.errorLabel, error) : error },
+              }));
+              if (error.status !== 404)
+              {
+                throw error;
+              }
+            });
+        },
+          _download(response)
+          {
+            const contentDisposition = response.headers.get('Content-Disposition');
+            if (contentDisposition)
+            {
+              const filenameMatches = contentDisposition.match(/filename[^;=\n]*=([^;\n]*''([^;\n]*)|[^;\n]*)/).filter((match) => !!match);
+              const filename = decodeURI(filenameMatches[filenameMatches.length - 1]);
+              return response.blob().then((blob) =>
+              {
+                if (navigator.msSaveBlob)
+                {
+                  // handle IE11 and Edge
+                  navigator.msSaveBlob(blob, filename);
+                }
+                else
+                {
+                  const a = document.createElement('a');
+                  a.style = 'display: none';
+                  a.download = filename;
+                  a.href = URL.createObjectURL(blob);
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  URL.revokeObjectURL(a.href);
+                }
+              });
+            }
+            else
+            {
+              return Promise.reject(new Error('missing Content-Disposition header'));
+            }
+          },
+
+        _params() {
+          const params = {};
+          if (this.document && (this.hasFacet(this.document, 'Collection') || this.hasFacet(this.document, 'Folderish'))) {
+            params.filename = `${this.document.title}_${new Date().getTime()}.zip`;
+          } else {
+            params.filename = `${this.i18n('bulkDownload.filename.selection')}-${new Date().getTime()}.zip`;
+          }
+          return params;
+      }, 
+      
+       _input() {
+        if (this._isAvailable(this.document, this.documents)) {
+          return `docs:${(this.document ? [this.document] : this.documents).map((doc) => doc.uid).join(',')}`;
+        }
+      },
+
+      _onResponse() {
+        console.log("running");
+        this.$.op.params = {
+          context: {input: this._input()},
+          event: "downloaded",
+          category: "userDownload",
+          recursive: true,
+          comment: this._params().filename
+        };
+        console.log(this.$.op.params);
+        
+        this.$.op.execute().then((res) => {
+                  console.log(res);
+        });
+        //this.notify({ message: this.i18n('bulkDownload.completed'), close: true });
+      },
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,9 @@
+<install>
+  <update upgradeOnly="true" file="${package.root}/install/bundlesupdate/nxserver/bundles" todir="${env.server.home}/nxserver/bundles" />
+  <update upgradeOnly="true" file="${package.root}/install/bundlesupdate/nxserver/lib" todir="${env.server.home}/nxserver/lib" />
+  <update upgradeOnly="true" file="${package.root}/install/bundlesupdate/lib" todir="${env.server.home}/lib" />
+  <copy overwrite="true" file="${package.root}/templates" todir="${env.server.home}" />
+  <update upgradeOnly="true" file="${package.root}/install/libsupdate/templates/default/nxserver/lib" todir="${env.server.home}/templates/default/nxserver/lib" />
+  <delete file="${env.server.home}/nxserver/lib/jsonevent-layout-1.7.jar" />
+  <delete file="${env.server.home}/nxserver/lib/json-smart-1.3.3.jar" />
+</install>

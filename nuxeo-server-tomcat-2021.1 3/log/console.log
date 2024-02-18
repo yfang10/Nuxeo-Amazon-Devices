@@ -1,0 +1,43 @@
+2023-08-30T14:08:54,350 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Nuxeo home:          /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3
+2023-08-30T14:08:54,357 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Nuxeo configuration: /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/bin/nuxeo.conf
+2023-08-30T14:08:54,396 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Include template: /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/templates/common-base
+2023-08-30T14:08:54,396 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Include template: /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/templates/common
+2023-08-30T14:08:54,397 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Include template: /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/templates/default
+2023-08-30T14:08:54,400 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Include template: /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/templates/pclm-package
+2023-08-30T14:08:54,402 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Include template: /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/templates/drive
+2023-08-30T14:08:54,405 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Include template: /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/templates/amazon-devices-saml-uat
+2023-08-30T14:08:54,407 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Include template: /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/templates/amazon-devices-package
+2023-08-30T14:08:54,413 WARN  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Nuxeo Dev mode is enabled
+2023-08-30T14:08:54,945 WARN  [main] [org.nuxeo.launcher.NuxeoLauncher] Server is not running.
+2023-08-30T14:08:55,091 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Configuration files generation (nuxeo.force.generation=true)...
+2023-08-30T14:08:55,214 WARN  [main] [org.nuxeo.common.utils.TextTemplate] FreeMarker variables: ignored 'java.version.date' conflicting with 'java.version'
+2023-08-30T14:08:55,605 INFO  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Configuration files generated.
+2023-08-30T14:08:56,365 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] Server started with process ID: 24096
+2023-08-30T14:09:00,401 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:02,411 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:04,421 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:06,424 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:08,427 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:10,432 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:12,441 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:14,450 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:16,456 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:19,458 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:22,461 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:25,467 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:28,476 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:31,486 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:34,490 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:37,496 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:40,502 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:43,508 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:46,518 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:50,524 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:54,530 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:09:58,541 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:10:01,556 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] .
+2023-08-30T14:10:01,564 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] ======================================================================
+= Component Loading Status: Pending: 0 / Missing: 0 / Unstarted: 0 / Total: 851
+======================================================================
+Started in 1min05s
+2023-08-30T14:10:01,569 INFO  [main] [org.nuxeo.launcher.NuxeoLauncher] Go to http://localhost:8080/nuxeo

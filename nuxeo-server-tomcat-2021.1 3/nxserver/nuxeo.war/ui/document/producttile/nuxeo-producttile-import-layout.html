@@ -1,0 +1,45 @@
+<!--
+`nuxeo-producttile-import-layout`
+@group Nuxeo UI
+@element nuxeo-producttile-import-layout
+-->
+<dom-module id="nuxeo-producttile-import-layout">
+  <template>
+    
+      <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" role="widget" label="Title" name="title" value="{{document.properties.dc:title}}" autofocus="" required=""></nuxeo-input>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.producttile:product_name}}" label="Product Name" required="true" min-chars="0" directory-name="Products" name="product_name"></nuxeo-directory-suggestion>
+
+
+    <nuxeo-textarea role="widget" role="widget" label="Description" name="dc:description" value="{{document.properties.dc:description}}"></nuxeo-textarea>
+
+    <nuxeo-input role="widget" value="{{document.properties.quicklink:order}}" required="true" label="Order" type="number" min="1" name="order"></nuxeo-input>
+
+    <div role="widget">
+      <label>Active</label>
+      <paper-checkbox checked="{{document.properties.quicklink:active}}" name="active"></paper-checkbox>
+    </div>
+    
+  </template>
+  <script>
+  Polymer({
+    is: 'nuxeo-producttile-import-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype ProductTile
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

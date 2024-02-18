@@ -1,0 +1,40 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+
+<!--
+`nuxeo-channel-edit-layout`
+@group Nuxeo UI
+@element nuxeo-channel-edit-layout
+-->
+<dom-module id="nuxeo-channel-edit-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <nuxeo-input name="title"
+                 role="widget" value="{{document.properties.dc:title}}"
+                 label="[[i18n('title')]]" type="text" required>
+    </nuxeo-input>
+
+    <nuxeo-input name="dc:description"
+                 role="widget" value="{{document.properties.dc:description}}"
+                 label="[[i18n('label.description')]]" type="text">
+    </nuxeo-input>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-channel-edit-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Channel
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

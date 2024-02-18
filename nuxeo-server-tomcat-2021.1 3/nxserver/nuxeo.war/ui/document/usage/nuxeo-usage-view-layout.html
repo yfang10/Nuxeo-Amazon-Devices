@@ -1,0 +1,34 @@
+<!--
+`nuxeo-usage-view-layout`
+@group Nuxeo UI
+@element nuxeo-usage-view-layout
+-->
+<dom-module id="nuxeo-usage-view-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    
+    <nuxeo-document-attachments role="widget" document="[[document]]"></nuxeo-document-attachments>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-usage-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Usage
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

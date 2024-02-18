@@ -1,0 +1,66 @@
+<dom-module id="iss-keyword">
+    <template>
+      <style>
+        :host {
+          display: inline-block;
+          background-color: var(--nuxeo-tag-background, transparent);
+          color: var(--nuxeo-default-text, #000);
+          padding: 4px 6px;
+          font-size: .8rem;
+          margin-bottom: .3em;
+          border-radius: 2em;
+          line-height: initial;
+          text-decoration: none;
+          @apply --nuxeo-tag;
+        }
+  
+        :host([uppercase]) {
+          text-transform: uppercase;
+        }
+  
+        iron-icon {
+          width: 14px;
+          height: 14px;
+          margin: 0;
+          padding: 0;
+        }
+      </style>
+  
+      <dom-if if="[[icon]]">
+        <template>
+          <iron-icon icon="[[icon]]"></iron-icon>
+        </template>
+      </dom-if>
+      <slot></slot>
+  
+    </template>
+  
+    <script>
+      {
+        /** 
+         */
+        class Keyword extends Nuxeo.Element {
+  
+          static get is() {
+            return 'iss-keyword';
+          }
+  
+          static get properties() {
+            return {
+              /**
+               * Icon to use (iconset_name:icon_name).
+               */
+              icon: String
+            };
+          }
+        }
+  
+      if (!customElements.get(Keyword.is)){
+        customElements.define(Keyword.is, Keyword);
+        Nuxeo.Keyword = Keyword;
+      }
+      }
+    </script>
+  
+  </dom-module>
+  

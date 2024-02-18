@@ -1,0 +1,47 @@
+<link rel="import" href="../../elements/nuxeo-se-collapse.html">
+
+<!--
+`nuxeo-brandasset-edit-layout`
+@group Nuxeo UI
+@element nuxeo-brandasset-edit-layout
+-->
+<dom-module id="nuxeo-brandasset-edit-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <!-- <nuxeo-input value="{{document.properties.dc:title}}" label="Title" type="text" required="true" role="widget"></nuxeo-input>
+
+    <nuxeo-input value="{{document.properties.dc:description}}" label="Description" type="text" role="widget"></nuxeo-input>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:asset_category}}" label="Asset Category" directory-name="BrandStrategyCategory" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+
+    <template is="dom-if" if="{{document.properties.amz:asset_category}}">
+      <nuxeo-directory-suggestion id="assetType" value="{{document.properties.amz:asset_type}}" label="Asset Type" directory-name="BrandStrategyType" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+    </template>
+
+    <amzd-amazon-create-layout document="{{document}}"></amzd-amazon-create-layout>
+
+    <pclm-usage-edit-layout document="{{document}}"></pclm-usage-edit-layout>
+
+    <pclm-relations-edit-layout document="{{document}}"></pclm-relations-edit-layout> -->
+
+    <!-- <amzd-approval-schema-edit-layout role="widget" document="{{document}}"></amzd-approval-schema-edit-layout>  -->
+    <amzd-metadata-schema-edit-layout role="widget" document="{{document}}"></amzd-metadata-schema-edit-layout>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-brandasset-edit-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      document: {
+        type: Object,
+      },
+      
+    }
+  });
+  </script>
+</dom-module>

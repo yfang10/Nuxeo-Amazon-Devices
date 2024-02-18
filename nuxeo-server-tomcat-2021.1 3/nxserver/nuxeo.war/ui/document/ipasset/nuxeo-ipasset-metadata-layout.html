@@ -1,0 +1,149 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/behaviors/pclm-form-behavior.html">
+<link rel="import" href="../../pclm/forms/pclm-usage-view-layout.html">
+<link rel="import" href="../../pclm/forms/pclm-relations-view-layout.html">
+<link rel="import" href="../../elements/nuxeo-se-collapse.html">
+<link rel="import" href="../../elements/amzd-keyword-suggestion.html">
+
+<!--
+`nuxeo-ipasset-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-ipasset-metadata-layout
+-->
+<dom-module id="nuxeo-ipasset-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>Title</label>
+      <div>[[document.properties.dc:title]]</div>
+    </div>
+    
+      <template is="dom-if" if="[[hasFacet(document, 'AMZKeyword')]]">
+      <div role="widget">
+        <label>[[i18n('documentPage.keywords')]]<label>
+            <div>
+              <amzd-keyword-suggestion document="[[document]]" allow-new-keywords>
+              </amzd-keyword-suggestion>
+            </div>
+      </div>
+    </template>
+
+    <div role="widget">
+      <label>Description</label>
+      <div>[[document.properties.dc:description]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:asset_category]]" label="Asset Category" readonly="true" directory-name="AssetCategory" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:asset_type]]" label="Asset Type" readonly="true" directory-name="AssetType" role="widget"></nuxeo-directory-suggestion>
+    
+    <nuxeo-directory-suggestion value="[[document.properties.amz:retailAssetUse]]" label="Retail Asset Use" readonly="true" directory-name="amzdAssetCategory" name="retailAssetUse" role="widget"></nuxeo-directory-suggestion>
+
+    <amzd-amazon-metadata-layout document="[[document]]"></amzd-amazon-metadata-layout>
+
+    <pclm-usage-view-layout document="[[document]]"></pclm-usage-view-layout>
+
+    <pclm-relations-view-layout document="[[document]]"></pclm-relations-view-layout>
+
+    <template is="dom-if" if="{{_isEqualToEither(document.properties.amz:asset_category, 'Book', 'Periodical')}}">    
+      <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
+                         heading="[[i18n('label.collapseheaders.book')]]"
+                         headingstyle="[[headingstyle]]"
+                         opened$="[[_false]]"
+                         >
+        <nuxeo-directory-suggestion role="widget" value="[[document.properties.ipasset:book_genre]]" label="Book Genre" readonly="true" directory-name="BookGenres"></nuxeo-directory-suggestion>
+        <div role="widget">
+          <label>Book Author</label>
+          <div>[[document.properties.ipasset:book_author]]</div>
+        </div>
+        <div role="widget">
+          <label>Book Publisher</label>
+          <div>[[document.properties.ipasset:book_publisher]]</div>
+        </div>
+        <nuxeo-directory-suggestion role="widget" value="[[document.properties.ipasset:book_3rdPartyUse]]" label="Book - Third Party Use" readonly="true" directory-name="Is_Retouched_Version"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion role="widget" value="[[document.properties.ipasset:book_amountApproved]]" label="Amount of book approved for use" readonly="true" directory-name="PercentApprovedForUse"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion role="widget" value="[[document.properties.ipasset:book_coverOrInterior]]" label="Cover or Interior" readonly="true" directory-name="CoverInterior"></nuxeo-directory-suggestion>
+      </nuxeo-se-collapse>
+    </template>
+
+    <template is="dom-if" if="[[_isEqualTo(document.properties.amz:asset_category, 'Music')]]">  
+    <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
+                       heading="[[i18n('label.collapseheaders.music')]]"
+                       headingstyle="[[headingstyle]]"
+                       opened$="[[_false]]"
+                       >
+      <div role="widget">
+        <label>Artist/Composer</label>
+        <div>[[document.properties.ipasset:music_artist]]</div>
+      </div>
+      <div role="widget">
+        <label>Music Label</label>
+        <div>[[document.properties.ipasset:music_label]]</div>
+      </div>
+      <nuxeo-directory-suggestion role="widget" value="[[document.properties.ipasset:music_cover]]" label="Music Cover - 3 Album Restriction" readonly="true" directory-name="Is_Retouched_Version"></nuxeo-directory-suggestion>
+      <nuxeo-directory-suggestion role="widget" value="[[document.properties.ipasset:music_lyrics]]" label="Music Cover - Lyrics Approved" readonly="true" directory-name="Is_Retouched_Version"></nuxeo-directory-suggestion>
+      <div role="widget">
+        <label>Music Publisher</label>
+        <div>[[document.properties.ipasset:music_publisher]]</div>
+      </div>
+      <div role="widget">
+        <label>Approved Audio Length</label>
+        <div>[[document.properties.ipasset:music_length]]</div>
+      </div>
+    </nuxeo-se-collapse>
+    </template>
+    
+    <amzd-approval-schema-view-layout document="[[document]]"></amzd-approval-schema-view-layout>
+  </template> 
+
+  <script>
+  Polymer({
+    is: 'nuxeo-ipasset-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype IPAsset
+         */
+      collapsestyle: {
+        type: String,
+        value: "border:0px solid #f5f5f5;margin-left:0em;"
+      },
+      headingstyle: {
+        type: String,
+        value: "font-size:1rem;font-weight:700;text-transform:uppercase;"
+      },
+      _false: {
+        type: Boolean,
+        value: false
+      },
+      _true: {
+        type: Boolean,
+        value: true
+      },
+      document: {
+        type: Object,
+      },
+
+    },
+    
+    _isEqualTo(title, string) {
+      if(title != null && title.id != null) {
+        return title.id == string;
+      }
+  		return title == string;
+		},
+
+    _isEqualToEither(title, string1, string2) {
+      if(title != null && title.id != null) {
+        return title.id == string1 || title.id == string2;
+      }
+      return title == string1 || title == string2;
+    }
+  });
+  </script>
+</dom-module>

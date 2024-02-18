@@ -1,0 +1,48 @@
+<!--
+`nuxeo-downloadpermission-20200313142901186-accept-reject-task-layout`
+@group Nuxeo UI
+@element nuxeo-downloadpermission-20200313142901186-accept-reject-task-layout
+-->
+<dom-module id="nuxeo-downloadpermission-20200313142901186-accept-reject-task-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>Directive</label>
+      <div>[[task.directive]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Created</label>
+      <div>[[formatDate(task.created)]]</div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-downloadpermission-20200313142901186-accept-reject-task-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @task var_Downloadpermission-20200313142901186-accept-reject-task
+         */
+        task: {
+          type: Object,
+        },
+
+        /**
+         * @schema dublincore
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

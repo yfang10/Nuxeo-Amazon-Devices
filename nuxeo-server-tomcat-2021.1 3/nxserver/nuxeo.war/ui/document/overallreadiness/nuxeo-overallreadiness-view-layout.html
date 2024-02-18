@@ -1,0 +1,29 @@
+<!--
+`nuxeo-overallreadiness-view-layout`
+@group Nuxeo UI
+@element nuxeo-overallreadiness-view-layout
+-->
+<dom-module id="nuxeo-overallreadiness-view-layout">
+  <template>
+    <style include="nuxeo-styles"></style>
+    <nuxeo-document-viewer role="widget" role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-overallreadiness-view-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype OverallReadiness
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

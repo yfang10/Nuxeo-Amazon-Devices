@@ -1,0 +1,187 @@
+<!--
+`nuxeo-content-view-layout`
+@group Nuxeo UI
+@element nuxeo-content-view-layout
+-->
+<dom-module id="nuxeo-content-view-layout">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      *[role=widget] {
+        padding: 5px;
+      }
+
+      nuxeo-results {
+        --nuxeo-document-content-min-height: calc(100vh - 256px - var(--nuxeo-app-top));
+      }
+
+      .results {
+        @apply --layout-vertical;
+        @apply --layout-flex;
+        min-height: var(--nuxeo-document-content-min-height, calc(100vh - 216px - var(--nuxeo-app-top)));
+        margin-bottom: var(--nuxeo-document-content-margin-bottom, 0);
+      }
+
+      .results.dragging{
+        border: 2px dashed var(--nuxeo-primary-color);
+      }
+
+      .ellipsis {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+        width: calc(100% - 38px);
+      }
+
+      .capitalize {
+        text-transform: capitalize;
+      }
+
+      nuxeo-tag {
+        margin-right: 2px;
+      }
+
+      nuxeo-justified-grid {
+        height: calc(100vh - 10em);
+      }
+
+    </style>
+    <nuxeo-page-provider id="nxProvider"
+                         provider="advanced_document_content"
+                         page-size="40"
+                         aggregations="{{aggregations}}"
+                         enrichers="thumbnail, permissions"
+                         params="[[params]]"
+                         schemas="dublincore,common,uid,file,picture"
+                         headers='{ "X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label" }'
+                         fetch-aggregates>
+    </nuxeo-page-provider>
+
+    <nuxeo-results id="results"
+                   display-mode="table"
+                   name="[[document.uid]]"
+                   nx-provider="[[nxProvider]]"
+                   selected-items="{{selectedItems}}"
+                   document="[[document]]"
+                   display-quick-filters
+                   display-sort="[[_canSort(document, sortOptions)]]"
+                   sort-options="[[sortOptions]]">
+
+      <nuxeo-data-grid name="grid" icon="nuxeo:view-thumbnails"
+                       class="results"
+                       selection-enabled
+                       draggable$="[[_hasWritePermission(document)]]" drop-target-filter="[[_dropTargetFilter]]">
+        <template>
+          <amzd-document-grid-thumbnail class="grid-box"
+                                         tabindex$="{{tabIndex}}"
+                                         selected$="{{selected}}"
+                                         index="[[index]]"
+                                         doc="[[item]]" on-navigate="_navigate"
+                                         selected-items="[[selectedItems]]">
+          </amzd-document-grid-thumbnail>
+        </template>
+      </nuxeo-data-grid>
+
+      <nuxeo-data-table name="table" icon="nuxeo:view-list"
+                        class="results"
+                        settings-enabled
+                        selection-enabled
+                        on-row-clicked="_navigate"
+                        draggable$="[[_hasWritePermission(document)]]" drop-target-filter="[[_dropTargetFilter]]">
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.title')]]"
+                                 field="dc:title" sort-by="[[_displaySort(document, 'dc:title')]]"
+                                 filter-by="title"  flex="100">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail>
+            <a class="title ellipsis" href$="[[urlFor('browse', item.path)]]" on-tap="_navigate">[[item.title]]</a>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.type')]]" field="type" hidden>
+          <template>
+            <nuxeo-tag>[[item.type]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.modified')]]"
+                                 field="dc:modified" sort-by="[[_displaySort(document, 'dc:modified')]]"
+                                 filter-by="dc_modified_agg"
+                                 flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                    placeholder="[[i18n('documentContentView.datatable.header.modified')]]"
+                    data="[[aggregations.dc_modified_agg]]"
+                    value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-date datetime="[[item.properties.dc:modified]]"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.lastContributor')]]"
+                                 filter-by="dc_last_contributor_agg" field="dc:lastContributor"
+                                 sort-by="[[_displaySort(document, 'dc:lastContributor')]]" flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                    placeholder="[[i18n('documentContentView.datatable.header.lastContributor')]]"
+                    data="[[aggregations.dc_last_contributor_agg]]"
+                    value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:lastContributor]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.created')]]"
+                                 field="dc:created" sort-by="[[_displaySort(document, 'dc:created')]]" flex="50" hidden>
+          <template>
+            <nuxeo-date datetime="[[item.properties.dc:created]]"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.author')]]"
+                                 field="dc:creator" sort-by="[[_displaySort(document, 'dc:creator')]]" hidden>
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:creator]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.state')]]"
+                                 field="currentLifeCycleState" sort-by="[[_displaySort(document, 'ecm:currentLifeCycleState')]]" hidden>
+          <template><span class="capitalize">[[formatLifecycleState(item.state)]]</span></template>
+        </nuxeo-data-table-column>
+
+
+      </nuxeo-data-table>
+    </nuxeo-results>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-content-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.DocumentContentBehavior],
+      properties: {
+
+        /**
+         * @doctype Content
+         */
+        document: {
+          type: Object,
+        },
+
+      },
+
+      _computeSortOptions() {
+        return [
+          { field: 'dc:title', label: this.i18n('searchResults.sort.field.title'), order: 'asc' },
+          { field: 'dc:created', label: this.i18n('searchResults.sort.field.created'), order: 'asc', selected: true },
+          { field: 'dc:creator', label: this.i18n('documentContentView.datatable.header.author'), order: 'asc' },
+          { field: 'dc:modified', label: this.i18n('searchResults.sort.field.modified'), order: 'desc' },
+          { field: 'dc:lastContributor', label: this.i18n('searchResults.sort.field.lastContributor'), order: 'asc' },
+          { field: 'ecm:currentLifeCycleState', label: this.i18n('searchResults.sort.field.state'), order: 'asc' }
+        ];
+      },
+
+    });
+  </script>
+</dom-module>

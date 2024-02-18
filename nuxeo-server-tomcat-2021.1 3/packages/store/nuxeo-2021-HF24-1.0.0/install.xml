@@ -1,0 +1,8 @@
+<install>
+  <update upgradeOnly="true" file="${package.root}/install/bundlesupdate/nxserver/bundles" todir="${env.server.home}/nxserver/bundles" />
+  <copy overwrite="true" file="${package.root}/templates" todir="${env.server.home}" />
+  <update file="${package.root}/install/tomcatupdate/bin" todir="${env.server.home}/bin" />
+  <update file="${package.root}/install/tomcatupdate/lib" todir="${env.server.home}/lib" />
+  <delete file="${env.server.home}/nxserver/lib/tomcat-juli-9.0.64.jar" />
+  <delete file="${env.server.home}/nxserver/lib/tomcat-jdbc-9.0.64.jar" />
+</install>

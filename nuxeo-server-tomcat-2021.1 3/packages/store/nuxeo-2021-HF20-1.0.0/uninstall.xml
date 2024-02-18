@@ -1,0 +1,11 @@
+<uninstall>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF20-1.0.0/backup/9709729503cef7825cde8f68c67bc892_distribution.properties" tofile="${env.server.home}/templates/common/config/distribution.properties" overwrite="true" md5="8a1c5550d31a0f8b12232ff4e6a69016"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF20-1.0.0/backup/0db46d3e8f665e3627d2b130ae4fb9d4_nuxeo.defaults" tofile="${env.server.home}/templates/nuxeo.defaults" overwrite="true" md5="d84c36d1811d845cadd59e8802e18d53"/>
+  <rollback key="nxserver/bundles/nuxeo-core-bulk" pkgId="nuxeo-2021-HF20-1.0.0" version="2021.20.4"/>
+  <rollback key="nxserver/bundles/nuxeo-elasticsearch-core" pkgId="nuxeo-2021-HF20-1.0.0" version="2021.20.4"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-login-saml2" pkgId="nuxeo-2021-HF20-1.0.0" version="2021.20.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core" pkgId="nuxeo-2021-HF20-1.0.0" version="2021.20.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core-event" pkgId="nuxeo-2021-HF20-1.0.0" version="2021.20.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage-dbs" pkgId="nuxeo-2021-HF20-1.0.0" version="2021.20.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core-cache" pkgId="nuxeo-2021-HF20-1.0.0" version="2021.20.4"/>
+</uninstall>

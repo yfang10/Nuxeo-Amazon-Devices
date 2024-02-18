@@ -1,0 +1,67 @@
+<link rel="import" href="../../elements/amzd-keyword-suggestion.html">
+
+<!--
+`nuxeo-productionasset-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-productionasset-metadata-layout
+-->
+<dom-module id="nuxeo-productionasset-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <!-- <div role="widget">
+      <label>Title</label>
+      <div>[[document.properties.dc:title]]</div>
+    </div>
+    
+     <template is="dom-if" if="[[hasFacet(document, 'AMZKeyword')]]">
+      <div role="widget">
+        <label>[[i18n('documentPage.keywords')]]<label>
+            <div>
+              <amzd-keyword-suggestion document="[[document]]" allow-new-keywords>
+              </amzd-keyword-suggestion>
+            </div>
+      </div>
+    </template>
+        
+    <div role="widget">
+      <label>Description</label>
+      <div>[[document.properties.dc:description]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:asset_category]]" label="Asset Category" readonly="true" directory-name="AssetCategory" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:asset_type]]" label="Asset Type" readonly="true" directory-name="AssetType" role="widget"></nuxeo-directory-suggestion>
+    
+    <nuxeo-directory-suggestion value="[[document.properties.amz:retailAssetUse]]" label="Retail Asset Use" readonly="true" directory-name="amzdAssetCategory" name="retailAssetUse" role="widget"></nuxeo-directory-suggestion>
+
+    <amzd-amazon-metadata-layout document="[[document]]"></amzd-amazon-metadata-layout>
+
+    <pclm-usage-view-layout document="[[document]]"></pclm-usage-view-layout>
+
+    <pclm-relations-view-layout document="[[document]]"></pclm-relations-view-layout>
+
+    <amzd-approval-schema-view-layout document="[[document]]"></amzd-approval-schema-view-layout> -->
+    <amzd-metadata-schema-view-layout document="[[document]]"></amzd-metadata-schema-view-layout>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-productionasset-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype ProductionAsset
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

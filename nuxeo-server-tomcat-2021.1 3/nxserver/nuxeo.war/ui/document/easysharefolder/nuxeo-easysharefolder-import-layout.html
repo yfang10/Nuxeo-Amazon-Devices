@@ -1,0 +1,45 @@
+<!--
+`nuxeo-easysharefolder-import-layout`
+@group Nuxeo UI
+@element nuxeo-easysharefolder-import-layout
+-->
+<dom-module id="nuxeo-easysharefolder-import-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" label="[[i18n('title')]]" name="title" value="{{document.properties.dc:title}}" autofocus="" required="true"></nuxeo-input>
+
+    <nuxeo-textarea role="widget" label="[[i18n('label.description')]]" name="description" value="{{document.properties.dc:description}}"></nuxeo-textarea>
+
+    <nuxeo-date-picker value="{{document.properties.dc:expired}}" label="Access Expiration Date" role="widget" required="true"></nuxeo-date-picker>
+
+    <div role="widget">
+      <label>Send Access Notifications</label>
+      <paper-checkbox checked="{{document.properties.eshare:hasNotification}}"></paper-checkbox>
+    </div>
+
+    <nuxeo-input role="widget" value="{{document.properties.eshare:contactEmail}}" label="Access Notifications Email Address" type="text"></nuxeo-input>
+
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-easysharefolder-import-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype EasyShareFolder
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

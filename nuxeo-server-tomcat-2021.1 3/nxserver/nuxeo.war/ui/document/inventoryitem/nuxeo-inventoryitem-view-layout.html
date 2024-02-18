@@ -1,0 +1,35 @@
+<!--
+`nuxeo-inventoryitem-view-layout`
+@group Nuxeo UI
+@element nuxeo-inventoryitem-view-layout
+-->
+<dom-module id="nuxeo-inventoryitem-view-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-document-viewer role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+    <nuxeo-document-attachments role="widget" document="[[document]]"></nuxeo-document-attachments>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-inventoryitem-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Product
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

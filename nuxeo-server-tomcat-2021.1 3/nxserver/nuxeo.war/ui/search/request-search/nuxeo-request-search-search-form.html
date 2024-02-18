@@ -1,0 +1,94 @@
+<!--
+`nuxeo-request-search-search-form`
+@group Nuxeo UI
+@element nuxeo-request-search-search-form
+-->
+<dom-module id="nuxeo-request-search-search-form">
+  <template>
+    <style include="nuxeo-styles">
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    
+    <nuxeo-connection user="{{user}}"></nuxeo-connection>
+    
+    <nuxeo-input role="widget" value="{{params.system_fulltext}}"
+    label="[[i18n('defaultSearch.fullText')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{params.request_purpose}}"
+    label="[[i18n('label.request.purpose')]]" type="text">
+    </nuxeo-input>
+    
+    <nuxeo-user-suggestion role="widget" value="{{params.dublincore_creator}}"
+                           label="[[i18n('label.dublincore.author')]]" 
+                           search-type="USER_TYPE" multiple>
+    </nuxeo-user-suggestion>
+
+    <nuxeo-user-suggestion role="widget" value="{{params.request_internal_participants_username}}"
+    label="[[i18n('label.request.internal.participants')]]" search-type="USER_TYPE" multiple>
+    </nuxeo-user-suggestion>
+
+    <nuxeo-input role="widget" value="{{params.request_external_participants_name}}"
+     label="[[i18n('label.request.external.participants')]]" type="text">
+    </nuxeo-input>
+
+    <div role="widget">
+      <label>[[i18n('label.request.additional_dates')]]</label>
+      <nuxeo-date-picker value="{{params.request_additional_dates_date_min}}"
+                         label="[[i18n('label.date.interval.from')]]">
+      </nuxeo-date-picker>
+      <nuxeo-date-picker value="{{params.request_additional_dates_date_max}}"
+                         label="[[i18n('label.date.interval.to')]]">
+      </nuxeo-date-picker>
+    </div>
+
+    <paper-checkbox role="widget" on-checked-changed="_isParticipantChanged" 
+                    checked="{{params.dummy_i_am_participant}}">
+      [[i18n('label.request.current.user.is.participant')]]
+    </paper-checkbox>
+    
+    <div role="widget">
+      <label>[[i18n('documentInfo.state')]]</label>
+      <nuxeo-checkbox-aggregation value="{{params.system_currentLifeCycleState_agg}}"
+      data="[[aggregations.system_currentLifeCycleState_agg]]">
+      </nuxeo-checkbox-aggregation>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-request-search-search-form',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @search request-search
+         */
+        params: {
+          type: Object,
+          value: {},
+          notify: true,
+        },
+
+        aggregations: {
+          type: Object,
+          value: {},
+          notify: true,
+        },
+      },
+      
+      _isParticipantChanged: function(e) {
+        console.log(e);
+        if (e.detail.value) {
+          this.params.request_internal_participants_username_1 = this.user.id;
+        } else {
+          delete this.params.request_internal_participants_username_1;
+        }
+      }
+      
+    });
+  </script>
+</dom-module>

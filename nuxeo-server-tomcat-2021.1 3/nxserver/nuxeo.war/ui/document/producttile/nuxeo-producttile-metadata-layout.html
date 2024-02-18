@@ -1,0 +1,54 @@
+<!--
+`nuxeo-producttile-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-producttile-metadata-layout
+-->
+<dom-module id="nuxeo-producttile-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>Title</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.producttile:product_name]]" label="Product Name" readonly="true" directory-name="Products" name="product_name"></nuxeo-directory-suggestion>
+
+    <div role="widget">
+      <label>Description</label>
+      <div name="dc:description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Order</label>
+      <div name="order">[[document.properties.quicklink:order]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Active</label>
+      <paper-checkbox checked="[[document.properties.quicklink:active]]" disabled="true" name="active"></paper-checkbox>
+    </div>
+
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-producttile-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype ProductTile
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

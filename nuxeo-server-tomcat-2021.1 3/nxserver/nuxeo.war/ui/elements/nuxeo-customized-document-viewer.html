@@ -1,0 +1,53 @@
+<link rel="import" href="nuxeo-customized-document-blob.html">
+<dom-module id="nuxeo-customized-document-viewer" assetpath="nuxeo-customized-document-viewer/">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      iron-image, nuxeo-document-preview {
+        width: 100%;
+        height: calc(80vh - 100px);
+      }
+
+      nuxeo-document-blob, nuxeo-dropzone {
+        margin-top: 8px;
+      }
+    </style>
+
+    <template is="dom-if" if="[[!document.properties.file:content.data]]">
+      <iron-image position="center" sizing="contain" src="[[_thumbnail(document)]]"></iron-image>
+      <template is="dom-if" if="[[_hasWritePermission(document)]]">
+        <nuxeo-dropzone document="{{document}}" update-document=""></nuxeo-dropzone>
+      </template>
+    </template>
+    <template is="dom-if" if="[[document.properties.file:content.data]]">
+      <nuxeo-document-preview document="[[document]]"></nuxeo-document-preview>
+      <nuxeo-customized-document-blob document="[[document]]"></nuxeo-customized-document-blob>
+    </template>
+
+  </template>
+
+
+<script>
+  Polymer({
+    is: 'nuxeo-customized-document-viewer',
+    behaviors: [Nuxeo.I18nBehavior, Nuxeo.FiltersBehavior],
+    properties: {
+      document: Object
+    },
+
+    _thumbnail: function(doc) {
+      return doc && doc.uid && doc.contextParameters && doc.contextParameters.thumbnail &&
+      doc.contextParameters.thumbnail.url ? doc.contextParameters.thumbnail.url : '';
+    },
+
+    _hasWritePermission: function (doc) {
+      return doc && this.hasPermission(doc, 'Write') &&
+        !this.isImmutable(doc) && doc.type !== 'Root' && !this.isTrashed(doc);
+    },
+  });
+</script>
+</dom-module>
+  

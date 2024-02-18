@@ -1,0 +1,35 @@
+<!--
+`nuxeo-year-import-layout`
+@group Nuxeo UI
+@element nuxeo-year-import-layout
+-->
+<dom-module id="nuxeo-year-import-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.dc:title}}" label="[[i18n(&#x27;title&#x27;)]]" directory-name="year" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text"></nuxeo-input>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-year-import-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Year
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,4 @@
+<uninstall>
+  <rollback key="nxserver/lib/protobuf-java" pkgId="easyshare-2021.1.19" version="3.7.1"/>
+  <rollback key="nxserver/bundles/nuxeo-easyshare-core" pkgId="easyshare-2021.1.19" version="2021.1.19"/>
+</uninstall>

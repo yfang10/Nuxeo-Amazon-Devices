@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<component name="cluster-config">
+
+  <extension target="org.nuxeo.runtime.cluster.ClusterService" point="configuration">
+    <clusterNode id="" enabled="" />
+  </extension>
+
+</component>

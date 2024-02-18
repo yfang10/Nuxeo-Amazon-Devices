@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.elasticsearch.defaultConfig">
+  <require>org.nuxeo.elasticsearch.ElasticSearchComponent</require>
+
+  <extension target="org.nuxeo.elasticsearch.ElasticSearchComponent" point="elasticSearchEmbeddedServer">
+    <elasticSearchEmbeddedServer clusterName="nuxeoCluster" nodeName="nuxeoNode"
+      pathData="/Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/nxserver/data/elasticsearch" pathLogs="/Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/log/elasticsearch"
+      httpEnabled="true" networkHost="127.0.0.1" />
+  </extension>
+
+  <extension target="org.nuxeo.elasticsearch.ElasticSearchComponent" point="elasticSearchClient">
+    <elasticSearchClient class="org.nuxeo.elasticsearch.client.ESRestClientFactory">
+      <option name="addressList"></option>
+      <option name="connection.timeout.ms">30000</option>
+      <option name="socket.timeout.ms">121000</option>
+      <option name="username"></option>
+      <option name="password"></option>
+      <option name="trustStorePath"></option>
+      <option name="trustStorePassword"></option>
+      <option name="trustStoreType"></option>
+      <option name="keyStorePath"></option>
+      <option name="keyStorePassword"></option>
+      <option name="keyStoreType"></option>
+      <option name="sslCertificateVerification">true</option>
+      <!-- deprecated since 10.3, and actually referring to the trustStore -->
+    </elasticSearchClient>
+  </extension>
+
+  <extension target="org.nuxeo.elasticsearch.ElasticSearchComponent"
+    point="elasticSearchIndex">
+    <elasticSearchIndex name="nuxeo" type="doc" repository="default" manageAlias="false">
+      <fetchFromSource>
+        <include>ecm:*</include>
+        <include>dc:*</include>
+        <exclude>ecm:binarytext</exclude>
+      </fetchFromSource>
+      <settings file="elasticsearch-doc-settings.json" />
+      <mapping file="elasticsearch-doc-mapping.json" />
+    </elasticSearchIndex>
+  </extension>
+
+</component>

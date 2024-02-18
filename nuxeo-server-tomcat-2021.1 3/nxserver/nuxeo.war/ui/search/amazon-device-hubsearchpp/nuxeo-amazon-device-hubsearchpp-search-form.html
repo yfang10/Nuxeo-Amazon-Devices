@@ -1,0 +1,233 @@
+<!--
+`nuxeo-amazon-device-hubsearchpp-search-form`
+@group Nuxeo UI
+@element nuxeo-amazon-device-hubsearchpp-search-form
+-->
+<dom-module id="nuxeo-amazon-device-hubsearchpp-search-form">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{params.system_fulltext}}" label="All Text" type="text"></nuxeo-input>
+    
+    <nuxeo-input role="widget" value="{{keywordInput}}" label="Keywords" type="text"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{params.es_related_devices}}" label="Device Name" type="text"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{params.product_product_id}}" label="ASIN" type="text"></nuxeo-input>
+    
+    
+    <div role="widget">
+      <label>Product Brand</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_brand_agg}}" data="[[aggregations.product_search_brand_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Product Line</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_pl_agg}}" data="[[aggregations.product_search_pl_agg]]">	     </amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Marketing Name</label>
+      <amzd-form-checkbox-aggregation value="{{params.es_market_names_agg}}" data="[[aggregations.es_market_names_agg]]" name="es_market_names_agg"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Product Year</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_year_agg}}" data="[[aggregations.product_search_year_agg]]">   </amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Retail Asset Type</label>
+      <amzd-form-checkbox-aggregation value="{{params.amazon_retailAssetTypes_agg}}" data="[[aggregations.amazon_retailAssetTypes_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Retail Asset Use</label>
+      <amzd-form-checkbox-aggregation value="{{params.amazon_retailAssetUse_agg}}" data="[[aggregations.amazon_retailAssetUse_agg]]" name="amazon_retailAssetUse_agg"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Rights Type</label>
+      <amzd-form-checkbox-aggregation value="{{params.usage_rights_type_agg}}" data="[[aggregations.usage_rights_type_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Approved Locations</label>
+      <amzd-form-checkbox-aggregation value="{{params.usage_geography_agg}}" data="[[aggregations.usage_geography_agg]]" name="usage_geography_agg"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Format</label>
+      <amzd-form-checkbox-aggregation value="{{params.picture_info_format_agg}}" data="[[aggregations.picture_info_format_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <template is="dom-if" if="[[_displayTechnical()]]">    
+      <div role="widget">
+        <label>Document Type</label>
+        <amzd-form-checkbox-aggregation value="{{params.system_primaryType_agg}}" data="[[aggregations.system_primaryType_agg]]"></amzd-form-checkbox-aggregation>
+      </div>      
+
+      <div role="widget">
+        <label>State</label>
+        <amzd-form-checkbox-aggregation value="{{params.system_currentLifeCycleState_agg}}" data="[[aggregations.system_currentLifeCycleState_agg]]"></amzd-form-checkbox-aggregation>
+      </div>    
+
+      <div role="widget">
+        <label>Agencies</label>
+        <amzd-checkbox-aggregation value="{{params.external_search_agencies_agg}}" data="[[aggregations.external_search_agencies_agg]]"></amzd-checkbox-aggregation>
+      </div>
+
+      <div role="widget">
+        <label>Retailers</label>
+        <amzd-checkbox-aggregation value="{{params.external_search_retailers_agg}}" data="[[aggregations.external_search_retailers_agg]]"></amzd-checkbox-aggregation>
+      </div>
+
+      <div role="widget">
+        <label>Vendors</label>
+        <amzd-checkbox-aggregation value="{{params.external_search_vendors_agg}}" data="[[aggregations.external_search_vendors_agg]]"></amzd-checkbox-aggregation>
+      </div>
+
+      <div role="widget">
+        <label>Product Generation</label>
+        <amzd-form-checkbox-aggregation value="{{params.product_search_generation_agg}}" data="[[aggregations.product_search_generation_agg]]"></amzd-form-checkbox-aggregation>
+      </div>
+
+      <div role="widget">
+        <label>Product Version</label>
+        <amzd-form-checkbox-aggregation value="{{params.product_search_version_agg}}" data="[[aggregations.product_search_version_agg]]"></amzd-form-checkbox-aggregation>
+      </div>
+
+      <div role="widget">
+        <label>Product Category</label>
+        <amzd-form-checkbox-aggregation value="{{params.product_search_category_agg}}" data="[[aggregations.product_search_category_agg]]"></amzd-form-checkbox-aggregation>
+      </div>
+
+      <div role="widget">
+        <label>Product Type</label>
+        <amzd-form-checkbox-aggregation value="{{params.product_search_product_type_agg}}" data="[[aggregations.product_search_product_type_agg]]"></amzd-form-checkbox-aggregation>
+      </div>
+
+      <div role="widget">
+        <label>Product Size</label>
+        <amzd-form-checkbox-aggregation value="{{params.product_search_size_agg}}" data="[[aggregations.product_search_size_agg]]"></amzd-form-checkbox-aggregation>
+      </div>
+
+      <div role="widget">
+        <label>Retail Asset Use</label>
+        <amzd-form-checkbox-aggregation value="{{params.amazon_retailAssetUse_agg}}" data="[[aggregations.amazon_retailAssetUse_agg]]"></amzd-form-checkbox-aggregation>
+      </div>
+
+      <nuxeo-date-picker value="{{params.product_production_date_min}}" label="Product Production Date Min" role="widget"></nuxeo-date-picker>
+
+      <nuxeo-date-picker value="{{params.product_production_date_max}}" label="Product Production Date Max" role="widget"></nuxeo-date-picker>
+
+      <nuxeo-date-picker value="{{params.product_purchase_date_min}}" label="Product Purchase Date Min" role="widget"></nuxeo-date-picker>
+
+      <nuxeo-date-picker value="{{params.product_purchase_date_max}}" label="Product Purchase Date Max" role="widget"></nuxeo-date-picker>     
+
+    </template>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-amazon-device-hubsearchpp-search-form',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @search Amazon-Device-HubSearchPP
+         */
+      params: {
+        type: Object,
+        value: {},
+        notify: true,
+      },
+
+      keywordInput: {
+          type: String,
+          observer: '_keywordInputChanged'
+      },
+      
+      aggregations: {
+        type: Object,
+        value: {},
+        notify: true,
+      }
+
+    },
+
+    _displayTechnical() {
+      const nuxeoApp = document.querySelector('nuxeo-app');
+      return this.isMember(nuxeoApp.currentUser, "administrators") || this.isMember(nuxeoApp.currentUser, "Librarian");
+    },
+    
+    _keywordInputChanged () {
+        let searchText = this.keywordInput.trim()
+        if (searchText.startsWith('AND') 
+        || searchText.startsWith('OR') 
+        || searchText.startsWith('NOT')) {
+         
+          return
+        } else if (searchText.endsWith('AND') 
+        || searchText.endsWith('OR') 
+        || searchText.endsWith('NOT')) {
+         
+          return
+        } else{
+          this.set('params.facetedKeyword_keywords_label', this._escape(searchText));
+        }
+      },
+
+    _escape(searchText) {
+        let escapedStr = ''
+        for (const char of searchText) {
+          // ! & | ( ) { } [ ] ^ " ~ * ? : \ /   
+          if (char == '!' || char == '&' || char == '|' || char == '(' || char == ')' 
+          || char == '{' || char == '}' || char == '[' || char == ']' || char == '^'
+          || char == '"' || char == '~' || char == '*' || char == '?' || char == ':' 
+          || char == '\\' || char == '/') {
+
+            escapedStr += '\\'
+          }
+          
+          escapedStr += char
+        }
+
+        return escapedStr
+      },
+    
+      _isBracketsInvalid (str) {
+        var depth = 0
+        for (var i in str) {
+          if (str[i] == '(') {
+            depth++
+          } else if (str[i] == ')') {
+            depth--
+          }
+          //  if the depth is negative we have a closing parenthesis 
+          //  before any matching opening parenthesis
+          if (depth < 0) return true
+        }
+        // if the depth is not null then a closing parenthesis is missing
+        if (depth > 0) return true
+
+        // in case of empty string or only spaces in parentheses
+        let lastIndexOpen = str.lastIndexOf('(')
+        if (lastIndexOpen >= 0){
+          let firstIndexClose = str.indexOf(')')
+
+          if (str.substring(lastIndexOpen + 1, firstIndexClose).trim().length == 0){
+            return true
+          }
+        }
+
+        return false;
+      }
+
+  });
+  </script>
+</dom-module>

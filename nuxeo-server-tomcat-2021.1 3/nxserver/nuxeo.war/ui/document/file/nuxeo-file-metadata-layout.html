@@ -1,0 +1,68 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/behaviors/pclm-form-behavior.html">
+<link rel="import" href="../../pclm/forms/pclm-usage-view-layout.html">
+<link rel="import" href="../../pclm/forms/pclm-relations-view-layout.html">
+
+<!--
+`nuxeo-file-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-file-metadata-layout
+-->
+<dom-module id="nuxeo-file-metadata-layout">
+
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <div role="widget">
+      <label>[[i18n('label.dublincore.title')]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'dc:description')]]">
+      <label>[[i18n('label.dublincore.description')]]</label>
+      <div name="dc:description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'dc:language')]]">
+      <label>[[i18n('label.dublincore.language')]]</label>
+      <div name="dc:language">[[formatDirectory(document.properties.dc:language)]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'dc:expired')]]">
+      <label>[[i18n('label.dublincore.expire')]]</label>
+      <div name="dc:expired">[[formatDate(document.properties.dc:expired)]]</div>
+    </div>
+
+    <div name="select:selected_in" role="widget" hidden$="[[_isEmpty(document,'select:selected_in')]]">
+      <nuxeo-document-suggestion value="{{document.properties.select:selected_in}}"
+                                 label="[[i18n('label.selects.selected_in')]]" multiple readonly>
+      </nuxeo-document-suggestion>
+    </div>
+
+    <div role="widget" hidden$="[[!_hasValueForPrefix(document,'usage')]]">
+      <pclm-usage-view-layout document="[[document]]"></pclm-usage-view-layout>
+    </div>
+
+    <div role="widget" hidden$="[[!_hasValueForPrefix(document,'relations')]]">
+      <label>[[i18n('label.relations')]]</label>
+      <pclm-relations-view-layout document="[[document]]"></pclm-relations-view-layout>
+    </div>
+
+    <nuxeo-document-attachments role="widget" document="[[document]]"></nuxeo-document-attachments>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-file-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.PclmFormBehavior],
+      properties: {
+        /**
+         * @doctype File
+         */
+        document: Object
+      }
+    });
+  </script>
+
+</dom-module>

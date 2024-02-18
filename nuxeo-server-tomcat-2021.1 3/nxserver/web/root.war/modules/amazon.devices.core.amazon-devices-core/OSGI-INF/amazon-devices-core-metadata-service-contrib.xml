@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<component name="amazon.devices.core.services.MetadataService">
+
+    <service>
+        <provide interface="amazon.devices.core.services.MetadataService"/>
+    </service>
+
+    <implementation class="amazon.devices.core.services.MetadataServiceImpl"/>
+
+    <extension-point name="metadataToCopy">
+        <object class="amazon.devices.core.descriptors.MetadataToCopyDescriptor"/>
+    </extension-point>
+
+    <extension target="amazon.devices.core.services.MetadataService" point="metadataToCopy">
+        <metadataToCopy documentType="CreativeAsset" source="picture:info.colorSpace" destination="amz:retailAssetUse"></metadataToCopy>
+        <metadataToCopy documentType="BrandAsset" source="picture:info.colorSpace" destination="amz:retailAssetUse"></metadataToCopy>
+        <metadataToCopy documentType="ThreeDCreativeAsset" source="picture:info.colorSpace" destination="amz:retailAssetUse"></metadataToCopy>
+        <metadataToCopy documentType="DeviceAsset" source="picture:info.colorSpace" destination="amz:retailAssetUse"></metadataToCopy>
+        <metadataToCopy documentType="IPAsset" source="picture:info.colorSpace" destination="amz:retailAssetUse"></metadataToCopy>
+        <metadataToCopy documentType="ProductionAsset" source="picture:info.colorSpace" destination="amz:retailAssetUse"></metadataToCopy>
+        <metadataToCopy documentType="RetailExperienceAsset" source="picture:info.colorSpace" destination="amz:retailAssetUse"></metadataToCopy>
+    </extension>
+
+</component>

@@ -1,0 +1,41 @@
+<!--
+`nuxeo-devicerenderlibrary-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-devicerenderlibrary-metadata-layout
+-->
+<dom-module id="nuxeo-devicerenderlibrary-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>Title</label>
+      <div>[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Description</label>
+      <div>[[document.properties.dc:description]]</div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-devicerenderlibrary-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype DeviceRenderLibrary
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

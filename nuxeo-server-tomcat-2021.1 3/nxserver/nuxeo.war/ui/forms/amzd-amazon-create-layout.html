@@ -1,0 +1,62 @@
+<!--
+`amzd-amazon-create-layout`
+@group Nuxeo UI
+@element amzd-amazon-create-layout
+-->
+<dom-module id="amzd-amazon-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:retailAssetTypes}}" min-chars="0" label="Retail Asset Types" directory-name="amzRetailAssetTypes" role="widget" multiple="true"></nuxeo-directory-suggestion>
+
+    <nuxeo-input value="{{document.properties.amz:original_creator_name}}" label="Original Creator Name" type="text" role="widget" min-chars="0"></nuxeo-input>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:creator_role}}" label="Original Creator Role" directory-name="roles" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-data-table role="widget" label="Additional Participants" items="{{document.properties.amz:additional_participants}}" orderable="true" editable="true">
+
+      <nuxeo-data-table-column name="Name">
+        <template>
+          [[item.name]]
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="Role">
+        <template>
+          <nuxeo-directory-suggestion role="widget" value="[[item.role]]" label="Role" readonly="true" directory-name="roles"></nuxeo-directory-suggestion>
+
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-form>
+        <template>
+          <nuxeo-input value="{{item.name}}" min-chars="0" label="Name" type="text"></nuxeo-input>
+          <nuxeo-directory-suggestion min-chars="0" value="{{item.role}}" label="Role" directory-name="roles"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-data-table-form>
+    </nuxeo-data-table>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:language}}" min-chars="0" label="Content Language" directory-name="Approved_Languages" role="widget" multiple></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:is_retouched_version}}" min-chars="0" label="Is Retouched Version" directory-name="Is_Retouched_Version" role="widget"></nuxeo-directory-suggestion>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'amzd-amazon-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

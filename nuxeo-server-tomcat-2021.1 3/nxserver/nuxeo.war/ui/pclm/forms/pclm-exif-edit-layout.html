@@ -1,0 +1,90 @@
+<link rel="import" href="../styles/pclm-form-styles.html">
+
+<!--
+`pclm-exif-edit-layout`
+@group Nuxeo UI
+@element pclm-exif-edit-layout
+-->
+
+<dom-module id="pclm-exif-edit-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <nuxeo-date-picker name="imd:date_time_original" role="widget"
+      value="{{document.properties.imd:date_time_original}}"
+      label="[[i18n('label.picture.exif.date')]]">
+    </nuxeo-date-picker>
+
+    <nuxeo-input name="imd:copyright" role="widget"
+      value="{{document.properties.imd:copyright}}"
+      label="[[i18n('label.picture.exif.copyright')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:equipment" role="widget"
+      value="{{document.properties.imd:equipment}}"
+      label="[[i18n('label.picture.exif.equipment')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:iso_speed_ratings" role="widget"
+      value="{{document.properties.imd:iso_speed_ratings}}"
+      label="[[i18n('label.picture.exif.iso')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:exposure_time" role="widget"
+      value="{{document.properties.imd:exposure_time}}"
+      label="[[i18n('label.picture.exif.exposure.time')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:fnumber" role="widget"
+      value="{{document.properties.imd:fnumber}}"
+      label="[[i18n('label.picture.exif.fnumber')]]" type="number">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:focal_length" role="widget"
+      value="{{document.properties.imd:focal_length}}"
+      label="[[i18n('label.picture.exif.focal.length')]]" type="number">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:orientation" role="widget"
+      value="{{document.properties.imd:orientation}}"
+      label="[[i18n('label.picture.exif.orientation')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:white_balance" role="widget"
+      value="{{document.properties.imd:white_balance}}"
+      label="[[i18n('label.picture.exif.white.balance')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:color_space" role="widget"
+      value="{{document.properties.imd:color_space}}"
+      label="[[i18n('label.picture.exif.color.space')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:icc_profile" role="widget"
+      value="{{document.properties.imd:icc_profile}}"
+      label="[[i18n('label.picture.exif.icc.profile')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:image_description" role="widget"
+      value="{{document.properties.imd:image_description}}"
+      label="[[i18n('label.picture.exif.image.description')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="imd:user_comment" role="widget" 
+      value="{{document.properties.imd:user_comment}}"
+      label="[[i18n('label.picture.exif.user.comment')]]" type="text">
+    </nuxeo-input>
+
+  </template>
+  <script>
+  Polymer({
+    is: 'pclm-exif-edit-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      document: {
+        type: Object
+      }
+    }
+  });
+  </script>
+</dom-module>

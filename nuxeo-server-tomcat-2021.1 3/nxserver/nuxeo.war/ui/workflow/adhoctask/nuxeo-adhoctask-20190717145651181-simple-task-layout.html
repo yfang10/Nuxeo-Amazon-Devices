@@ -1,0 +1,51 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/tools/pclm-comment-validator.html">
+
+<!--
+`nuxeo-adhoctask-20190717145651181-simple-task-layout`
+@group Nuxeo UI
+@element nuxeo-adhoctask-20190717145651181-simple-task-layout
+-->
+<dom-module id="nuxeo-adhoctask-20190717145651181-simple-task-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <nuxeo-user-suggestion role="widget" value="{{task.workflowInitiator}}"
+                           label="[[i18n('label.task.adhoc.from')]]"
+                           readonly></nuxeo-user-suggestion>
+
+    <div role="widget">
+      <label>[[i18n('label.action.assign.task.directive')]]</label>
+      <div>[[i18n(task.variables.directive)]]</div>
+    </div>
+
+    <pclm-comment-validator role="widget">
+        <nuxeo-document-comment-thread uid="[[task.workflowInstanceId]]"></nuxeo-document-comment-thread>
+    </pclm-comment-validator>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-adhoctask-20190717145651181-simple-task-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @task var_AdhocTask-20190717145651181-simple-task
+         */
+      task: {
+        type: Object,
+      },
+
+      /**
+         * @schema dublincore
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

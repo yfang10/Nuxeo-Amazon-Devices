@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<component name="amazon.devices.core.operation" version="1.0">
+	<require>org.nuxeo.ecm.core.automation.coreContrib</require>
+
+	<extension point="operations"
+		target="org.nuxeo.ecm.core.operation.OperationServiceComponent">
+		<operation
+			class="amazon.devices.core.operation.CreateUserAccessOperation" />
+		<operation
+			class="amazon.devices.core.operation.AddPermissionForCompanyOperation" />
+		<operation
+			class="amazon.devices.core.operation.DeleteUserFromUserAccessDocument" />
+		<operation
+			class="amazon.devices.core.operation.SetPasswordForUserAccessOperation" />
+		<operation
+			class="amazon.devices.core.operation.SystemDocumentPageProviderOperation" />
+		<operation
+			class="amazon.devices.core.operation.CreateProjectOperation" />
+		<operation
+		        class="amazon.devices.core.operation.AssetBulkDownload" />
+		<operation
+			class="amazon.devices.core.operation.SystemFetchByProperty" />
+		<operation
+			class="amazon.devices.core.operation.PublishContentsOperation" />
+		<operation
+			class="amazon.devices.core.operation.SubmitNewCodenameOperation" />
+		<operation
+			class="amazon.devices.core.operation.OneStageWorkflowSetApproverOperation" />
+		<operation
+			class="amazon.devices.core.operation.OneStageWorkflowApprovedOperation" />
+		<operation
+			class="amazon.devices.core.operation.OneStageWorkflowSplitBatchOperation" />
+		<operation
+			class="amazon.devices.core.operation.OneStageWorkflowDistributionOperation" />
+		<operation
+			class="amazon.devices.core.operation.GetCompaniesByUserAccessType" />
+		<operation
+			class="amazon.devices.core.operation.GetRoleUsersByCompany" />
+		<operation
+			class="amazon.devices.core.operation.GetDevicesFromRelations" />
+		<operation
+			class="amazon.devices.core.operation.GetParentProjectOperation" />
+		<operation
+			class="amazon.devices.core.operation.AddToPortalCollection" />
+		<operation
+			class="amazon.devices.core.operation.GetUserAccessFolderByFixtureParticipant" />
+		<operation class="amazon.devices.core.operation.UpdateDocumentsMetadata"/>
+		<operation class="amazon.devices.core.operation.GetDocumentsInCollections"/>
+		<operation class="amazon.devices.core.operation.ExportAuditLog"/>
+		<operation class="amazon.devices.core.operation.LogEvent"/>
+		<operation class="amazon.devices.core.operation.EmailUserDownloadedExpiredContent"/>
+		<operation class="amazon.devices.core.operation.MoveDocument"/>
+		<operation class="amazon.devices.core.operation.UpdateExpiredContentPermission"/>
+		<operation class="amazon.devices.core.operation.FireEvent"/>
+		<operation class="amazon.devices.core.operation.EmailUserDownloadedArchivingContent"/>
+		<operation class="amazon.devices.core.operation.CustomRunConverter" replace="true"/>
+		<operation class="amazon.devices.core.operation.GetContainerContentsRendition"/>
+		<operation
+				class="amazon.devices.core.operation.CartDownload" />
+		<operation class="amazon.devices.core.operation.CalculateFolderSizeOperation" />
+		<operation class="amazon.devices.core.operation.DownloadRecordCsvExport" />
+	</extension>
+
+
+	<extension point="chains"
+		target="org.nuxeo.ecm.core.operation.OperationServiceComponent">
+
+		<chain id="Image.Blob.ConvertToPNG">
+			<operation id="Blob.RunConverter">
+				<param name="converter" type="string">changeFormat</param>
+			</operation>
+		</chain>
+
+		<chain id="Image.Blob.Resize.Jpeg">
+			<operation id="Blob.RunConverter">
+				<param name="converter" type="string">pictureResize</param>
+				<param name="pictureConversionId" type="string">OriginalJpeg</param>
+			</operation>
+		</chain>
+
+	</extension>
+</component>
+

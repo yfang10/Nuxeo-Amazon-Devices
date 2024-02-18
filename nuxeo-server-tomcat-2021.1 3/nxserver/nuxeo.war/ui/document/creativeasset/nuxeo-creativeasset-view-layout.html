@@ -1,0 +1,111 @@
+<!--
+`nuxeo-creativeasset-view-layout`
+@group Nuxeo UI
+@element nuxeo-creativeasset-view-layout
+-->
+<dom-module id="nuxeo-creativeasset-view-layout">
+  <template>
+    <style>
+       *[role=widget] {
+        padding: 5px;
+      }
+      .one{
+        font-weight: bold;
+      }
+      nuxeo-customized-document-viewer,
+      nuxeo-video-info,
+      nuxeo-video-conversions,
+      nuxeo-3d-preview,
+      nuxeo-3d-render-views,
+      nuxeo-3d-transmission-formats {
+        @apply --paper-card;
+      }
+    </style>
+<template is="dom-if" if="[[_hasrights_types(document)]]">
+    <div class="one">
+       <nuxeo-directory-suggestion style="font-weight:bold;" value="[[document.properties.usage:rights_type]]" label="Rights Type" readonly="true" directory-name="Rights_Type" role="widget"></nuxeo-directory-suggestion>
+    </div>
+    </template>
+   
+    <template is="dom-if" if="[[_hasrights(document)]]">
+       
+    <div role="widget">
+      <label>Restrictions</label>
+      <div class="one">[[document.properties.dc:rights]]
+    </div>
+  </div>
+    </template>
+    <template is="dom-if" if="[[!_is3D(document)]]">
+      <nuxeo-customized-document-viewer role="widget" document="[[document]]"/>
+    </template>
+    
+    <template is="dom-if" if="[[_isVideo(document)]]">
+      <nuxeo-video-info role="widget" document="[[document]]"></nuxeo-video-info>
+      <nuxeo-customized-video-conversions role="widget" document="[[document]]" label="[[i18n('videoViewLayout.conversions')]]"></nuxeo-customized-video-conversions>
+    </template>
+
+    <template is="dom-if" if="[[_isPicture(document)]]">
+      <div class="additional">
+        <nuxeo-card heading="[[i18n('pictureViewLayout.info')]]">
+          <nuxeo-picture-info role="widget" document="[[document]]"></nuxeo-picture-info>
+        </nuxeo-card>
+
+        <nuxeo-card heading="[[i18n('pictureViewLayout.formats')]]">
+          <nuxeo-customized-picture-format role="widget" document="[[document]]"></nuxeo-customized-picture-format>
+        </nuxeo-card>
+
+        <nuxeo-card heading="[[i18n('pictureViewLayout.exif')]]">
+          <pclm-exif-metadata role="widget" document="[[document]]"></pclm-exif-metadata>
+        </nuxeo-card>
+
+        <nuxeo-card heading="[[i18n('pictureViewLayout.iptc')]]">
+          <pclm-iptc-metadata role="widget" document="[[document]]"></pclm-iptc-metadata>
+        </nuxeo-card>
+      </div>
+    </template>
+    
+    <template is="dom-if" if="[[_is3D(document)]]">
+      <nuxeo-3d-preview document="{{document}}"></nuxeo-3d-preview>
+      <nuxeo-3d-render-views document="{{document}}"></nuxeo-3d-render-views>
+      <nuxeo-3d-transmission-formats document="{{document}}"></nuxeo-3d-transmission-formats>
+    </template>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-creativeasset-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype CreativeAsset
+         */
+        document: {
+          type: Object,
+        },
+
+      },
+      
+      _isVideo: function(document){
+        return document && document.facets && document.facets.indexOf("Video")>=0;
+      },
+
+      _isPicture: function(document){
+        return document && document.facets && document.facets.indexOf("Picture")>=0;
+      },
+      
+      _is3D: function(document){
+        return document && document.facets && document.facets.indexOf("ThreeD")>=0;
+      },
+      _hasrights_types:function(document){
+        
+        return this.document.properties["usage:rights_type"];
+    },
+    _hasrights:function(document){
+        
+        return this.document.properties["dc:rights"];
+    }
+    });
+  </script>
+</dom-module>

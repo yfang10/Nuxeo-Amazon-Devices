@@ -1,0 +1,49 @@
+<dom-module id="amzd-calculate-folder-size">
+  <template>
+    <nuxeo-operation id="op" op="[[operation]]" input="[[input]]"></nuxeo-operation>
+
+      <div>{{displayValue}}</div>
+      <div class="action" on-click="_execute" hidden$="{{hideBtn}}">
+        <paper-icon-button id="btn" icon="[[icon]]" noink></paper-icon-button>
+        <paper-tooltip for="btn">[[label]]</paper-tooltip>
+        <span class="label" hidden$="[[!showLabel]]">[[i18n(label)]]</span>	
+      </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'amzd-calculate-folder-size',
+
+      behaviors: [Nuxeo.I18nBehavior],
+
+      properties: {
+        icon: {
+          type: String
+        },
+        hideBtn: {
+          type:Boolean,
+          value: false
+        },
+        displayValue: {
+          type:String,
+          value: ''
+        },
+        operation: {
+          type: String,
+          value: "AMZD.CalculateFolderSize"
+        }
+      },
+
+      _execute() {
+        let op = this.$.op;
+        op.execute().then(function(res) {
+          if (res) {
+            this.displayValue=res.value;
+            this.hideBtn = true;
+          }
+        }.bind(this));
+      }
+    });
+  </script>
+</dom-module>

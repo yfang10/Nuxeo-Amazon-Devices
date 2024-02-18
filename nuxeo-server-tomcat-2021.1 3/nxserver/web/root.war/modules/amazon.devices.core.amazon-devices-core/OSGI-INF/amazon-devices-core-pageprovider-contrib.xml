@@ -1,0 +1,85 @@
+<component
+	name="org.nuxeo.ecm.collections.pageprovider.override">
+	<require>org.nuxeo.ecm.collections.pageprovider</require>
+	<require>org.nuxeo.ecm.document.pageproviders</require>
+	<require>org.nuxeo.ecm.webapp.pageproviders.contrib</require>
+	<!-- -->
+	<extension target="org.nuxeo.ecm.platform.query.api.PageProviderService"
+		point="providers">
+		<coreQueryPageProvider name="user_collections">
+			<pattern escapeParameters="true" quoteParameters="true">
+				SELECT * FROM Document WHERE dc:title ILIKE :searchTerm AND ecm:mixinType
+				= 'Collection' AND
+				ecm:primaryType != 'Favorites' AND ecm:primaryType != 'EasyShareFolder' AND
+				ecm:isProxy = 0 AND ecm:mixinType != 'HiddenInNavigation' AND
+				ecm:isVersion = 0 AND ecm:isTrashed = 0
+			</pattern>
+			<parameter>#{currentUser.name}</parameter>
+			<sort ascending="false" column="dc:modified" />
+			<pageSize>50</pageSize>
+		</coreQueryPageProvider>
+
+		<coreQueryPageProvider name="default_contents_in_collections">
+			<pattern quoteParameters="false" escapeParameters="false">
+				SELECT * FROM Document where ecm:mixinType != 'HiddenInNavigation' AND
+				ecm:isTrashed = 0 AND collectionMember:collectionIds/* in ?
+			</pattern>
+			<sort ascending="true" column="dc:title.keyword"/>
+			<pageSize>50</pageSize>
+		</coreQueryPageProvider>
+
+		<coreQueryPageProvider name="advanced_document_content">
+			<trackUsage>true</trackUsage>
+			<property name="maxResults">DEFAULT_NAVIGATION_RESULTS</property>
+			<whereClause docType="AdvancedContent">
+				<fixedPart> ecm:isVersion = 0 AND ecm:mixinType != 'HiddenInNavigation' </fixedPart>
+				<predicate operator="FULLTEXT" parameter="dc:title">
+					<field name="title" schema="advanced_content"/>
+				</predicate>
+				<predicate operator="=" parameter="ecm:parentId">
+					<field name="ecm_parentId" schema="advanced_content"/>
+				</predicate>
+				<predicate operator="=" parameter="ecm:isTrashed">
+					<field name="ecm_trashed" schema="advanced_content"/>
+				</predicate>
+			</whereClause>
+			<aggregates>
+				<aggregate id="dc_last_contributor_agg" parameter="dc:lastContributor" type="terms">
+					<field name="dc_last_contributor_agg" schema="advanced_content"/>
+					<properties>
+						<property name="size">10</property>
+					</properties>
+				</aggregate>
+				<aggregate id="dc_modified_agg" parameter="dc:modified" type="date_range">
+					<field name="dc_modified_agg" schema="advanced_content"/>
+					<properties>
+						<property name="format">"dd-MM-yyyy"</property>
+					</properties>
+					<dateRanges>
+						<dateRange fromDate="now-24H" key="last24h" toDate="now"/>
+						<dateRange fromDate="now-7d" key="lastWeek" toDate="now-24H"/>
+						<dateRange fromDate="now-1M" key="lastMonth" toDate="now-7d"/>
+						<dateRange fromDate="now-1y" key="lastYear" toDate="now-1M"/>
+						<dateRange key="priorToLastYear" toDate="now-1y"/>
+					</dateRanges>
+				</aggregate>
+			</aggregates>
+			<sort ascending="true" column="dc:title.keyword"/>
+			<pageSize>20</pageSize>
+		</coreQueryPageProvider>
+
+		<coreQueryPageProvider name="tree_children">
+			<property name="maxResults">PAGE_SIZE</property>
+			<pattern>
+				SELECT * FROM Document WHERE ecm:parentId = ? AND ecm:isProxy = 0 AND
+				ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation'
+				AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:primaryType!= 'CompoundAsset'
+			</pattern>
+			<sort column="dc:title"  ascending="true"/>
+			<pageSize>50</pageSize>
+		</coreQueryPageProvider>
+
+	</extension>
+
+</component>
+

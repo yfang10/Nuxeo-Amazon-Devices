@@ -1,0 +1,186 @@
+<!--
+-`nuxeo-device-searchpp-search-form`
+-@group Nuxeo UI
+-@element nuxeo-device-searchpp-search-form
+--->
+<dom-module id="nuxeo-device-searchpp-search-form">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{params.system_fulltext}}" label="All Text" type="text"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{keywordInput}}" label="Keywords" type="text"></nuxeo-input>
+    
+    <nuxeo-input role="widget" value="{{params.product_product_id}}" label="ASIN" type="text"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{params.dublincore_title}}" label="Device Name" type="text"></nuxeo-input>
+
+
+
+    <div role="widget">
+      <label>Type </label>
+      <amzd-form-checkbox-aggregation value="{{params.system_primaryType_agg}}" data="[[aggregations.system_primaryType_agg]]">		</amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Brand</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_brand_agg}}" data="[[aggregations.product_search_brand_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Content Location</label>
+      <amzd-form-checkbox-aggregation value="{{params.relations_workspaceLocation_agg}}" data="[[aggregations.relations_workspaceLocation_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Product Line</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_pl_agg}}" data="[[aggregations.product_search_pl_agg]]">	     </amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Year</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_year_agg}}" data="[[aggregations.product_search_year_agg]]">   </amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Generation</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_generation_agg}}" data="[[aggregations.product_search_generation_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Product Version</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_version_agg}}" data="[[aggregations.product_search_version_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Product Category</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_category_agg}}" data="[[aggregations.product_search_category_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Type</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_product_type_agg}}" data="[[aggregations.product_search_product_type_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Size</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_size_agg}}" data="[[aggregations.product_search_size_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Launch Countries</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_launch_countries_agg}}" data="[[aggregations.product_search_launch_countries_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Color</label>
+      <amzd-form-checkbox-aggregation value="{{params.product_search_color_agg}}" data="[[aggregations.product_search_color_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <nuxeo-date-picker value="{{params.product_production_date_min}}" label="Product Production Date Min" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-date-picker value="{{params.product_production_date_max}}" label="Product Production Date Max" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-date-picker value="{{params.product_purchase_date_min}}" label="Product Purchase Date Min" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-date-picker value="{{params.product_purchase_date_max}}" label="Product Purchase Date Max" role="widget"></nuxeo-date-picker>
+
+
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-device-searchpp-search-form',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+ * @search Device-SearchPP
+ */
+      params: {
+        type: Object,
+        value: {},
+        notify: true,
+      },
+
+      keywordInput: {
+          type: String,
+          observer: '_keywordInputChanged'
+      },
+      
+      aggregations: {
+        type: Object,
+        value: {},
+        notify: true,
+      }
+    },
+    
+     _keywordInputChanged () {
+        let searchText = this.keywordInput.trim()
+        if (searchText.startsWith('AND') 
+        || searchText.startsWith('OR') 
+        || searchText.startsWith('NOT')) {
+         
+          return
+        } else if (searchText.endsWith('AND') 
+        || searchText.endsWith('OR') 
+        || searchText.endsWith('NOT')) {
+         
+          return
+        } else{
+          this.set('params.facetedKeyword_keywords_label', this._escape(searchText));
+        }
+      },
+
+     _escape(searchText) {
+        let escapedStr = ''
+        for (const char of searchText) {
+          // ! & | ( ) { } [ ] ^ " ~ * ? : \ /   
+          if (char == '!' || char == '&' || char == '|' || char == '(' || char == ')' 
+          || char == '{' || char == '}' || char == '[' || char == ']' || char == '^'
+          || char == '"' || char == '~' || char == '*' || char == '?' || char == ':' 
+          || char == '\\' || char == '/') {
+
+            escapedStr += '\\'
+          }
+          
+          escapedStr += char
+        }
+
+        return escapedStr
+      },
+
+      _isBracketsInvalid (str) {
+        var depth = 0
+        for (var i in str) {
+          if (str[i] == '(') {
+            depth++
+          } else if (str[i] == ')') {
+            depth--
+          }
+          //  if the depth is negative we have a closing parenthesis 
+          //  before any matching opening parenthesis
+          if (depth < 0) return true
+        }
+        // if the depth is not null then a closing parenthesis is missing
+        if (depth > 0) return true
+
+        // in case of empty string or only spaces in parentheses
+        let lastIndexOpen = str.lastIndexOf('(')
+        if (lastIndexOpen >= 0){
+          let firstIndexClose = str.indexOf(')')
+
+          if (str.substring(lastIndexOpen + 1, firstIndexClose).trim().length == 0){
+            return true
+          }
+        }
+        
+        return false;
+      }
+  });
+  </script>
+</dom-module>

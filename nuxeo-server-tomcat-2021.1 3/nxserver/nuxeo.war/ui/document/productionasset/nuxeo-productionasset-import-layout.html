@@ -1,0 +1,55 @@
+<link rel="import" href="../../elements/amzd-keyword-suggestion-import.html">
+
+<!--
+`nuxeo-productionasset-import-layout`
+@group Nuxeo UI
+@element nuxeo-productionasset-import-layout
+-->
+<dom-module id="nuxeo-productionasset-import-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+       <!-- <nuxeo-input value="{{document.properties.dc:title}}" label="Title" type="text" required="true" role="widget"></nuxeo-input>
+
+    <div role="widget">
+       <amzd-keyword-suggestion-import document="[[document]]" allow-new-keywords></amzd-keyword-suggestion-import>
+    </div>
+    
+    <nuxeo-input value="{{document.properties.dc:description}}" label="Description" type="text" role="widget"></nuxeo-input>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:asset_category}}" label="Asset Category" directory-name="AssetCategory" role="widget" min-chars="0" on-value-changed="_clearAssetType"></nuxeo-directory-suggestion>
+
+    <template is="dom-if" if="{{document.properties.amz:asset_category}}">
+      <nuxeo-directory-suggestion id="assetType" value="{{document.properties.amz:asset_type}}" label="Asset Type" directory-name="{{document.properties.amz:asset_category}}" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+    </template>
+
+    <amzd-amazon-create-layout document="{{document}}"></amzd-amazon-create-layout>
+
+    <pclm-usage-edit-layout document="{{document}}"></pclm-usage-edit-layout>
+
+    <pclm-relations-edit-layout document="{{document}}"></pclm-relations-edit-layout>
+
+    <amzd-approval-schema-edit-layout role="widget" document="{{document}}"></amzd-approval-schema-edit-layout>-->
+		<amzd-metadata-schema-import-layout role="widget" document="{{document}}"></amzd-metadata-schema-import-layout>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-productionasset-import-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+   properties: {
+      document: {
+        type: Object,
+      },
+    },
+
+    _clearAssetType: function(event){
+      // clear the value of asset_type selection
+      this.$$('#assetType').value = "";
+    }
+  });
+  </script>
+</dom-module>

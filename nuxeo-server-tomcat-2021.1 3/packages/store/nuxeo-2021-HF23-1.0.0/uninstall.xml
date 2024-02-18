@@ -1,0 +1,27 @@
+<uninstall>
+  <rollback key="nxserver/lib/netty-buffer" pkgId="nuxeo-2021-HF23-1.0.0" version="4.1.78.Final"/>
+  <rollback key="nxserver/lib/netty-handler" pkgId="nuxeo-2021-HF23-1.0.0" version="4.1.78.Final"/>
+  <rollback key="nxserver/lib/netty-resolver" pkgId="nuxeo-2021-HF23-1.0.0" version="4.1.78.Final"/>
+  <rollback key="nxserver/lib/netty-common" pkgId="nuxeo-2021-HF23-1.0.0" version="4.1.78.Final"/>
+  <rollback key="nxserver/lib/netty-transport" pkgId="nuxeo-2021-HF23-1.0.0" version="4.1.78.Final"/>
+  <rollback key="nxserver/lib/netty-codec-http" pkgId="nuxeo-2021-HF23-1.0.0" version="4.1.78.Final"/>
+  <rollback key="nxserver/lib/netty-codec" pkgId="nuxeo-2021-HF23-1.0.0" version="4.1.78.Final"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF23-1.0.0/backup/9709729503cef7825cde8f68c67bc892_distribution.properties" tofile="${env.server.home}/templates/common/config/distribution.properties" overwrite="true" md5="0f02d998461cf6ac6257286d93571fb3"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF23-1.0.0/backup/0db46d3e8f665e3627d2b130ae4fb9d4_nuxeo.defaults" tofile="${env.server.home}/templates/nuxeo.defaults" overwrite="true" md5="9570da7df09438dc582318f870cf2351"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF23-1.0.0/backup/bc598d2e0e7a175345a074bcefe21c44_nuxeo-launcher.jar" tofile="${env.server.home}/bin/nuxeo-launcher.jar" overwrite="true" md5="78f6a8507d045010e4f9b11050755b77"/>
+  <rollback key="nxserver/lib/nuxeo-stream" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-runtime" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-video" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-elasticsearch-core" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-core-bulk" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-core" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage-mongodb" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-core-cache" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-web-common" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-oauth" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-common" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-launcher-commons" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-rest-api-server" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-imaging-core" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage-dbs" pkgId="nuxeo-2021-HF23-1.0.0" version="2021.23.2"/>
+</uninstall>

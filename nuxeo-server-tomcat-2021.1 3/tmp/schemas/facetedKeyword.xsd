@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<xs:schema targetNamespace="http://www.nuxeo.org/ecm/schemas/facetedKeyword/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:keywordxs="http://www.nuxeo.org/ecm/schemas/facetedKeyword/">
+
+  <xs:complexType name="keyword">
+    <xs:sequence>
+      <xs:element name="label" type="xs:string"/>
+      <xs:element name="username" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="keywords">
+    <xs:sequence>
+      <xs:element name="item" type="keywordxs:keyword" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="keywords" type="keywordxs:keywords"/>
+
+</xs:schema>

@@ -1,0 +1,15 @@
+<uninstall>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF25-1.0.0/backup/9709729503cef7825cde8f68c67bc892_distribution.properties" tofile="${env.server.home}/templates/common/config/distribution.properties" overwrite="true" md5="36b49f4c0eae431bfa304164a7e54e6a"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF25-1.0.0/backup/0db46d3e8f665e3627d2b130ae4fb9d4_nuxeo.defaults" tofile="${env.server.home}/templates/nuxeo.defaults" overwrite="true" md5="da9e529aebaee2707eb36f533839706b"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF25-1.0.0/backup/bc598d2e0e7a175345a074bcefe21c44_nuxeo-launcher.jar" tofile="${env.server.home}/bin/nuxeo-launcher.jar" overwrite="true" md5="21496169a8548791790c84cd1681537a"/>
+  <rollback key="nxserver/lib/nuxeo-stream" pkgId="nuxeo-2021-HF25-1.0.0" version="2021.25.8"/>
+  <rollback key="nxserver/bundles/nuxeo-rest-api-server" pkgId="nuxeo-2021-HF25-1.0.0" version="2021.25.8"/>
+  <rollback key="nxserver/bundles/nuxeo-common" pkgId="nuxeo-2021-HF25-1.0.0" version="2021.25.8"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-mail" pkgId="nuxeo-2021-HF25-1.0.0" version="2021.25.8"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage-mongodb" pkgId="nuxeo-2021-HF25-1.0.0" version="2021.25.8"/>
+  <rollback key="nxserver/bundles/nuxeo-core-schema" pkgId="nuxeo-2021-HF25-1.0.0" version="2021.25.8"/>
+  <rollback key="nxserver/bundles/nuxeo-core-api" pkgId="nuxeo-2021-HF25-1.0.0" version="2021.25.8"/>
+  <rollback key="nxserver/bundles/nuxeo-runtime-stream" pkgId="nuxeo-2021-HF25-1.0.0" version="2021.25.8"/>
+  <rollback key="nxserver/bundles/nuxeo-core-mimetype" pkgId="nuxeo-2021-HF25-1.0.0" version="2021.25.8"/>
+  <rollback key="nxserver/bundles/nuxeo-webengine-core" pkgId="nuxeo-2021-HF25-1.0.0" version="2021.25.8"/>
+</uninstall>

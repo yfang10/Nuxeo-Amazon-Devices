@@ -1,0 +1,55 @@
+<!--
+`nuxeo-fixture-edit-layout`
+@group Nuxeo UI
+@element nuxeo-fixture-edit-layout
+-->
+<link rel="import" href="amzd-fixture-participants-form.html">
+<dom-module id="nuxeo-fixture-edit-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <nuxeo-input role="widget" role="widget" label="[[i18n(&#x27;title&#x27;)]]" name="title" value="{{document.properties.dc:title}}" autofocus="" required=""></nuxeo-input>
+
+    <nuxeo-textarea role="widget" role="widget" label="[[i18n(&#x27;label.description&#x27;)]]" name="description" value="{{document.properties.dc:description}}"></nuxeo-textarea>
+
+    <nuxeo-data-table role="widget" label="Participants" items="{{document.properties.fixture:participants}}" orderable="true" editable="true">
+      <nuxeo-data-table-column name="Role">
+        <template>
+          <nuxeo-directory-suggestion role="widget" value="[[item.role]]" readonly="true" directory-name="Access_Permissions"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-data-table-column>
+      <nuxeo-data-table-column name="Company">
+        <template>
+          <system-document-suggestion role="widget" value="[[item.company]]" readonly="true"></system-document-suggestion>
+        </template>
+      </nuxeo-data-table-column>
+      <nuxeo-data-table-column name="Role Users">
+        <template>
+          <system-document-suggestion role="widget" value="[[item.role_users]]" readonly="true" multiple="true"></system-document-suggestion>
+        </template>
+      </nuxeo-data-table-column>
+      <nuxeo-data-table-form>
+        <template>
+          <amzd-fixture-participants-form item="{{item}}"></amzd-fixture-participants-form>
+        </template>
+      </nuxeo-data-table-form>
+    </nuxeo-data-table>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-fixture-edit-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      document: {
+        type: Object,
+      },
+    }
+  });
+  </script>
+</dom-module>

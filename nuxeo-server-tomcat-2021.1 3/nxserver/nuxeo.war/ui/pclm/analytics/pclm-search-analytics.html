@@ -1,0 +1,340 @@
+label.number.of.results.
+<link rel="import" href="../behaviors/pclm-analytics-dashboard-behavior.html">
+<link rel="import" href="../behaviors/pclm-analytics-format-behavior.html">
+<link rel="import" href="../styles/pclm-analytics-styles.html">
+<link rel="import" href="../styles/pclm-grid-styles.html">
+
+<dom-module id="pclm-search-analytics">
+  <template>
+    <style include="iron-flex iron-flex-alignment pclm-grid-styles pclm-analytics-styles">
+      .searches {
+        width:15em;
+        margin-right:8px;
+      }
+    </style>
+
+
+    <!-- Search calls per day -->
+    <nuxeo-search-data class="data"
+                       start-date="[[startDate]]" end-date="[[endDate]]"
+                       date-format="[[dateFormat]]"
+                       with-date-intervals="day"
+                       data="{{callsPerDay}}"
+                       page-provider="[[pageprovider]]"
+                       where="[[_onlyFirstPage]]">>
+    </nuxeo-search-data>
+
+    <!-- Number of calls per hour -->
+    <nuxeo-search-data class="data"
+                       start-date="[[startDate]]" end-date="[[endDate]]"
+                       with-date-intervals="hour"
+                       without-extended-bounds
+                       date-format="H"
+                       data="{{callsPerHour}}"
+                       page-provider="[[pageprovider]]">
+    </nuxeo-search-data>
+       
+    <!-- Average Response time -->
+    <nuxeo-search-data class="data"
+                       start-date="[[startDate]]"
+                       end-date="[[endDate]]"
+                       metrics="avg(executionTimeMs)"
+                       data="{{avgResponseTime}}"
+                       page-provider="[[pageprovider]]">
+    </nuxeo-search-data>
+    
+    <!-- Percentiles Response time -->
+    <nuxeo-search-data class="data"
+                       start-date="[[startDate]]"
+                       end-date="[[endDate]]"
+                       metrics="percentiles(executionTimeMs)"
+                       data="{{percentilesResponseTime}}"
+                       page-provider="[[pageprovider]]">
+    </nuxeo-search-data>
+    
+    <!-- Result ranges -->
+    <nuxeo-search-data class="data"
+                       start-date="[[startDate]]" end-date="[[endDate]]"
+                       with-ranges='{"resultsCount":[
+                                    {"key": "label.number.of.results.none", "to": 1 },
+                                    {"key": "label.number.of.results.less.fifty", "from" : 1, "to": 50},
+                                    {"key": "label.number.of.results.fiftyone.to.twohundred", "from" : 51, "to": 200 },
+                                    {"key": "label.number.of.results.twohundred.to.thousand", "from" : 201, "to": 1000},
+                                    {"key": "label.number.of.results.more.thousand", "from" : 1001 }]}'
+                       data="{{callPerNumberOfResults}}"
+                       page-provider="[[pageprovider]]"
+                       where="[[_onlyFirstPage]]">
+    </nuxeo-search-data>
+
+    <!-- Searches with no results  -->
+    <nuxeo-search-data class="data"
+                       start-date="[[startDate]]"
+                       end-date="[[endDate]]"
+                       grouped-by="[[_getPageproviderFulltextField(pageprovider)]]"
+                       group-limit="50" data="{{noResultSearches}}" index="[[index]]"
+                       page-provider="[[pageprovider]]"
+                       where="[[_noResults]]">
+    </nuxeo-search-data>
+
+
+    <!-- Searches by number of pages displayed -->
+    <nuxeo-search-data class="data"
+                       start-date="[[startDate]]" end-date="[[endDate]]"
+                       with-ranges='{"pageIndex":[
+                                    {"key": "label.number.of.pages.displayed.first", "from" : 0, "to": 1 },
+                                    {"key": "label.number.of.pages.displayed.second", "from" : 1, "to": 2},
+                                    {"key": "label.number.of.pages.displayed.three.to.five", "from" : 2, "to": 5 },
+                                    {"key": "label.number.of.pages.displayed.six.to.ten", "from" : 6, "to": 10},
+                                    {"key": "label.number.of.pages.displayed.after.ten", "from" : 10 }]}'
+                       data="{{callPerNumberOfPages}}"
+                       page-provider="[[pageprovider]]">
+    </nuxeo-search-data>
+
+    <!-- Most used expressions for full text search  -->
+    <nuxeo-search-data class="data"
+                       start-date="[[startDate]]"
+                       end-date="[[endDate]]"
+                       grouped-by="[[_getPageproviderFulltextField(pageprovider)]]"
+                       group-limit="50" data="{{callsPerFT}}"
+                       page-provider="[[pageprovider]]"
+                       where="[[_onlyFirstPage]]">
+    </nuxeo-search-data>
+
+    <!-- Most used filters  -->
+    <nuxeo-search-data class="data"
+                       start-date="[[startDate]]"
+                       end-date="[[endDate]]"
+                       grouped-by="searchFields"
+                       group-limit="10" data="{{mostUsedFilters}}"
+                       page-provider="[[pageprovider]]"
+                       where="[[_onlyFirstPage]]">
+    </nuxeo-search-data>
+
+    <!-- Main Users  -->
+    <nuxeo-search-data class="data"
+                       start-date="[[startDate]]"
+                       end-date="[[endDate]]"
+                       grouped-by="principalName"
+                       group-limit="50" data="{{mainUsers}}"
+                       page-provider="[[pageprovider]]"
+                       where="[[_onlyFirstPage]]">
+    </nuxeo-search-data>
+
+
+
+    <div class="container">
+
+      <div class="layout horizontal wrap">
+
+        <div class="row">
+          <nuxeo-card class="dates">
+            <div class="horizontal flex end-justified layout wrap">
+              <nuxeo-select
+                            label="[[i18n('analytics.pageprovider.name')]]"
+                            selected="{{pageprovider}}"
+                            options="[[pageproviders]]"
+                            class="searches">
+              </nuxeo-select>
+              <nuxeo-date-picker value="{{startDate}}"
+                                 label="[[i18n('label.date.interval.from')]]"
+                                 default-time="00:00:00"></nuxeo-date-picker>
+              <nuxeo-date-picker value="{{endDate}}"
+                                 label="[[i18n('label.date.interval.to')]]"
+                                 default-time="23:59:59"></nuxeo-date-picker>
+              <paper-icon-button class="refresh" icon="icons:refresh" on-tap="refresh"></paper-icon-button>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="row">
+          <nuxeo-card heading="[[i18n('analytics.search.calls.per.day')]]">
+            <chart-line class="chart"
+                        labels="[[_formatDateLabels(callsPerDay,'L')]]"
+                        values="[[_values(callsPerDay)]]"
+                        options="[[defaultLineChartOptions]]">
+            </chart-line>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('searchAnalytics.callsPerHour.heading')]]">
+            <div>
+              <chart-bar id="calls" class="chart" labels="[[_range(0,23)]]"
+                         values="[[_aggregatePerHourOfDay(callsPerHour)]]"
+                         series="[[_range(0,23)]]"
+                         options='{ "legend": { "display": false }, "animation": false }'>
+              </chart-bar>
+            </div>
+          </nuxeo-card>
+        </div>
+        
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('searchAnalytics.mostPopularSearches.heading')]]">
+            <nuxeo-data-table items="[[callsPerFT]]">
+              <nuxeo-data-table-column name="[[i18n('searchAnalytics.mostPopularSearches.searchTerm')]]">
+                <template>[[item.key]]</template>
+              </nuxeo-data-table-column>
+              <nuxeo-data-table-column name="[[i18n('searchAnalytics.mostPopularSearches.numberOfCalls')]]">
+                <template>[[item.value]]</template>
+              </nuxeo-data-table-column>
+            </nuxeo-data-table>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('searchAnalytics.numberOfResults.heading')]]">
+            <chart-bar class="chart"
+                       data="[[_formatSingleDatasetforBarChart(callPerNumberOfResults,15)]]"
+                       options="[[defaultBarChartOptions]]">
+            </chart-bar>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.search.no.result.searches.heading')]]">
+            <nuxeo-data-table items="[[noResultSearches]]">
+              <nuxeo-data-table-column name="[[i18n('searchAnalytics.mostPopularSearches.searchTerm')]]">
+                <template>[[item.key]]</template>
+              </nuxeo-data-table-column>
+              <nuxeo-data-table-column name="[[i18n('searchAnalytics.mostPopularSearches.numberOfCalls')]]">
+                <template>[[item.value]]</template>
+              </nuxeo-data-table-column>
+            </nuxeo-data-table>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('searchAnalytics.mostPopularSearches.numberOfPagesDisplayed.heading')]]">
+            <chart-bar class="chart"
+                       data="[[_formatSingleDatasetforBarChart(callPerNumberOfPages,5)]]"
+                       options="[[defaultBarChartOptions]]">
+            </chart-bar>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.search.most.popular.filters.heading')]]">
+            <nuxeo-data-table items="[[_sanatizeFilters(mostUsedFilters)]]">
+              <nuxeo-data-table-column name="[[i18n('analytics.search.most.popular.filters.filter')]]">
+                <template>[[i18n(item.key)]]</template>
+              </nuxeo-data-table-column>
+              <nuxeo-data-table-column name="[[i18n('analytics.search.most.popular.filters.nb')]]">
+                <template>[[item.value]]</template>
+              </nuxeo-data-table-column>
+            </nuxeo-data-table>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.search.main.consumers.heading')]]">
+            <nuxeo-data-table items="[[mainUsers]]">
+              <nuxeo-data-table-column name="[[i18n('analytics.search.main.consumers.username')]]">
+                <template>[[item.key]]</template>
+              </nuxeo-data-table-column>
+              <nuxeo-data-table-column name="[[i18n('analytics.search.main.consumers.nb')]]">
+                <template>[[item.value]]</template>
+              </nuxeo-data-table-column>
+            </nuxeo-data-table>
+          </nuxeo-card>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer"></div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-search-analytics',
+      behaviors: [
+        Nuxeo.PclmAnalyticsDashboardBehavior,Nuxeo.PclmAnalyticsFormatBehavior,
+        Nuxeo.I18nBehavior
+      ],
+      properties: {
+        index: {
+          type: String,
+          value: 'audit'
+        },
+
+        pageproviders: {
+          type: Array,
+          computed: '_computePageproviders()'
+        },
+
+        // pageprovider: {
+        //   type: String,
+        //   value: "asset-search",
+        //   observer: "_onPPchanged"
+        // },
+        pageprovider: {
+          type: String,
+          value: "General-SearchPP",
+          observer: "_onPPchanged"
+        },
+
+        _onlyFirstPage:  {
+          type:Object,
+          value: [
+            {
+              "term": {
+                "extended.pageIndex": 0
+              }
+            }
+          ]
+        },
+
+        _noResults:  {
+          type:Object,
+          value: [
+            {
+              "term": {
+                "extended.resultsCount": 0
+              }
+            }
+          ]
+        }
+
+      },
+
+      _computePageproviders: function() {
+        return [
+         {
+           id: "Amazon-Device-HubSearchPP",
+           label: 'Amazon-Device-HubSearchPP'
+         },{
+           id: "Device-SearchPP",
+           label: 'Device-SearchPP',
+         },
+         {
+           id: "General-SearchPP",
+           label:'General-SearchPP'
+         },
+         {
+           id: "User-searchPP",
+           label:'User-searchPP'
+         },
+        ];
+      },
+
+      _getPageproviderFulltextField: function(pageprovider) {
+        return 'searchDocumentModel.properties.'+pageprovider+'_pp:system_fulltext';
+      },
+
+      _onPPchanged: function(pageprovider) {
+        // workaround for https://jira.nuxeo.com/browse/ELEMENTS-1032
+        var searchElements = this.shadowRoot.querySelectorAll('nuxeo-search-data');
+        searchElements.forEach(function(searchElement){
+          searchElement._query();
+        })
+      },
+
+      _sanatizeFilters: function(filters) {
+        return filters.filter(filter => !filter.key.startsWith("saved:"));
+      }
+     
+    })
+  </script>
+</dom-module>

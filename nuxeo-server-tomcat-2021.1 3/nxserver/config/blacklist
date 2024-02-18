@@ -1,0 +1,2 @@
+org.nuxeo.runtime.trackers.files.threadstracking.config
+org.nuxeo.drive.mongodb.change.finder

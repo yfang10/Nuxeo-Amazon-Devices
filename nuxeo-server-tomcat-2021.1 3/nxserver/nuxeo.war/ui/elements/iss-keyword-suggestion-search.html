@@ -1,0 +1,135 @@
+<!--
+`iss-keyword-suggestion-search`
+@group Nuxeo UI
+@element iss-keyword-suggestion-search
+-->
+<dom-module id="iss-keyword-suggestion-search">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            :host([hidden]) {
+                display: none;
+            }
+        </style>
+        <nuxeo-selectivity id="s2" operation="[[operation]]" label="[[label]]" min-chars="[[minChars]]"
+            tagging$="[[allowNewKeywords]]" multiple="[[multiple]]" params="[[params]]" placeholder="[[placeholder]]"
+            error-message="[[errorMessage]]" readonly="[[readonly]]" value="{{value}}"
+            selected-items="{{selectedItems}}" required="[[required]]" invalid="[[invalid]]"
+            new-entry-formatter="[[newEntryFormatter]]" init-selection="[[initSelection]]" 
+            stay-open-on-select="[[stayOpenOnSelect]]">
+        </nuxeo-selectivity>
+        <nuxeo-connection id="nx" user="{{user}}"></nuxeo-connection>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'iss-keyword-suggestion-search',
+            behaviors: [Nuxeo.I18nBehavior, 
+            Nuxeo.IronFormElementBehavior, 
+            Nuxeo.IronValidatableBehavior, 
+            Nuxeo.RoutingBehavior],
+            properties: {
+                user: {
+                    type: Object
+                },
+
+                /*
+                 * Whether or not adding new keyword(s) is allowed.
+                 */
+                allowNewKeywords: {
+                    type: Boolean
+                },
+
+                /**
+                 * Label.
+                 */
+                label: String,
+              
+                /**
+                 * Operation to call for suggestions.
+                 */
+                operation: {
+                    type: String,
+                    value: 'Keyword.Suggestion',
+                },
+              
+                /**
+                 * Operation to call for suggestions.
+                 */
+                multiple: {
+                    type: Boolean,
+                    value: false,
+                },
+              
+                /**
+                 * Parameters for the operation.
+                 */
+                params: Object,
+
+                /**
+                 * Selected value(s).
+                 */
+                value: {
+                    type: String,
+                    notify: true
+                },
+          
+                /**
+                 * Minimum number of chars to trigger the suggestions.
+                 */
+                minChars: {
+                    type: Number,
+                    value: 1,
+                },
+
+                /**
+                 * If true, the dropdown stays open after a selection is made.
+                 */
+                stayOpenOnSelect: {
+                    type: Boolean,
+                    value: false,
+                },
+
+                /**
+                 * Error message to show when `invalid` is true.
+                 */
+                errorMessage: String,
+
+                /**
+                 * Selected items.
+                 */
+                selectedItems: {
+                    type: Object,
+                    notify: true,
+                },
+
+                /**
+                 * Formatter for new suggested entries.
+                 */
+                newEntryFormatter: {
+                    type: Function,
+                    value() {
+                        return this._newEntryFormatter.bind(this);
+                    },
+                }
+            },
+          
+            /* Override method from Polymer.IronValidatableBehavior. */
+            _getValidity() {
+                return this.$.s2._getValidity()
+            },
+          
+            _newEntryFormatter(term) {
+                return {
+                    id: term,
+                    displayLabel: term,
+                    newKeyword: true
+                };
+            },
+        });
+    </script>
+</dom-module>

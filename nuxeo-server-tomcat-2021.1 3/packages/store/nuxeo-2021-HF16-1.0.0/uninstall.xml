@@ -1,0 +1,19 @@
+<uninstall>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF16-1.0.0/backup/67348a270deeeb8b5b32b498546fe658_opencensus-contrib-log-correlation-log4j2-0.27.1.jar" tofile="${env.server.home}/nxserver/lib/opencensus-contrib-log-correlation-log4j2-0.27.1.jar" overwrite="false"/>
+  <rollback key="nxserver/lib/dd-trace-api" pkgId="nuxeo-2021-HF16-1.0.0" version="0.93.0"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF16-1.0.0/backup/9709729503cef7825cde8f68c67bc892_distribution.properties" tofile="${env.server.home}/templates/common/config/distribution.properties" overwrite="true" md5="d7828808045422784cf5b55ebb0c3270"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF16-1.0.0/backup/0db46d3e8f665e3627d2b130ae4fb9d4_nuxeo.defaults" tofile="${env.server.home}/templates/nuxeo.defaults" overwrite="true" md5="532efb6dd44b7398ca08014e638fa92e"/>
+  <rollback key="nxserver/lib/nuxeo-stream" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-automation-core" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-core-management-jtajca" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage-mongodb" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-core" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-core-schema" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-elasticsearch-core" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-content-template-manager" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-core-event" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-core-api" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-automation-server" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-runtime" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-rendition-core" pkgId="nuxeo-2021-HF16-1.0.0" version="2021.16.7"/>
+</uninstall>

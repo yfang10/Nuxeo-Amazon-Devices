@@ -1,0 +1,310 @@
+<dom-module id="amzd-document-history">
+  <template>
+    <style include="nuxeo-action-button-styles">
+      :host {
+        display: block;
+      }
+      .row-container {
+        @apply --layout-horizontal;
+        @apply --layout-wrap;
+      }
+
+      .row-container * {
+        flex: 1 0 0;
+        margin-right: 8px;
+      }
+      
+      .resultActions, .viewModes, .rightHand {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+      }
+
+      .resultActions, .rightHand {
+        @apply --layout-wrap;
+      }
+
+      .rightHand {
+        @apply --layout-flex;
+        @apply --layout-end-justified;
+      }
+
+      #table {
+        height: calc(100vh - 420px);
+      }
+    </style>
+
+    <nuxeo-connection id="nxcon"></nuxeo-connection>
+    <amzd-audit-page-provider id="provider" page-size="40"></amzd-audit-page-provider>
+
+    <nuxeo-card>
+      <template is="dom-if" if="[[visible]]">
+        <nuxeo-user-suggestion value="{{principalName}}" label="[[i18n('documentHistory.filter.username')]]" placeholder="[[i18n('documentHistory.filter.usernamePlaceholder')]]"></nuxeo-user-suggestion>
+        <div class="row-container">
+         <nuxeo-date-picker role="widget" label="[[i18n('documentHistory.filter.after')]]" value="{{startDate}}" max="[[_getFormattedDate(endDate)]]">
+         </nuxeo-date-picker>
+         <nuxeo-date-picker role="widget" label="[[i18n('documentHistory.filter.before')]]" value="{{endDate}}" min="[[_getFormattedDate(startDate)]]">
+         </nuxeo-date-picker>
+        </div>
+        <div class="row-container">
+         <nuxeo-directory-suggestion class="item" role="widget" label="[[i18n('documentHistory.filter.eventType')]]" directory-name="HistoryEventType" value="{{selectedEventTypes}}" multiple="true" placeholder="[[i18n('documentHistory.filter.selectEventTypes')]]" min-chars="0">
+          </nuxeo-directory-suggestion>
+          <nuxeo-directory-suggestion class="item" role="widget" label="[[i18n('documentHistory.filter.eventCategory')]]" directory-name="HistoryEventCategory" value="{{selectedEventCategory}}" placeholder="[[i18n('documentHistory.filter.selectEventCategory')]]" min-chars="0">
+          </nuxeo-directory-suggestion>
+        </div>
+      </template>
+    </nuxeo-card>
+    
+    <div class="rightHand">
+      <nuxeo-operation id="op" op="AMZD.ExportAuditLog" input="[[document]]" poll-interval="[[pollInterval]]">
+      </nuxeo-operation>
+  
+      <div class="action" on-click="_execute">
+        <paper-icon-button id="bt" icon="[[buttonIcon]]"></paper-icon-button>
+      </div>
+      <nuxeo-tooltip>[[i18n(buttonLabel)]]</nuxeo-tooltip>
+    </div>
+
+    <nuxeo-card>
+      <nuxeo-data-table id="table" paginable="" nx-provider="provider" empty-label="[[i18n('documentHistory.empty')]]">
+        <nuxeo-data-table-column name="[[i18n('documentHistory.performedAction')]]" sort-by="eventId">
+          <template>[[_formatActivity(item.eventId)]]</template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentHistory.date')]]" sort-by="eventDate">
+          <template><nuxeo-date datetime="[[item.eventDate]]" format="LLL"></nuxeo-date></template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentHistory.username')]]" sort-by="principalName">
+          <template><nuxeo-user-tag user="[[item.principalName]]"></nuxeo-user-tag></template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentHistory.category')]]" sort-by="category">
+          <template>[[_formatActivity(item.category)]]</template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentHistory.comment')]]">
+          <template>
+            <a href$="[[_parseComment(item.comment)]]">[[_formatComment(item.comment)]]</a>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentHistory.state')]]">
+          <template><nuxeo-tag uppercase="">[[formatLifecycleState(item.docLifeCycle)]]</nuxeo-tag></template>
+        </nuxeo-data-table-column>
+      </nuxeo-data-table>
+    </nuxeo-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'amzd-document-history',
+      behaviors: [Nuxeo.FormatBehavior, Nuxeo.RoutingBehavior],
+      properties: {
+        document: Object,
+        pollInterval: {
+          type: Number,
+          value: 1000,
+        },
+        buttonIcon: {
+          type: String,
+          value: 'nuxeo:csv-export'
+        },
+        visible: {
+          type: Boolean,
+          value: false,
+          observer: '_refresh'
+        },
+        principalName: {
+          type: String,
+          value: '',
+        },
+        startDate: {
+          type: String,
+          notify: true,
+          observer: '_observeDates',
+        },
+        endDate: {
+          type: String,
+          notify: true,
+          observer: '_observeDates',
+        },
+        selectedEventTypes: {
+          type: Array,
+          value: [],
+        },
+        selectedEventCategory: {
+          type: String,
+          value: '',
+        }
+      },
+
+      observers: ['_refresh(selectedEventTypes.*, selectedEventCategory, principalName)'],
+      
+      ready() {
+        var that = this;
+        this.$.nxcon.connect().then(function(res) {
+          if(res.properties.groups.indexOf("ADH_Manager") > -1 ||
+          res.properties.groups.indexOf("administrators") > -1 ||
+          res.properties.groups.indexOf("Librarian") > -1 ) {
+            that.visible = true;
+          }
+          else {
+            that.visible = false;
+          }
+        });
+        this.$.bt.addEventListener('poll-start', this._onPollStart.bind(this));
+        this.$.bt.addEventListener('response', this._onResponse.bind(this));
+      },
+
+      _hasValidDate: function(dateAsString) {
+        return dateAsString && dateAsString.length > 0;
+      },
+
+      _getFormattedDate: function(dateAsString) {
+        return this._hasValidDate(dateAsString) ? moment(Date.parse(dateAsString)).format('YYYY-MM-DD') : '';
+      } ,
+
+      _observeDates: function() {
+        var start = this._hasValidDate(this.startDate) && Date.parse(this.startDate);
+        var end = this._hasValidDate(this.endDate) && Date.parse(this.endDate);
+        var refresh = !start || !end || start < end;
+        if (start && end && start > end) {
+          this.startDate = moment(end)
+            .subtract(7, 'day')
+            .format('YYYY-MM-DD');
+        }
+
+        if (refresh) {
+          this._refresh();
+        }
+      },
+
+      _buildParams: function() {
+        var params = {
+          principalNames: this.principalName? this.principalName: ""
+        };
+        if (this.selectedEventTypes && this.selectedEventTypes.length > 0) {
+          params.eventIds = this.selectedEventTypes;
+        }
+        if (this.selectedEventCategory) {
+          params.eventCategories = this.selectedEventCategory;
+        }
+        if (this._hasValidDate(this.startDate)) {
+          params.startDate = this.startDate;
+        }
+        if (this._hasValidDate(this.endDate)) {
+          params.endDate = this.endDate;
+        }
+        return params;
+      },
+
+      _refresh: function() {
+        if (this.document && this.visible) {
+          this.$.provider.page = 1;
+          this.$.provider.docId = this.document.uid;
+          this.$.provider.params = this._buildParams();
+          this.$.table.fetch();
+        }
+      },
+
+      _formatActivity: function(key) {
+        return this.i18n('activity.' + key);
+      },
+
+      // XXX: Both parse and format methods shouldn't be needed after NXP-28820
+      _parseComment: function(comment) {
+        if (comment && /^\w+:(?:\w+-){2,}(?:\w+)$/.test(comment)) {
+          // repoName:docId
+          return this.urlFor('document', comment.split(':')[1]);
+        }
+        return null;
+      },
+
+      _formatComment: function (comment) {
+        if (moment(comment, moment.ISO_8601).isValid()) {
+          return this.formatDateTime(comment);
+        }
+        return comment;
+      },
+      
+      _params(doc) {
+        return {
+        filename: doc.title +"_history_report.csv",
+        providerName: "DOCUMENT_HISTORY_SEARCH",
+        namedQueryParams: this._buildParams(),
+        currentPageIndex: 0,
+        pageSize: 40,
+        queryParams: doc.uid,
+        sortBy: "eventDate",
+        sortOrder: "desc"
+        };
+      },
+
+      _onPollStart() {
+        this.notify({ message: this.i18n('csvExportButton.action.poll') });
+      },
+
+      _onResponse() {
+        this.notify({ message: this.i18n('csvExportButton.action.completed') });
+      },
+
+      _execute() {
+        this.$.op.params = this._params(this.document);
+        this.$.op.execute().then((response) => {
+          if (this.notification) {
+            this.dispatchEvent(new CustomEvent('notify', {
+              composed: true,
+              bubbles: true,
+              detail: { message: this.i18n(this.notification) },
+            }));
+          }
+          let detail = { response };
+          if (this.detail) {
+            // if the supplied params are a string, parse them as JSON
+            detail = typeof this.detail === 'string' ? JSON.parse(this.detail) : this.detail;
+          }
+          this.dispatchEvent(new CustomEvent(this.event, {
+            composed: true,
+            bubbles: true,
+            detail,
+          }));
+          return this._download(response);
+        })
+          .catch((error) => {
+            this.dispatchEvent(new CustomEvent('notify', {
+              composed: true,
+              bubbles: true,
+              detail: { message: this.errorLabel ? this.i18n(this.errorLabel, error) : error },
+            }));
+            if (error.status !== 404) {
+              throw error;
+            }
+          });
+      },
+
+      _download(response) {
+        const contentDisposition = response.headers.get('Content-Disposition');
+        if (contentDisposition) {
+          const filenameMatches = contentDisposition
+            .match(/filename[^;=\n]*=([^;\n]*''([^;\n]*)|[^;\n]*)/).filter((match) => !!match);
+          const filename = decodeURI(filenameMatches[filenameMatches.length - 1]);
+          return response.blob().then((blob) => {
+            if (navigator.msSaveBlob) {
+              // handle IE11 and Edge
+              navigator.msSaveBlob(blob, filename);
+            } else {
+              const a = document.createElement('a');
+              a.style = 'display: none';
+              a.download = filename;
+              a.href = URL.createObjectURL(blob);
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(a.href);
+            }
+          });
+        } else {
+          return Promise.reject(new Error('missing Content-Disposition header'));
+        }
+      }
+
+    });
+  </script>
+
+</dom-module>

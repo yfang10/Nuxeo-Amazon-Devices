@@ -1,0 +1,84 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/forms/pclm-relations-edit-layout.html">
+<link rel="import" href="../../pclm/forms/pclm-usage-edit-layout.html">
+
+
+<!--
+@license
+(C) Copyright Nuxeo Corp. (http://nuxeo.com/)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!--
+`nuxeo-file-create-layout`
+@group Nuxeo UI
+@element nuxeo-file-create-layout
+-->
+<dom-module id="nuxeo-file-create-layout">
+
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <nuxeo-input role="widget"
+                 label="[[i18n('title')]]"
+                 name="title"
+                 value="{{document.properties.dc:title}}"
+                 autofocus required>
+    </nuxeo-input>
+
+    <nuxeo-textarea role="widget"
+                    label="[[i18n('label.description')]]"
+                    name="dc:description"
+                    value="{{document.properties.dc:description}}">
+    </nuxeo-textarea>
+
+    <nuxeo-dropzone role="widget"
+                    label="[[i18n('file.content')]]"
+                    name="content"
+                    document="[[document]]"></nuxeo-dropzone>
+
+    <nuxeo-directory-suggestion role="widget" label="[[i18n('label.dublincore.language')]]"
+                                value="{{document.properties.dc:language}}"
+                                directory-name="language" name="dc:language">
+    </nuxeo-directory-suggestion>
+
+    <nuxeo-date-picker name="dc:expired" role="widget"
+                       label="[[i18n('label.dublincore.expire')]]"
+                       name="expired"
+                       value="{{document.properties.dc:expired}}">
+    </nuxeo-date-picker>
+
+    <pclm-usage-edit-layout document="{{document}}"></pclm-usage-edit-layout>
+
+    <div role="widget">
+      <label>[[i18n('label.relations')]]</label>
+      <pclm-relations-edit-layout document="{{document}}"></pclm-relations-edit-layout>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-file-create-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        /**
+         * @doctype File
+         */
+        document: Object
+      }
+    });
+  </script>
+
+</dom-module>

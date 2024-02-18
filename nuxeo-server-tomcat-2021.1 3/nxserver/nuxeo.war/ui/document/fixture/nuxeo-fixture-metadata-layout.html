@@ -1,0 +1,42 @@
+<!--
+`nuxeo-fixture-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-fixture-metadata-layout
+-->
+<dom-module id="nuxeo-fixture-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <div role="widget">
+      <label>[[i18n(&#x27;label.dublincore.title&#x27;)]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n(&#x27;label.dublincore.description&#x27;)]]</label>
+      <div name="description" class="multiline">[[document.properties.dc:description]]</div>
+    </div> 
+    
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-fixture-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype Fixture
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

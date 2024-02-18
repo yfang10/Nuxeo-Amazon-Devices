@@ -1,0 +1,61 @@
+<!--
+`nuxeo-user-searchpp-search-form`
+@group Nuxeo UI
+@element nuxeo-user-searchpp-search-form
+-->
+<dom-module id="nuxeo-user-searchpp-search-form">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <nuxeo-input value="{{params.system_fulltext}}" label="All Text" type="text" role="widget"></nuxeo-input>
+
+    <div role="widget"><label>Type of Access</label><amzd-form-checkbox-aggregation value="{{params.userAccess_typeOfAccess_agg}}" data="[[aggregations.userAccess_typeOfAccess_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+
+
+
+    <div role="widget">
+      <label>Company Name</label>
+      <nuxeo-dropdown-aggregation value="{{params.userAccess_company_agg}}" data="[[aggregations.userAccess_company_agg]]" min-chars="0" multiple="true"></nuxeo-dropdown-aggregation>
+    </div>
+
+    <nuxeo-input value="{{params.userAccess_fName}}" label="First Name" type="text" role="widget"></nuxeo-input>
+
+    <nuxeo-input value="{{params.userAccess_lName}}" label="Last Name" type="text" role="widget"></nuxeo-input>
+
+    <nuxeo-input value="{{params.userAccess_email}}" label="Email" type="text" role="widget"></nuxeo-input>
+
+    <div role="widget"><label>State</label><amzd-form-checkbox-aggregation value="{{params.system_currentLifeCycleState_agg}}" data="[[aggregations.system_currentLifeCycleState_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-user-searchpp-search-form',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @search User-searchPP
+         */
+      params: {
+        type: Object,
+        value: {},
+        notify: true,
+      },
+
+      aggregations: {
+        type: Object,
+        value: {},
+        notify: true,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

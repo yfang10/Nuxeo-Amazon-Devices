@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<component name="amazon.devices.core.binding.contrib">
+    <require>org.nuxeo.ecm.core.automation.features.bindings</require>
+    <extension point="bindings" target="org.nuxeo.ecm.automation.server.AutomationServer">
+        <!--  don't allow direct access to Audit log  -->
+        <binding name="Audit.Query">
+            <administrator>false</administrator>
+            <groups>administrators,Librarian,ADH_Manager</groups>
+        </binding>
+        <binding name="Audit.QueryWithPageProvider">
+            <administrator>false</administrator>
+            <groups>administrators,Librarian,ADH_Manager</groups>
+        </binding>
+    </extension>
+</component>

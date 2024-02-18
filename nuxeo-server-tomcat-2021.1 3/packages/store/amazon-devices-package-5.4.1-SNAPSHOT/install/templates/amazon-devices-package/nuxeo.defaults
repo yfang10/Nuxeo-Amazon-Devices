@@ -1,0 +1,20 @@
+## Edit this file to customize your configuration ##
+#amazon-devices-package.target=
+## Run every Sunday 9pm
+amazon.devices.core.delete.trashed.batch.scheduler=0 0 21 ? * SUN *
+
+# Set list of templates to include, comma separated values.
+# nuxeo.template.includes=
+
+# org.nuxeo.ecm.instance.description=Nuxeo ECM customized with Amazon Devices Package
+nuxeo.digest.groups=administrators,ADH_Manager,Librarian
+nuxeo.digest.limit=100
+nuxeo.digest.offset=-8
+nuxeo.digest.states=approved
+nuxeo.digest.subject=[Amazon Devices DAM] Approved / Published Content Digest
+nuxeo.digest.template=digestNotify
+nuxeo.digest.timezone=America/Los_Angeles
+nuxeo.digest.users=
+
+## Activate the Select All and Bulk Actions feature
+nuxeo.selection.selectAllEnabled=true

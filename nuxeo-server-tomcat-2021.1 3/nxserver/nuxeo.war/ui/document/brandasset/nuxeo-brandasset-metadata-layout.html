@@ -1,0 +1,56 @@
+<link rel="import" href="../../elements/nuxeo-se-collapse.html">
+<link rel="import" href="../../elements/amzd-keyword-suggestion.html">
+
+<!--
+`nuxeo-brandasset-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-brandasset-metadata-layout
+-->
+<dom-module id="nuxeo-brandasset-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+
+
+    <!-- <nuxeo-directory-suggestion value="[[document.properties.amz:asset_category]]" label="Asset Category" readonly="true" directory-name="BrandStrategyCategory" role="widget"></nuxeo-directory-suggestion> -->
+
+    <!-- <nuxeo-directory-suggestion value="[[document.properties.amz:asset_type]]" label="Asset Type" readonly="true" directory-name="BrandStrategyType" role="widget"></nuxeo-directory-suggestion> -->
+
+    <!-- <nuxeo-directory-suggestion value="[[document.properties.amz:retailAssetUse]]" label="Retail Asset Use" readonly="true" directory-name="amzdAssetCategory" name="retailAssetUse" role="widget"></nuxeo-directory-suggestion> -->
+
+    <!-- <amzd-amazon-metadata-layout document="[[document]]"></amzd-amazon-metadata-layout> -->
+
+    <!-- <pclm-usage-view-layout document="[[document]]"></pclm-usage-view-layout> -->
+
+    <!-- <pclm-relations-view-layout document="[[document]]"></pclm-relations-view-layout> -->
+
+
+    <!-- <amzd-approval-schema-view-layout document="[[document]]"></amzd-approval-schema-view-layout> -->
+    <amzd-metadata-schema-view-layout document="[[document]]"></amzd-metadata-schema-view-layout>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-brandasset-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        document: {
+          type: Object,
+        },
+        collapsestyle: {
+          type: String,
+          value: "border:0px solid #f5f5f5;margin-left:0em;"
+        },
+        opened: {
+          type: Boolean,
+          value: true,
+          reflectToAttribute: true
+        }
+      }
+    });
+  </script>
+</dom-module>

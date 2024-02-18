@@ -1,0 +1,37 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+
+<!--
+`nuxeo-talent-view-layout`
+@group Nuxeo UI
+@element nuxeo-talent-view-layout
+-->
+<dom-module id="nuxeo-talent-view-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-document-viewer role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+    <nuxeo-document-attachments role="widget" document="[[document]]"></nuxeo-document-attachments>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-talent-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Talent
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

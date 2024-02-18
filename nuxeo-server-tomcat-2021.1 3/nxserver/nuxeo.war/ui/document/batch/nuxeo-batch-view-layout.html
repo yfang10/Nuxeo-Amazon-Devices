@@ -1,0 +1,88 @@
+<!--
+`nuxeo-batch-view-layout`
+@group Nuxeo UI
+@element nuxeo-batch-view-layout
+-->
+<dom-module id="nuxeo-batch-view-layout">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: inline-block;
+        position: relative;
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 40vh;
+      }
+    </style>
+
+    <nuxeo-page-provider
+      id="provider"
+      provider="get-by-doc-id-list"
+      schemas="dublincore,common"
+      page-size="40"
+      enrichers="thumbnail, permissions">
+    </nuxeo-page-provider>
+
+    <nuxeo-default-results
+      id="results"
+      name="[[document.uid]]"
+      items="{{items}}"
+      on-navigate="_navigate"
+      selected-items="{{selectedItems}}"
+      empty-label="[[i18n('collections.noDocument')]]"
+      empty-label-when-filtered="[[i18n('collections.noDocumentWhenFiltered')]]"
+      hide-content-view-actions>
+      <div slot="selectionActions">
+        <nuxeo-slot slot="BATCH_ACTIONS" model="[[actionContext]]"></nuxeo-slot>
+      </div>
+    </nuxeo-default-results>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-batch-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior, Nuxeo.FiltersBehavior],
+      properties: {
+        /**
+         * @doctype Collection
+         */
+        document: {
+          type: Object,
+          observer: '_documentChanged',
+        },
+        actionContext: {
+          type: Object,
+          computed: '_actionContext(document, selectedItems)',
+        },
+      },
+
+      _documentChanged() {
+        if (this.document && this.document.type === 'Batch') {
+          this.$.results.nxProvider = this.$.provider;
+          this.$.provider.params = {
+            system_uuid: this.document.properties['batch:documents']
+          }
+          this.$.provider.page = 1;
+          this.$.results._refreshAndFetch();
+        }
+      },
+
+      _actionContext() {
+        return { 
+          collection: this.document, 
+          selectedItems: this.selectedItems, 
+          items: this.$.results.items 
+        };
+      },
+
+      _navigate(e) {
+        this.fire('navigate', {
+          doc: e.detail.doc,
+          index: e.detail.index,
+          srcDoc: this.document
+        });
+        e.stopPropagation();
+      },
+    });
+  </script>
+</dom-module>

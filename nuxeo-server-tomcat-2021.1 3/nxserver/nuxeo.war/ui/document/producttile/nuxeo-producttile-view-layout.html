@@ -1,0 +1,29 @@
+<!--
+`nuxeo-producttile-view-layout`
+@group Nuxeo UI
+@element nuxeo-producttile-view-layout
+-->
+<dom-module id="nuxeo-producttile-view-layout">
+  <template>
+    <style include="nuxeo-styles"></style>
+    <nuxeo-document-viewer role="widget" role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-producttile-view-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype ProductTile
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

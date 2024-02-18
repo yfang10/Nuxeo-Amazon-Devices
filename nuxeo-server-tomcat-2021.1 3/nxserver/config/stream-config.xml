@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.stream.defaultConfig">
+    <require>org.nuxeo.runtime.stream.service</require>
+  <require>org.nuxeo.ecm.core.bulk.config</require>
+  <extension target="org.nuxeo.runtime.stream.service" point="logConfig">
+    <logConfig name="default" type="chronicle" default="true">
+      <option name="retention">4d</option>
+    </logConfig>
+    <logConfig name="bulk" type="chronicle">
+      <option name="retention">4d</option>
+      <log name="bulk/command" size="2" />
+      <log name="bulk/status" size="2" />
+      <log name="bulk/done" size="1" />
+      <match name="bulk/" />
+    </logConfig>
+  </extension>
+  <require>org.nuxeo.ecm.platform.audit.service.NXAuditEventsService</require>
+  <extension target="org.nuxeo.runtime.stream.service" point="logConfig">
+     <logConfig name="audit" type="chronicle">
+       <option name="retention">4d</option>
+       <match name="audit/" />
+     </logConfig>
+  </extension>
+ <extension target="org.nuxeo.runtime.stream.service" point="logConfig">
+     <logConfig name="pubsub" type="chronicle">
+       <option name="retention">4h</option>
+       <log name="pubsub/pubsub" size="1" />
+       <match name="pubsub/" />
+     </logConfig>
+  </extension>
+  <extension target="org.nuxeo.runtime.pubsub.PubSubService" point="configuration">
+    <provider class="org.nuxeo.runtime.pubsub.StreamPubSubProvider">
+      <option name="logName">pubsub/pubsub</option>
+      <option name="codec">avroBinary</option>
+    </provider>
+  </extension>
+</component>

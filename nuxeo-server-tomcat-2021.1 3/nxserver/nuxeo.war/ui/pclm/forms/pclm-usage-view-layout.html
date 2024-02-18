@@ -1,0 +1,90 @@
+<link rel="import" href="../styles/pclm-form-styles.html">
+<link rel="import" href="../behaviors/pclm-form-behavior.html">
+<link rel="import" href="../../elements/nuxeo-se-collapse.html">
+
+<!--
+`pclm-usage-view-layout`
+@group Nuxeo UI
+@element pclm-usage-view-layout
+-->
+<dom-module id="pclm-usage-view-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+<nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
+                       heading="[[i18n('label.collapseheaders.usage')]]"
+                       headingstyle="[[headingstyle]]"
+                       opened$="[[_false]]"
+                       >
+    <!--   <div role="widget"><label>Owner or Source</label><div>[[document.properties.dc:publisher]]</div></div> -->
+
+
+    <nuxeo-directory-suggestion value="[[document.properties.usage:rights_type]]" label="Rights Type" readonly="true" directory-name="Rights_Type" role="widget"></nuxeo-directory-suggestion>
+
+    <!--   <nuxeo-data-table role="widget" label="Placement" items="{{document.properties.usage:usagechannel}}">
+
+
+
+          <nuxeo-data-table-column name="Marketing Placement">
+            <template>
+              <nuxeo-directory-suggestion role="widget" value="[[item.channel]]"  readonly="true" directory-name="channels"></nuxeo-directory-suggestion>
+            </template>
+          </nuxeo-data-table-column>
+
+          <nuxeo-data-table-column name="Approved SubPlacements">
+            <template>
+              <nuxeo-directory-suggestion role="widget" value="[[item.subchannel]]"  readonly="true" directory-name="subchannels"></nuxeo-directory-suggestion>
+            </template>
+          </nuxeo-data-table-column>
+
+          <nuxeo-data-table-form>
+            <template>
+              <nuxeo-directory-suggestion value="{{item.channel}}" label="Channel" directory-name="channels"></nuxeo-directory-suggestion>
+              <nuxeo-directory-suggestion value="{{item.subchannel}}" label="Subchannel" directory-name="subchannels"></nuxeo-directory-suggestion>
+            </template>
+          </nuxeo-data-table-form>
+        </nuxeo-data-table> -->
+    <nuxeo-directory-suggestion value="[[document.properties.usage:geography]]" label="Approved Locations" readonly="true" directory-name="Approved_Locations" multiple="true" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="[[document.properties.usage:language]]" label="Approved Languages" readonly="true" directory-name="Approved_Languages" multiple="true"role="widget"></nuxeo-directory-suggestion>
+
+    <div role="widget"><label>Expiration Date</label><div>[[formatDate(document.properties.dc:expired)]]</div>
+    </div>
+
+    <div role="widget"><label>Restrictions</label><div>[[document.properties.dc:rights]]</div>
+    </div>
+    </nuxeo-se-collapse>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-usage-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.PclmFormBehavior],
+      properties: {
+
+        /**
+         * @doctype Usage
+         */
+        collapsestyle: {
+        type: String,
+        value: "border:0px solid #f5f5f5;margin-left:0em;"
+      },
+      headingstyle: {
+        type: String,
+        value: "font-size:1rem;font-weight:700;text-transform:uppercase;"
+      },
+      _false: {
+        type: Boolean,
+        value: false
+      },
+      _true: {
+        type: Boolean,
+        value: true
+      },
+      document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,37 @@
+<!--
+`nuxeo-product-view-layout`
+@group Nuxeo UI
+@element nuxeo-product-view-layout
+-->
+<dom-module id="nuxeo-product-view-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <paper-card class="flex side-by-side" hidden$="[[edit]]" style="width:100%">
+      <div class="card-content">
+        <nuxeo-product-metadata-layout role="widget" document="[[document]]" layout="metadata"></nuxeo-product-metadata-layout>
+      </div>
+    </paper-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-product-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Product
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

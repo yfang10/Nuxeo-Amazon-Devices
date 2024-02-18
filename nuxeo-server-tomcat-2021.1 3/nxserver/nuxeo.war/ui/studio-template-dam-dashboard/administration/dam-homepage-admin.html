@@ -1,0 +1,219 @@
+<link rel="import" href="../dam-home-element.html">
+<link rel="import" href="../layouts/dam-home-single-image-layout.html">
+
+
+<dom-module id="dam-homepage-admin">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      
+      .actions {
+        @apply --nuxeo-card;
+        margin-top: 16px;
+        align-items: center;
+      }
+      
+      .layout.vertical.flex{        
+        justify-content:space-between;
+        width:30%;
+        margin-right:0px;
+        padding-right:0px;
+        float:left;
+      }
+      
+      nuxeo-card{
+        width:100%;
+      }   
+      
+      dam-home-element{
+      float:right;
+        width:67%;
+      }
+      
+      paper-button{
+        margin-bottom:20px;
+        background-color:var(--nuxeo-primary-color);
+        color: white;
+        font-weight: bold;
+      }
+    
+    </style>
+
+    
+<nuxeo-operation auto id="getConfig" op="javascript.AS_ExternalTemplate_DamDashboard_GetOrCreateDashboardConfig" on-response="_handleGet" headers='{"fetch.document": "properties"}'>
+</nuxeo-operation>
+
+<nuxeo-document id="saveOp" method="PUT"></nuxeo-document>
+
+<nuxeo-page>
+    <div slot="header">
+        <div>Dashboard Admin</div>
+    </div>
+
+    <div class="layout vertical flex">
+
+        <paper-button dialog-confirm class="primary" on-tap="_doChange">Save</paper-button>
+        <paper-toast id="toast"></paper-toast>
+
+        <nuxeo-card heading="Main Picture">
+
+            <nuxeo-input label="Title" value="{{elements.0.title}}" class="input" required="true"></nuxeo-input>
+
+            <nuxeo-input label="Subtitle" value="{{elements.0.subtitle}}" required="true" class="input"></nuxeo-input>
+
+            <nuxeo-document-suggestion label="Background" 
+                                       value="{{elements.0.hero}}" 
+                                       required="true" 
+                                       min-chars="0" 
+                                       page-provider="PP_ExternalTemplate_DamDashboard_AssetSuggestions" 
+                                       result-formatter="[[thumbnailFormatter]]">
+            </nuxeo-document-suggestion>
+          
+						<nuxeo-input label="Hyperlink"  value="{{elements.0.hyperlink}}" class="input"></nuxeo-input>
+
+            <nuxeo-document-suggestion label="Link to Document" value="{{elements.0.targetDocument}}" min-chars="0"></nuxeo-document-suggestion>
+
+        </nuxeo-card>
+        <nuxeo-card heading="Picture - Top Right">
+
+            <nuxeo-input label="Title"  value="{{elements.1.title}}" required="true" class="input"></nuxeo-input>
+
+            <nuxeo-input label="Subtitle" value="{{elements.1.subtitle}}" required="true" class="input"></nuxeo-input>
+
+            <nuxeo-document-suggestion label="Background" 
+                                       value="{{elements.1.hero}}" 
+                                       required="true" 
+                                       min-chars="0" 
+                                       page-provider="PP_ExternalTemplate_DamDashboard_AssetSuggestions" 
+                                       result-formatter="[[thumbnailFormatter]]">
+            </nuxeo-document-suggestion>
+
+            <nuxeo-input label="Hyperlink"  value="{{elements.1.hyperlink}}" class="input"></nuxeo-input>
+
+            <nuxeo-document-suggestion label="Link to Document" 
+                                       value="{{elements.1.targetDocument}}" 
+                                       min-chars="0">
+          </nuxeo-document-suggestion>
+
+        </nuxeo-card>
+        <nuxeo-card heading="Picture - Bottom Right">
+
+            <nuxeo-input label="Title" value="{{elements.2.title}}" required="true" class="input"></nuxeo-input>
+
+            <nuxeo-input label="Subtitle" value="{{elements.2.subtitle}}" required="true" class="input"></nuxeo-input>
+
+            <nuxeo-document-suggestion label="Background" 
+                                       value="{{elements.2.hero}}" 
+                                       required="true" 
+                                       min-chars="0" 
+                                       page-provider="PP_ExternalTemplate_DamDashboard_AssetSuggestions" 
+                                       result-formatter="[[thumbnailFormatter]]">
+            </nuxeo-document-suggestion>
+
+            <nuxeo-input label="Hyperlink" value="{{elements.2.hyperlink}}" class="input"></nuxeo-input>
+
+            <nuxeo-document-suggestion label="Link to Document" value="{{elements.2.targetDocument}}" min-chars="0"></nuxeo-document-suggestion>
+          
+
+        </nuxeo-card>
+
+    </div>
+
+    <dam-home-element id="damHome"></dam-home-element>
+
+</nuxeo-page>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+    Polymer({
+      is: 'dam-homepage-admin',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.Select2Behavior],
+      properties: {
+        visible: {
+          type: Boolean,
+          observer: '_visibleChanged'
+        },
+        
+        thumbnailFormatter: {
+          type: Function,
+          value: function() {
+            return this._thumbnailFormatter.bind(this);
+          }
+        },
+        
+        elements: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        }
+      },
+
+      
+      _visibleChanged: function(visible) {
+        if (visible) {
+          this._refresh();
+        }
+      },
+      
+      _refresh: function() {
+        this.$.damHome.refresh();
+      },
+      
+       _handleGet: function(e) { 
+        this.document = e.detail.response.entries[0];
+        var elements = this.document.properties['homepage:elements'];
+        var size = elements.length;
+        for (var i=size;i<3;i++) {
+          elements.push({});
+        }
+        
+        this.set('elements',elements);
+      },
+      
+      _doChange: function(e) {  
+        
+        var data = {
+          uid : this.document.uid,
+          'entity-type': 'document',
+            properties: {
+              'homepage:elements': this.elements
+            }
+        };
+        
+        var op = this.$.saveOp;
+        op.data = data;
+        op.docId = this.document.uid;
+        op.execute()
+          .then(function(result) {  
+            this.$.toast.hide();
+            this.$.toast.text = "Homepage Configuration Saved!";
+            this.$.toast.open();
+            this.$.damHome.refresh();
+          }.bind(this))
+          .catch(function(error) {
+          }.bind(this));
+      },
+    
+    _thumbnailFormatter: function(doc) {
+      if (!doc.properties) {
+        return "";
+      }
+      let markup = "";
+      markup += "<table width='100%'><tbody>";
+      markup += "<tr>";
+      markup += "<td width='100px' style='text-align: center'>";
+      markup += "<img src='" + "/nuxeo/api/v1/id/" + doc.uid + "/@rendition/thumbnail" + "' style='max-width: 100px; max-height=25px;' >";
+      markup += "</td>";
+      markup += "<td>";
+      markup += "<div style='margin-left:15px'><span>"+ doc.title +"</span></div>";
+      markup += "</td>";
+      markup += "</tr>"
+      markup += "</tbody></table>";
+      return markup;
+    }
+      
+    });
+  })();
+  </script>
+</dom-module>

@@ -1,0 +1,41 @@
+<!--
+`nuxeo-shoppingcart-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-shoppingcart-metadata-layout
+-->
+<dom-module id="nuxeo-shoppingcart-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>Title</label>
+      <div>[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Description</label>
+      <div>[[document.properties.dc:description]]</div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-shoppingcart-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype ShoppingCart
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,49 @@
+<!--
+`nuxeo-brandlink-create-layout`
+@group Nuxeo UI
+@element nuxeo-brandlink-create-layout
+-->
+<dom-module id="nuxeo-brandlink-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" label="[[i18n('title')]]" name="title" value="{{document.properties.dc:title}}" autofocus="" required=""></nuxeo-input>
+
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.brandlink:brand_name}}" label="Brand Name" min-chars="0" directory-name="Brand" name="brand_name"></nuxeo-directory-suggestion>
+
+
+    <nuxeo-dropzone role="widget" label="Thumbnail(175x175)" name="content" document="[[document]]"></nuxeo-dropzone>
+
+    <nuxeo-textarea role="widget" label="[[i18n('label.description')]]" name="dc:description" value="{{document.properties.dc:description}}"></nuxeo-textarea>
+
+    <nuxeo-input role="widget" value="{{document.properties.quickLink:order}}" required="true" label="Order" type="number" min="1" name="order"></nuxeo-input>
+
+    <div role="widget">
+      <label>Active</label>
+      <paper-checkbox checked="{{document.properties.quickLink:active}}" name="active"></paper-checkbox>
+    </div>
+
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-brandlink-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype BrandLink
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

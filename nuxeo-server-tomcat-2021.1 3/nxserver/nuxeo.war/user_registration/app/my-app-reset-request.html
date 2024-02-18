@@ -1,0 +1,165 @@
+<!-- FORGOT.HTML --><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../bower_components/paper-password-input/paper-password-input.html">
+<link rel="import" href="../bower_components/paper-password-input/match-passwords-validator.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="./user-access-password-validator.html">
+<link rel="import" href="./dropdown-menu-filter.html">
+
+<dom-module id="my-app-reset-request">
+   <template>
+      <style include="iron-flex iron-flex-alignment paper-material-styles">
+         .form {
+            width: 50%;
+            height: 100%;
+            margin: 0 auto;
+         }
+
+         paper-card {
+            width: 100%;
+         }
+
+         .half {
+            max-width: 48%;
+         }
+
+         paper-input,
+         paper-textarea,
+         gold-email-input {
+            margin-left: 1%;
+            margin-right: 2%;
+            margin-top: 2%;
+            margin-bottom: 2%;
+         }
+
+         .card-content {
+            margin-bottom: 2%;
+         }
+
+         .flex {
+            min-width: 48%;
+         }
+
+         .logo {
+            margin: 0 auto;
+            margin-top: 5%;
+            margin-bottom: 5%;
+            display: block;
+         }
+
+         .result {
+            background-color: white;
+            height: 30vh;
+            align-items: center;
+            justify-content: center;
+         }
+
+         .footer {
+            height: 100px;
+         }
+
+         .center {
+         }
+
+         paper-button {
+            color: white;
+            background: #111111;
+         }
+
+         paper-button:hover {
+            background: #404040;
+         }
+
+         dropdown-menu-filter {
+            --dropdown-menu-filter-width: 400px;
+            --dropdown-menu-filter-list-height: 150px;
+         }
+
+         .error {
+            color: red;
+         }
+      </style>
+      <match-passwords-validator id="match-passwords-validator" password="[[params.password]]"></match-passwords-validator>
+      <user-access-password-validator id="user-access-password-validator" pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&amp;*]).{8,}$"></user-access-password-validator>
+      <iron-ajax id="xhr" url="/nuxeo/site/selfregistration/reset_request" method="POST" content-type="application/json" on-response="_handleResponse" on-error="_handleErrorResponse">
+      </iron-ajax>
+      <div class="form">
+         <img class="logo" src="/nuxeo/img/user-registration-logo.png">
+         <iron-pages selected="{{selected}}">
+            <paper-card heading="User Account Password Reset Request">
+               <div class="card-content">
+                  <iron-form id="form">
+                     <form>
+                        <div class="layout horizontal wrap">
+                           <paper-input label="Email" id="email" class="flex" type="email" value="{{params.email}}" auto-validate="" required="" autocomplete=""></paper-input>
+                        </div>
+                     </form>
+                  </iron-form>
+                  <label class="error" hidden$="[[!error]]" id="error">[[error]]</label>
+               </div>
+               <div class="card-actions">
+                  <paper-button on-tap="_submitRequest">SUBMIT</paper-button>
+               </div>
+            </paper-card>
+            <paper-material class="result layout horizontal" elevation="1">
+               <div class="center">
+                  <p>The request to reset your user account password has successfully been submitted. If a User Account with the given email address exists, an email will be sent with password reset instructions.</p>
+               </div>
+            </paper-material>
+         </iron-pages>
+         <div class="footer"></div>
+      </div>
+      <div>
+      </div>
+   </template>
+   <script>
+      Polymer({
+         is: 'my-app-reset-request',
+         properties: {
+            error: {
+               type: String
+            },
+            params: {
+               type: Object,
+               value: {}
+            },
+            selected: {
+               type: Number,
+               value: 0
+            },
+         },
+
+         _submitRequest: function () {
+            if (!this.$.form.validate()) return;
+            if (this.params.country) {
+               this.params.country = this.params.country.id;
+            }
+            this.$.xhr.body = JSON.stringify(this.params);
+            this.$.xhr.generateRequest();
+         },
+
+         _handleResponse: function (e) {
+            this.selected = 1;
+         },
+
+         _handleErrorResponse: function (e) {
+            this.set("error", "Error requesting user account password reset");
+         },
+
+         _isEqualTo(title, string) {
+            return title == string;
+         }
+
+      });
+   </script>
+</dom-module>

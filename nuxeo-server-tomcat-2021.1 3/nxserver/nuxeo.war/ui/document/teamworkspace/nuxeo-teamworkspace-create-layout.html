@@ -1,0 +1,40 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+
+<!--
+`nuxeo-teamworkspace-create-layout`
+@group Nuxeo UI
+@element nuxeo-teamworkspace-create-layout
+-->
+<dom-module id="nuxeo-teamworkspace-create-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <nuxeo-input name="title"
+                 role="widget" value="{{document.properties.dc:title}}"
+                 label="[[i18n('title')]]" type="text" required>
+    </nuxeo-input>
+
+    <nuxeo-input name="dc:description"
+                 role="widget" value="{{document.properties.dc:description}}"
+                 label="[[i18n('label.description')]]" type="text">
+    </nuxeo-input>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-teamworkspace-create-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype TeamWorkspace
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

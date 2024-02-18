@@ -1,0 +1,114 @@
+<link rel="import" href="iss-keyword.html">
+<link rel="import" href="iss-keyword-remove.html">
+
+<dom-module id="iss-keywords">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+    </style>
+
+    <dom-repeat items="[[items]]" as="keyword">
+      <template>
+        <dom-if if="[[_type('append', type)]]">
+          <template>
+            <iss-keyword>[[keyword]]</iss-keyword>
+          </template>
+        </dom-if>
+        <dom-if if="[[_type('replace', type)]]">
+          <template>
+            <iss-keyword>[[keyword]]</iss-keyword>
+          </template>
+        </dom-if>
+        <dom-if if="[[_type('remove', type)]]">
+          <template>
+            <iss-keyword-remove flagged-handler="[[flaggedHandler]]">
+              [[keyword]]
+            </iss-keyword-remove>
+          </template>
+        </dom-if>
+      </template>
+    </dom-repeat>
+  </template>
+
+  <script>
+    {
+      /**
+       * An element to display a list of keywords.
+       *
+       */
+      class Keywords extends Nuxeo.Element {
+
+        static get is() {
+          return 'iss-keywords';
+        }
+
+        static get properties() {
+          return {
+            /**
+             * Type ("append", "replace", "remove").
+             */
+            type: {
+              type: String,
+              value: 'append',
+            },
+            /**
+             * Array of keywords.
+             */
+            items: {
+              type: Array,
+            },
+
+            keywordsFlagged: {
+              type: Array,
+              value: [],
+              notify: true
+            },
+
+            flaggedHandler: {
+              type: Function,
+              value() {
+                return this._flaggedHandler.bind(this);
+              },
+            }
+          };
+        }
+
+        static get observers() {
+          return [
+            '_keywordsFlaggedLengthChanged(keywordsFlagged.length)'
+          ]
+        }
+
+        _type(value, type) {
+          return this.type === value
+        }
+
+        _flaggedHandler(k) {
+          if (!this.keywordsFlagged.includes(k)) {
+            this.push('keywordsFlagged', k)
+          } else {
+            var index = this.keywordsFlagged.indexOf(k)
+            this.splice('keywordsFlagged', index, 1)
+          }
+        }
+
+        _keywordsFlaggedLengthChanged(length) {
+          if (length == 0) {
+            var elements = this.shadowRoot.querySelectorAll('iss-keyword-remove')
+            if (elements && elements.length > 0) {
+              elements.forEach(e => e.removeAttribute('flagged'))
+            }
+          }
+        }
+      }
+
+        if (!customElements.get(Keywords.is)){
+        customElements.define(Keywords.is, Keywords);
+        Nuxeo.Keywords = Keywords;
+      }
+    }
+  </script>
+
+</dom-module>

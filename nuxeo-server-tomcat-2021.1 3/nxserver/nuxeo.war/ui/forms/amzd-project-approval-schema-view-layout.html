@@ -1,0 +1,283 @@
+<dom-module id="amzd-project-approval-schema-view-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-connection id="nxcon" user="{{user}}"></nuxeo-connection>
+    <nuxeo-resource id="user" path="/user"></nuxeo-resource>
+
+    <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
+                       heading="[[i18n('label.collapseheaders.approval')]]"
+                       headingstyle="[[headingstyle]]"
+                       opened$="[[_false]]"
+                       >
+      <nuxeo-directory-suggestion value="[[document.properties.approval:need_copy]]" label="Need Copy Appproval"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+
+      <nuxeo-user-suggestion hidden$="{{!isneed_copy}}"role="widget" value="{{document.properties.approval:copy_approvers}}" label="Copy Approvers" search-type="USER_GROUP_TYPE" min-chars="0" multiple="true" readonly="true"></nuxeo-user-suggestion>
+
+      <nuxeo-filter document="[[document]]"
+                    user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_copy}}" value="[[document.properties.approval:has_copy]]" label="Has Copy Approval"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+
+      <nuxeo-directory-suggestion value="[[document.properties.approval:need_requester]]" label="Need Requester Approval"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+
+      <nuxeo-user-suggestion hidden$="{{!isneed_requester}}" role="widget" value="{{document.properties.approval:requester_approvers}}" label="Content Requesters" search-type="USER_GROUP_TYPE" min-chars="0" multiple="true" readonly="true"></nuxeo-user-suggestion>
+
+      <nuxeo-filter document="[[document]]"
+                    user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_requester}}" value="[[document.properties.approval:has_requester]]" label="Has Requester Approval"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+
+      <nuxeo-directory-suggestion value="[[document.properties.approval:need_utterance]]" label="Need Utterance Approval"  readonly="true" role="widget"></nuxeo-directory-suggestion>
+
+      <nuxeo-user-suggestion hidden$="{{!isneed_utterance}}" role="widget" value="{{document.properties.approval:utterance_approvers}}" label="Utterance Approvers" min-chars="0" search-type="USER_GROUP_TYPE" multiple="true" readonly="true"></nuxeo-user-suggestion>
+
+      <nuxeo-filter document="[[document]]"
+                    user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_utterance}}" value="[[document.properties.approval:has_utterance]]" label="Has Utterance Approval" readonly="true"  role="widget"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+
+      <nuxeo-directory-suggestion value="[[document.properties.approval:need_legal]]" label="Need Legal Approval"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+
+      <nuxeo-user-suggestion hidden$="{{!isneed_legal}}" role="widget" value="{{document.properties.approval:legal_approvers}}" label="Legal Approvers" search-type="USER_GROUP_TYPE" min-chars="0" readonly="true" multiple="true"></nuxeo-user-suggestion>
+
+      <nuxeo-filter document="[[document]]"
+                    user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_legal}}" value="[[document.properties.approval:has_legal]]" label="Has Legal Approval" readonly="true"  role="widget"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+
+      <nuxeo-directory-suggestion value="[[document.properties.approval:need_tm]]" label="Need Trademark Approval"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+
+      <nuxeo-user-suggestion hidden$="{{!isneed_tm}}" role="widget" value="{{document.properties.approval:tm_approvers}}" label="Trademark Approvers" min-chars="0" search-type="USER_GROUP_TYPE" multiple="true" readonly="true"></nuxeo-user-suggestion>
+
+      <nuxeo-filter document="[[document]]"
+                    user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_tm}}" value="[[document.properties.approval:has_tm]]" label="Has Trademark Approval"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+
+      <nuxeo-directory-suggestion value="[[document.properties.approval:need_accessibility]]" label="Need Accessibility Standards Approval"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+
+      <nuxeo-user-suggestion hidden$="{{!isneed_accessibility}}" role="widget" value="{{document.properties.approval:accessibility_approvers}}" label="Accessibility Standards Approvers" min-chars="0" search-type="USER_GROUP_TYPE" readonly="true" multiple="true"></nuxeo-user-suggestion>
+
+      <nuxeo-filter document="[[document]]"
+                    user="[[user]]" group="administrators,Librarian">
+        <template>
+          <nuxeo-directory-suggestion hidden$="{{!isneed_accessibility}}" value="[[document.properties.approval:has_accessibility]]" label="Has Accessibility Standards Approval"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+        </template>
+      </nuxeo-filter>
+
+      <nuxeo-directory-suggestion value="[[document.properties.approval:need_retailer]]" label="Need Retailer Approval"  readonly="true" role="widget"></nuxeo-directory-suggestion>
+
+      <nuxeo-user-suggestion hidden$="{{!isneed_retailer}}" role="widget" value="{{document.properties.approval:retailer_approvers}}" label="Retail Approvers" min-chars="0" search-type="USER_GROUP_TYPE" multiple="true" readonly="true"></nuxeo-user-suggestion>
+    </nuxeo-se-collapse>
+
+    <nuxeo-filter document="[[document]]"
+                  user="[[user]]" group="administrators,Librarian">
+      <template>
+        <nuxeo-directory-suggestion hidden$="{{!isneed_retailer}}" value="[[document.properties.approval:has_retailer]]" label="Has Retailer Approval"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+      </template>
+    </nuxeo-filter>
+
+
+
+
+
+    <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
+                       heading="[[i18n('label.collapseheaders.distribution')]]"
+                       headingstyle="[[headingstyle]]"
+                       opened$="[[_false]]"
+                       >
+      <nuxeo-directory-suggestion value="[[document.properties.approval:distribute_ADH]]" label="Distribute Content to Amazon Device Hub Staging"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+
+
+      <nuxeo-directory-suggestion value="[[document.properties.approval:distribute_selects]]" label="Distribute Selects for CXLab Use"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+
+
+      <nuxeo-directory-suggestion value="[[document.properties.approval:distribute_CXLabs]]" label="Distribute Final Content for CXLab Use"  readonly="true"  role="widget"></nuxeo-directory-suggestion>
+    </nuxeo-se-collapse>
+
+  </template>
+  <script>
+  Polymer({
+    is: 'amzd-project-approval-schema-view-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      collapsestyle: {
+        type: String,
+        value: "border:0px solid #f5f5f5;margin-left:0em;"
+      },
+      headingstyle: {
+        type: String,
+        value: "font-size:1rem;font-weight:700;text-transform:uppercase;"
+      },
+      _false: {
+        type: Boolean,
+        value: false
+      },
+      _true: {
+        type: Boolean,
+        value: true
+      },
+      document: {
+        type: Object
+      },
+      isneed_copy:{
+        type: String,
+        computed:'_isneedcopy(document.properties.approval:need_copy)'
+      },
+      isneed_requester:{
+        type:String,
+        computed:'_isneedrequester(document.properties.approval:need_requester)'
+      },
+
+      isneed_utterance:{
+        type: String,
+
+        computed:'_isneedutterance(document.properties.approval:need_utterance)'
+      },
+      isneed_legal:{
+        type: String,
+        computed:'_isneedlegal(document.properties.approval:need_legal)'
+      },
+      isneed_tm:{
+        type: String,
+
+        computed:'_isneedtm(document.properties.approval:need_tm)'
+      },
+      isneed_accessibility:{
+        type: String,
+
+        computed:'_isneedaccessibility(document.properties.approval:need_accessibility)'
+      },
+      isneed_retailer:{
+        type: String,
+
+        computed:'_isneedretailer(document.properties.approval:need_retailer)'
+      }
+
+    },
+    _isneedcopy: function(a) {
+
+      if(a === null || a === undefined)
+        return null;
+      a=this.document.properties["approval:need_copy"];
+      if(a==='No'||a===null)
+        return null;
+      if(a.id==='No'||a.id===null)
+        return null;
+      if(a.id==='Yes')
+        return a;
+      if(a==='Yes') 
+        return a;
+
+    },
+
+    _isneedrequester: function(a) {
+      if(a === null || a === undefined)
+        return null;
+      a=this.document.properties["approval:need_requester"];
+
+      if(a==='No'||a===null)
+        return null;
+      if(a.id==='No'||a.id===null)
+        return null;
+      if(a.id==='Yes')
+        return a;
+      if(a==='Yes') 
+        return a;
+
+    },
+    _isneedutterance: function(a) {
+      if(a === null || a === undefined)
+        return null;
+      a=this.document.properties["approval:need_utterance"];
+
+      if(a==='No'||a===null)
+        return null;
+      if(a.id==='No'||a.id===null)
+        return null;
+      if(a.id==='Yes')
+        return a;
+      if(a==='Yes') 
+        return a;
+
+    },
+    _isneedlegal: function(a) {
+      if(a === null || a === undefined)
+        return null;
+      a=this.document.properties["approval:need_legal"];
+
+      if(a==='No'||a===null)
+        return null;
+      if(a.id==='No'||a.id===null)
+        return null;
+      if(a.id==='Yes')
+        return a;
+      if(a==='Yes') 
+        return a;
+
+    },
+    _isneedtm: function(a) {
+      if(a === null || a === undefined)
+        return null;
+      a=this.document.properties["approval:need_tm"];
+
+      if(a==='No'||a===null)
+        return null;
+      if(a.id==='No'||a.id===null)
+        return null;
+      if(a.id==='Yes')
+        return a;
+      if(a==='Yes') 
+        return a;
+
+    },
+    _isneedaccessibility: function(a) {
+      if(a === null || a === undefined)
+        return null;
+      a=this.document.properties["approval:need_accessibility"];
+
+      if(a==='No'||a===null)
+        return null;
+      if(a.id==='No'||a.id===null)
+        return null;
+      if(a.id==='Yes')
+        return a;
+      if(a==='Yes') 
+        return a;
+
+    },
+
+    _isneedretailer: function(a) {
+      if(a === null || a === undefined)
+        return null;
+      a=this.document.properties["approval:need_retailer"];
+
+      if(a==='No'||a===null)
+        return null;
+      if(a.id==='No'||a.id===null)
+        return null;
+      if(a.id==='Yes')
+        return a;
+      if(a==='Yes') 
+        return a;
+
+    }
+  });
+
+  </script>
+</dom-module>

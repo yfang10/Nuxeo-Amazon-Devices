@@ -1,0 +1,233 @@
+<!--
+`amzd-internal-publish`
+@group Nuxeo UI
+@element amzd-internal-publish
+-->
+<dom-module id="amzd-internal-publish">
+    <template>
+      <style include="iron-flex iron-flex-alignment iron-flex-factors nuxeo-styles">
+        :host {
+           display: block;
+           @apply --layout-flex;
+           @apply --layout-horizontal;
+       }
+       
+       .container {
+           margin: 2rem;
+           padding: 0 1rem 0 0;
+           display: inline-block;
+           @apply --layout-flex;
+           @apply --layout-vertical;
+       }
+       
+       .versions,
+       .options {
+           margin-left: 3em;
+       }
+       
+       label {
+           @apply --nuxeo-label;
+       }
+       
+       .error {
+           border-left: 4px solid var(--nuxeo-warn-text);
+           color: var(--nuxeo-text-default);
+           padding-left: 8px;
+           margin-bottom: 8px;
+       }
+   </style>
+   <nuxeo-operation id="op" op="[[operation]]" sync-indexing></nuxeo-operation>
+    <nuxeo-document id="srcDoc"></nuxeo-document>
+    
+
+    
+    <div class="container">
+
+      <nuxeo-document-suggestion
+        id="target"
+        required
+        label="[[i18n('distribution.internal.location')]]"
+        placeholder="[[i18n('publication.internal.location.placeholder')]]"
+        selected-item="{{publishSpace}}"
+        min-chars="0"
+        selection-formatter="[[targetFormatter]]"
+        enrichers="permissions"
+        page-provider="publish-space-suggestions"
+        params="[[pageProviderParams]]"
+      >
+      </nuxeo-document-suggestion>
+      <template is="dom-if" if="[[errorMessage]]">
+        <span class="horizontal layout error">[[errorMessage]]</span>
+      </template>
+
+    <div class="buttons horizontal end-justified layout">
+        <div class="flex start-justified">
+            <paper-button noink dialog-dismiss on-tap="_cancel">[[i18n('command.cancel')]]</paper-button>
+        </div>
+        <paper-button id="publish" noink class="primary" on-tap="_publish" disabled$="[[!_canPublish(document,documents,publishSpace)]]">
+            [[i18n('publication.distribute')]]
+        </paper-button>
+    </div>
+    </div>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'amzd-internal-publish',
+            behaviors: [Nuxeo.I18nBehavior, Nuxeo.LayoutBehavior],
+
+            properties: {
+                /**
+                 * Input document.
+                 */
+                document: Object,
+
+                /**
+                 * Input documents.
+                 */
+                documents: Array,
+
+                 ExpirationDate: {
+                    type:Date,
+                    value:null,
+                },
+
+                publishSpace: Object,
+
+                path: {
+                    type: String,
+                    value: '/default-domain/Approved Content/Amazon Device Hub Staging'
+                },
+
+                operation: {
+                    type: String,
+                    value: 'AMZD.PublishContentsOperation',
+                },
+                selectedRendition: {
+                    type: String,
+                    value: 'none',
+                },
+
+                _isMultiple: {
+                    type: Boolean,
+                    computed: '_computeMultiple(document, documents.length)',
+                },
+
+                targetFormatter: {
+                    type: Function,
+                    value() {
+                        return this._targetFormatter.bind(this);
+                    },
+                },
+
+                pageProviderParams: {
+                    type: Object,
+                    computed: '_computeParams(document, documents)',
+                },
+            },
+
+
+            _computeParams() {
+                
+
+                    return {
+                        namedParameters: {
+                            system_path: "/default-domain/Amazon Device Hub/",
+                            system_primaryType: "AMZDeviceHubType"
+                        }
+                    };
+                
+               
+            },
+
+            _computeMultiple() {
+                return !!(this.documents && this.documents.length > 0);
+            },
+
+            _computeRenditionOptions() {
+                const options = [{
+                    id: 'none',
+                    label: this.i18n('publication.internal.renditon.none')
+                }, {
+                    id: 'default',
+                    label: this.i18n('publication.internal.renditon.default')
+                }, ];
+                if (this.document && this.document.contextParameters && this.document.contextParameters.renditions) {
+                    this.document.contextParameters.renditions.forEach((item) => {
+                        options.push({
+                            id: item.name,
+                            label: this.formatRendition(item.name),
+                            icon: item.icon
+                        });
+                    });
+                }
+                return options;
+            },
+
+            _publish() {
+                console.log(this.ExpirationDate);
+                this.$.op.params = {
+                    target: this.publishSpace.uid,
+                    override: this.override,
+                    renditionName: null,
+                    newexpiration:this.ExpirationDate,
+                };
+                if (this.selectedRendition) {
+                    if (this.selectedRendition === 'default') {
+                        this.$.op.params.defaultRendition = true;
+                    } else if (this.selectedRendition !== 'none') {
+                        this.$.op.params.renditionName = this.selectedRendition;
+                    }
+                }
+                
+                
+                this.$.op.input = this._isMultiple ? `docs:${this.documents.map((doc) => doc.uid).join(',')}` : this.document.uid;
+                
+               
+                this.$.op
+                    .execute()
+                    .then(() => {
+                        this.fire('notify', {
+                            message: this.i18n(`publication.internal.publish.success${this._isMultiple ? '.multiple' : ''}`),
+                        });
+                        if (this._isMultiple) {
+                            var index = this.documents[0].path.lastIndexOf('/');
+                            var parentPath = this.documents[0].path.substring(0, index);
+                            var targetParent = parentPath.replace(this.path, this.publishSpace.path);
+                            this.navigateTo('browse', targetParent);
+                        } else {
+                            this.fire('document-updated');
+                        }
+                        this.fire('nx-publish-success');
+                    })
+                    .catch((err) => {
+                        this.fire('notify', {
+                            message: this.i18n(`publication.internal.publish.error${this._isMultiple ? '.multiple' : ''}`),
+                        });
+                        throw err;
+                    });
+            },
+
+            _canPublish() {
+                this.errorMessage = null;
+                if (!this.publishSpace) {
+                    return false;
+                }
+                const hasPermission = this.hasPermission(this.publishSpace, 'AddChildren');
+                if (!hasPermission) {
+                    this.errorMessage = this.i18n('publication.internal.location.error.noPermission');
+                }
+                return hasPermission;
+            },
+
+            _cancel() {
+                this.fire('cancel');
+            },
+
+            _targetFormatter(doc) {
+                return this.$.target.$.s2.escapeHTML(doc.title);
+            }
+        });
+    </script>
+</dom-module>

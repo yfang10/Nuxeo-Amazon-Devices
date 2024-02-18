@@ -1,0 +1,85 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+
+<!--
+`nuxeo-location-create-layout`
+@group Nuxeo UI
+@element nuxeo-location-create-layout
+-->
+<dom-module id="nuxeo-location-create-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <nuxeo-input name="title" role="widget" value="{{document.properties.dc:title}}"
+                 label="[[i18n('title')]]" type="text" required>
+    </nuxeo-input>
+
+    <nuxeo-input name="dc:description" role="widget" value="{{document.properties.dc:description}}"
+                 label="[[i18n('label.description')]]" type="text">
+    </nuxeo-input>
+
+     <nuxeo-dropzone role="widget" label="[[i18n('file.content')]]" name="content"
+                    document="[[document]]"></nuxeo-dropzone>
+
+    <nuxeo-input name="location:address.line1" role="widget" value="{{document.properties.location:address.line1}}"
+                 label="[[i18n('label.location.line1')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="location:address.line2" role="widget" value="{{document.properties.location:address.line2}}"
+                 label="[[i18n('label.location.line2')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="location:address.city" role="widget" value="{{document.properties.location:address.city}}"
+                 label="[[i18n('label.location.city')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="location:address.postal_code" role="widget" value="{{document.properties.location:address.postal_code}}"
+                 label="[[i18n('label.location.postal_code')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="location:address.region" role="widget" value="{{document.properties.location:address.region}}"
+                 label="[[i18n('label.location.region')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="location:address.country" role="widget" value="{{document.properties.location:address.country}}"
+                 label="[[i18n('label.location.country')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="location:alternate_name" role="widget" value="{{document.properties.location:alternate_name}}"
+                 label="[[i18n('label.location.alternate_name')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="location:geo" role="widget" value="{{document.properties.location:geo}}"
+                 label="[[i18n('label.location.geo')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="location:primary_contact" role="widget" value="{{document.properties.location:primary_contact}}"
+                 label="[[i18n('label.location.primary_contact')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="location:primary_contact_email" role="widget" value="{{document.properties.location:primary_contact_email}}"
+                 label="[[i18n('label.location.primary_contact_email')]]" type="email">
+    </nuxeo-input>
+
+    <nuxeo-input name="location:telephone" role="widget" value="{{document.properties.location:telephone}}"
+                 label="[[i18n('label.location.telephone')]]" type="text">
+    </nuxeo-input>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-location-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype Location
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

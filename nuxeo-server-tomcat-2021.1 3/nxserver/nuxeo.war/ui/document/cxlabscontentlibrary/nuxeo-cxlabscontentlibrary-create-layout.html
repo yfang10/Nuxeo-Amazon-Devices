@@ -1,0 +1,36 @@
+<!--
+`nuxeo-cxlabscontentlibrary-create-layout`
+@group Nuxeo UI
+@element nuxeo-cxlabscontentlibrary-create-layout
+-->
+<dom-module id="nuxeo-cxlabscontentlibrary-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text"></nuxeo-input>
+
+  </template>
+
+
+  <script>
+  Polymer({
+    is: 'nuxeo-cxlabscontentlibrary-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype CXLabsContentLibrary
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

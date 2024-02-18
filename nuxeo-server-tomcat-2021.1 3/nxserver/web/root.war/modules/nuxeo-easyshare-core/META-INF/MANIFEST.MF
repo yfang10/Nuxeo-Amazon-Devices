@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: root
+Build-Jdk: 11.0.14.1
+Bundle-ManifestVersion: 2
+Bundle-Version: 1.0.0
+Nuxeo-WebModule: org.nuxeo.ecm.webengine.app.WebEngineModule;name=easy
+ share;package=org/nuxeo/easyshare
+Bundle-Vendor: Nuxeo
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Bundle-Name: nuxeo-easyshare-core
+Nuxeo-Component: OSGI-INF/extensions.xml, OSGI-INF/easyshare-contrib.xml
+Bundle-SymbolicName: nuxeo-easyshare-core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Nuxeo-AllowOverride: true
+

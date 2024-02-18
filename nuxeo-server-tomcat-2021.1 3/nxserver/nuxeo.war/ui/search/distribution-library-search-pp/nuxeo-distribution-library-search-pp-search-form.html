@@ -1,0 +1,342 @@
+<!--
+`nuxeo-distribution-library-search-pp-search-form`
+@group Nuxeo UI
+@element nuxeo-distribution-library-search-pp-search-form
+-->
+<link rel="import" href="../../elements/iss-keyword-suggestion-search.html">
+<dom-module id="nuxeo-distribution-library-search-pp-search-form">
+  <template>
+    <style include="nuxeo-styles">
+      /* *[role=widget] {
+      padding: 5px;
+    } */
+      h3 {
+        display: inline;
+      }
+
+      label {
+        @apply --nuxeo-label;
+      }
+
+      :host {
+        display: block;
+        -webkit-box-sizing: border-box;
+        /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;
+        /* Firefox, other Gecko */
+        box-sizing: border-box;
+        /* Opera/IE 8+ */
+        background-color: inherit;
+      }
+
+      :host([collapsible]) {
+        padding-bottom: 40px;
+      }
+
+      :host([collapsible]) h3:hover {
+        cursor: pointer;
+        @apply --nuxeo-link-hover;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .collapse {
+        border-width: 1px;
+        border-style: none;
+        border-color: black;
+      }
+
+      .header {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        margin: 8px 0px 0px 0px;
+      }
+
+      .heading {
+        padding-left: 0.5em;
+      }
+
+      .toggle {
+        opacity: var(--nuxeo-label_-_opacity);
+      }
+
+      :host([opened]) {
+        padding-bottom: 0px !important;
+      }
+    </style>
+
+    <h3 class="header" on-tap="toggle">
+      <div role="widget" style="display:flex;font-size: 12px;align-items: center;">
+        <paper-checkbox checked="[[opened]]" aria-labelledby="uniqueItemField" name="uniqueItem"
+          on-change="_collapseToggle"></paper-checkbox>
+        <label id="uniqueItemField">Expand Filters</label>
+      </div>
+      </iron-icon>
+      <span class="heading" style="[[headingstyle]]">[[heading]]</span>
+    </h3>
+
+    <nuxeo-card  heading="Text Search" >
+      <nuxeo-input role="widget" value="{{params.system_fulltext}}" label="" type="text" name="system_fulltext">
+      </nuxeo-input>
+    </nuxeo-card>
+
+    <nuxeo-card  heading="Title" >
+      <nuxeo-input role="widget" value="{{params.dublincore_title}}" label="" type="text" name="dublincore_title">
+      </nuxeo-input>
+    </nuxeo-card>
+    <nuxeo-card  heading="Keywords" >
+      <nuxeo-input role="widget" value="{{keywordInput}}" label="" type="text"></nuxeo-input>
+      <!-- <iss-keyword-suggestion-search role="widget" value="{{keywordInput}}" label="" type="text" allow-new-keywords>
+      </iss-keyword-suggestion-search> -->
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Primary Type" opened="{{opened}}">
+      <div role="widget">
+        <!-- <label id="system_primaryType_aggField">Primary Type</label> -->
+        <nuxeo-checkbox-aggregation value="{{params.system_primaryType_agg}}"
+          data="[[aggregations.system_primaryType_agg]]" aria-labelledby="system_primaryType_aggField"
+          name="system_primaryType_agg"></nuxeo-checkbox-aggregation>
+      </div>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Mime Type" opened="{{opened}}">
+      <div role="widget">
+        <!-- <label id="file_content_mime-type_aggField">Mime Type</label> -->
+        <nuxeo-checkbox-aggregation value="{{params.file_content_mime-type_agg}}"
+          data="[[aggregations.file_content_mime-type_agg]]" aria-labelledby="file_content_mime-type_aggField"
+          name="file_content_mime-type_agg"></nuxeo-checkbox-aggregation>
+      </div>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Width" opened="{{opened}}">
+      <div role="widget">
+        <!-- <label id="picture_info_width_aggField">Width</label> -->
+        <nuxeo-checkbox-aggregation value="{{params.picture_info_width_agg}}"
+          data="[[aggregations.picture_info_width_agg]]" aria-labelledby="picture_info_width_aggField"
+          name="picture_info_width_agg"></nuxeo-checkbox-aggregation>
+      </div>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Height" opened="{{opened}}">
+      <div role="widget">
+        <!-- <label id="picture_info_height_aggField">Height</label> -->
+        <nuxeo-checkbox-aggregation value="{{params.picture_info_height_agg}}"
+          data="[[aggregations.picture_info_height_agg]]" aria-labelledby="picture_info_height_aggField"
+          name="picture_info_height_agg"></nuxeo-checkbox-aggregation>
+      </div>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Color Space" opened="{{opened}}">
+      <div role="widget">
+        <!-- <label id="picture_info_colorSpace_aggField">Color Space</label> -->
+        <nuxeo-checkbox-aggregation value="{{params.picture_info_colorSpace_agg}}"
+          data="[[aggregations.picture_info_colorSpace_agg]]" aria-labelledby="picture_info_colorSpace_aggField"
+          name="picture_info_colorSpace_agg"></nuxeo-checkbox-aggregation>
+      </div>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Duration" opened="{{opened}}">
+      <div role="widget">
+        <!-- <label id="video_info_duration_aggField">Duration</label> -->
+        <nuxeo-checkbox-aggregation value="{{params.video_info_duration_agg}}"
+          data="[[aggregations.video_info_duration_agg]]" aria-labelledby="video_info_duration_aggField"
+          name="video_info_duration_agg"></nuxeo-checkbox-aggregation>
+      </div>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Brands" opened="{{opened}}">
+      <!-- <nuxeo-directory-suggestion role="widget" value="{{params.commonFields_brands}}" label="" min-chars="0"
+        directory-name="brands" name="commonFields_brands"></nuxeo-directory-suggestion> -->
+        <nuxeo-checkbox-aggregation value="{{params.commonFields_brands_agg}}"
+        data="[[aggregations.commonFields_brands_agg]]" aria-labelledby="commonFields_brands_aggField"
+        name="commonFields_brands_agg"></nuxeo-checkbox-aggregation>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Product Line" opened="{{opened}}">
+      <!-- <nuxeo-directory-suggestion role="widget" value="{{params.commonFields_product_line}}" label="" multiple="true"  min-chars="0"
+        directory-name="product_line" name="commonFields_product_line"></nuxeo-directory-suggestion> -->
+        <nuxeo-checkbox-aggregation value="{{params.commonFields_product_line_agg}}"
+        data="[[aggregations.commonFields_product_line_agg]]" aria-labelledby="commonFields_product_line_aggField"
+        name="commonFields_product_line_agg"></nuxeo-checkbox-aggregation>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Topic" opened="{{opened}}">
+      <!-- <nuxeo-directory-suggestion role="widget" value="{{params.commonFields_topic}}" label="" min-chars="0"
+        directory-name="topic" name="commonFields_topic"></nuxeo-directory-suggestion> -->
+        <nuxeo-checkbox-aggregation value="{{params.commonFields_topic_agg}}"
+        data="[[aggregations.commonFields_topic_agg]]" aria-labelledby="commonFields_topic_aggField"
+        name="commonFields_topic_agg"></nuxeo-checkbox-aggregation>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Rights Type" opened="{{opened}}">
+      <!-- <nuxeo-directory-suggestion role="widget" value="{{params.commonFields_rights_type}}" label="" min-chars="0"
+        directory-name="rights_type" name="commonFields_rights_type"></nuxeo-directory-suggestion> -->
+        <nuxeo-checkbox-aggregation value="{{params.commonFields_rights_type_agg}}"
+        data="[[aggregations.commonFields_rights_type_agg]]" aria-labelledby="commonFields_rights_type_aggField"
+        name="commonFields_rights_type_agg"></nuxeo-checkbox-aggregation>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Marketing Placement" opened="{{opened}}">
+      <!-- <nuxeo-directory-suggestion role="widget" value="{{params.commonFields_marketing_placement}}" label=""
+        min-chars="0" directory-name="marketing_placement" name="commonFields_marketing_placement">
+      </nuxeo-directory-suggestion> -->
+      <nuxeo-checkbox-aggregation value="{{params.commonFields_marketing_placement_agg}}"
+      data="[[aggregations.commonFields_marketing_placement_agg]]" aria-labelledby="commonFields_marketing_placement_aggField"
+      name="commonFields_marketing_placement_agg"></nuxeo-checkbox-aggregation>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Approved Locations" opened="{{opened}}">
+      <!-- <nuxeo-directory-suggestion role="widget" value="{{params.commonFields_approved_locations}}" label=""
+        min-chars="0" directory-name="approved_locations" name="commonFields_approved_locations">
+      </nuxeo-directory-suggestion> -->
+      <nuxeo-checkbox-aggregation value="{{params.commonFields_approved_locations_agg}}"
+      data="[[aggregations.commonFields_approved_locations_agg]]" aria-labelledby="commonFields_approved_locations_aggField"
+      name="commonFields_approved_locations_agg"></nuxeo-checkbox-aggregation>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Content Language" opened="{{opened}}">
+      <!-- <nuxeo-directory-suggestion role="widget" value="{{params.commonFields_aprroved_languages}}" label=""
+        min-chars="0" directory-name="content_language" name="commonFields_aprroved_languages">
+      </nuxeo-directory-suggestion> -->
+      <nuxeo-checkbox-aggregation value="{{params.commonFields_content_language_agg}}"
+      data="[[aggregations.commonFields_content_language_agg]]" aria-labelledby="commonFields_content_language_aggField"
+      name="commonFields_content_language_agg"></nuxeo-checkbox-aggregation>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Expiration Date" opened="{{opened}}">
+      <!-- <nuxeo-date-picker role="widget" value="{{params.dublincore_expired}}" label="" name="dublincore_expired">
+      </nuxeo-date-picker> -->
+      <nuxeo-date-picker value="{{params.dublincore_expired_min}}" label="Expired Minimum" role="widget"></nuxeo-date-picker>
+      <nuxeo-date-picker value="{{params.dublincore_expired_max}}" label="Expired Maximum" role="widget"></nuxeo-date-picker>
+    </nuxeo-card>
+    <nuxeo-card collapsible heading="Asset Format" opened="{{opened}}">
+      <div role="widget">
+        <!-- <label id="file_content_mime-type_aggField">Asset Format</label> -->
+        <!-- <nuxeo-checkbox-aggregation value="{{params.file_content_mime-type_agg}}"
+          data="[[aggregations.file_content_mime-type_agg]]" aria-labelledby="file_content_mime-type_aggField"
+          name="file_content_mime-type_agg"></nuxeo-checkbox-aggregation> -->
+        
+          <nuxeo-checkbox-aggregation value="{{params.picture_info_format_agg}}"
+      data="[[aggregations.picture_info_format_agg]]" aria-labelledby="picture_info_format_aggField"
+      name="picture_info_format_agg"></nuxeo-checkbox-aggregation>
+      </div>
+    </nuxeo-card>
+    </nuxeo-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-distribution-library-search-pp-search-form',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+           * @search distribution-library-search-pp
+           */
+        params: {
+          type: Object,
+          value: {},
+          notify: true,
+          observer: '_keywordInputClear'
+        },
+
+        keywordInput: {
+          type: String,
+          observer: '_keywordInputChanged'
+        },
+
+        aggregations: {
+          type: Object,
+          value: {},
+          notify: true,
+        },
+
+        collapsestyle: {
+          type: String,
+          value: "border:1px solid #ffffff00;"
+        },
+        collapsible: {
+          type: Boolean,
+          value: true,
+          reflectToAttribute: true
+        },
+        document: {
+          type: Object,
+          notify: true
+        },
+        heading: {
+          type: String,
+          value: null
+        },
+        headingclass: {
+          type: String,
+          value: "h2"
+        },
+        headingstyle: {
+          type: String,
+          value: ""
+        },
+        icon: {
+          type: String,
+          value: null
+        },
+        opened: {
+          type: Boolean,
+          value: true,
+          reflectToAttribute: true
+        }
+      },
+
+      _keywordInputChanged() {
+        let searchText = ''
+        if (this.keywordInput) {
+          searchText = this.keywordInput.trim()
+        }
+        if (searchText.startsWith('AND') ||
+          searchText.startsWith('OR') ||
+          searchText.startsWith('NOT')) return
+        else if (searchText.endsWith('AND') ||
+          searchText.endsWith('OR') ||
+          searchText.endsWith('NOT')) return
+        else {
+          this.set('params.facetedKeyword_keywords_label', this._escape(searchText));
+        }
+      },
+      
+       _keywordInputClear(){
+        this.keywordInput = ''
+      },
+
+
+      _escape(searchText) {
+        let escapedStr = ''
+        for (const char of searchText) {
+          // ! & | ( ) { } [ ] ^ ~ ? : +  
+          if (char == '!' || char == '&' || char == '|' || char == '(' || char == ')' ||
+            char == '{' || char == '}' || char == '[' || char == ']' || char == '^' || char == '~' || char == '?' || char == ':' || char == '+') {
+
+            escapedStr += '\\'
+          }
+
+          escapedStr += char
+        }
+
+        return escapedStr
+      },
+      toggle: function () {
+        if (this.collapsible) {
+          this.opened = !this.opened;
+        }
+      },
+
+      _collapseIcon: function (itemOpen) {
+        return itemOpen ? 'expand-less' : 'expand-more';
+      },
+      _collapseToggle: function (e) {
+        // Assume e.target is the paper-button or an immediate child
+        const selector = e.target.dataset.selector || e.target.parentElement.dataset.selector;
+        if (selector) {
+          this.$$(selector).toggle();
+          e.target.icon = this._collapseIcon(this.$$(selector).opened);
+        }
+      },
+      _hasHeading: function (icon, heading, collapsible) {
+        return icon || heading || collapsible;
+      },
+      _opened: function (opened, collapsible) {
+        return !collapsible || opened;
+      },
+      _toggleIcon: function (opened) {
+        return 'hardware:keyboard-arrow-' + (opened ? 'up' : 'down');
+      },
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,115 @@
+<!--
+`nuxeo-launchcollection-view-layout`
+@group Nuxeo UI
+@element nuxeo-launchcollection-view-layout
+-->
+<dom-module id="nuxeo-launchcollection-view-layout">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: inline-block;
+        position: relative;
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 40vh;
+      }
+
+      .results {
+        @apply --layout-vertical;
+        @apply --layout-flex;
+        min-height: var(--nuxeo-document-content-min-height, calc(100vh - 216px - var(--nuxeo-app-top)));
+        margin-bottom: var(--nuxeo-document-content-margin-bottom, 0);
+      }
+
+      .results.dragging{
+        border: 2px dashed var(--nuxeo-primary-color);
+      }
+
+      .ellipsis {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+        width: calc(100% - 38px);
+      }
+
+      .capitalize {
+        text-transform: capitalize;
+      }
+
+      nuxeo-tag {
+        margin-right: 2px;
+      }
+
+      nuxeo-justified-grid {
+        height: calc(100vh - 10em);
+      }
+
+    </style>
+
+    <nuxeo-document-viewer role="widget" role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+    <nuxeo-page-provider
+                         id="provider"
+                         provider="default_content_collection"
+                         schemas="dublincore,common"
+                         page-size="40"
+                         enrichers="thumbnail, permissions, favorites"
+                         >
+    </nuxeo-page-provider>
+
+    <nuxeo-default-results
+                           id="results"
+                           name="[[document.uid]]"
+                           items="{{items}}"
+                           on-navigate="_navigate"
+                           selected-items="{{selectedItems}}"
+                           empty-label="[[i18n('collections.noDocument')]]"
+                           empty-label-when-filtered="[[i18n('collections.noDocumentWhenFiltered')]]"
+                           hide-content-view-actions
+                           >
+      <!--nuxeo-actions-menu slot="selectionActions">
+        <nuxeo-slot name="COLLECTION_ACTIONS" model="[[actionContext]]"></nuxeo-slot>
+      </nuxeo-actions-menu-->
+    </nuxeo-default-results>
+
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-launchcollection-view-layout',
+    behaviors: [Nuxeo.LayoutBehavior,Nuxeo.DocumentContentBehavior,Nuxeo.IronResizableBehavior,Nuxeo.FiltersBehavior],
+    properties: {
+
+      /**
+         * @doctype LaunchCollection
+         */
+      document: {
+        type: Object,
+        observer: '_documentChanged',
+      }
+
+    },
+    _documentChanged() {
+      if (this.document && this.document.properties['launchcollection:collection']) {
+        this.$.results.nxProvider = this.$.provider;
+        this.$.provider.params = [this.document.properties['launchcollection:collection'].uid];
+        this.$.provider.page = 1;
+        this.fire('collection-loaded', { collection: this.document});
+        this.$.results._refreshAndFetch();
+      }
+    },
+
+    _navigate(e) {
+      this.fire('navigate', {
+        doc: e.detail.doc,
+        index: e.detail.index,
+        srcDoc: this.document,
+        isFromCollection: true,
+      });
+      e.stopPropagation();
+    },
+  });
+  </script>
+</dom-module>

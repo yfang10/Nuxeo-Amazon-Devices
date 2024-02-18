@@ -1,0 +1,275 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../bower_components/paper-password-input/paper-password-input.html">
+<link rel="import" href="../bower_components/paper-password-input/match-passwords-validator.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="./user-access-password-validator.html">
+<link rel="import" href="./dropdown-menu-filter.html">
+
+<dom-module id="my-app">
+   <template>
+      <style include="iron-flex iron-flex-alignment paper-material-styles">
+         .form {
+            width: 50%;
+            height: 100%;
+            margin: 0 auto;
+         }
+
+         paper-card {
+            width: 100%;
+         }
+
+         .half {
+            max-width: 48%;
+         }
+
+         paper-input,
+         paper-textarea,
+         gold-email-input {
+            margin-left: 1%;
+            margin-right: 2%;
+            margin-top: 2%;
+            margin-bottom: 2%;
+         }
+
+         .card-content {
+            margin-bottom: 2%;
+         }
+
+         .flex {
+            min-width: 48%;
+         }
+
+         .logo {
+            margin: 0 auto;
+            margin-top: 5%;
+            margin-bottom: 5%;
+            display: block;
+         }
+
+         .result {
+            background-color: white;
+            height: 30vh;
+            align-items: center;
+            justify-content: center;
+         }
+
+         .footer {
+            height: 100px;
+         }
+
+         .center {
+         }
+
+         paper-button {
+            color: white;
+            background: #111111;
+         }
+
+         paper-button:hover {
+            background: #404040;
+         }
+
+         dropdown-menu-filter {
+            --dropdown-menu-filter-width: 400px;
+            --dropdown-menu-filter-list-height: 150px;
+         }
+      </style>
+      <match-passwords-validator id="match-passwords-validator" password="[[params.password]]"></match-passwords-validator>
+      <user-access-password-validator id="user-access-password-validator" pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&amp;*]).{8,}$"></user-access-password-validator>
+      <iron-ajax id="xhr" url="/nuxeo/site/selfregistration" method="POST" content-type="application/json" on-response="_handleResponse" on-error="_handleErrorResponse">
+      </iron-ajax>
+      <div class="form">
+         <img class="logo" src="/nuxeo/img/user-registration-logo.png">
+         <iron-pages selected="{{selected}}">
+            <paper-card heading="Request User Account">
+               <div class="card-content">
+                  <iron-form id="form">
+                     <form>
+                        <div class="layout horizontal wrap">
+                           <paper-dropdown-menu required="" label="Access Type">
+                              <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{params.accesstype}}" attr-for-selected="data-item">
+                                 <paper-item data-item="Retail">Retail</paper-item>
+                                 <paper-item data-item="Vendor">Vendor</paper-item>
+                                 <paper-item data-item="Agency">Agency</paper-item>
+                              </paper-listbox>
+                           </paper-dropdown-menu>
+                        </div>
+                        <template is="dom-if" if="[[_isEqualTo(params.accesstype, 'Retail')]]">
+                           <div class="layout horizontal wrap">
+                              <dropdown-menu-filter label="Country" class="flex" list="[[list]]" selected="{{params.country}}" required="[[_isEqualTo(params.accesstype, 'Retail')]]"></dropdown-menu-filter>
+                           </div>
+                        </template>
+                        <div class="layout horizontal wrap">
+                           <paper-input class="flex" label="Company" value="{{params.company}}" required="" autocomplete=""></paper-input>
+                        </div>
+                        <div class="layout horizontal wrap">
+                           <paper-input class="flex" label="First Name" value="{{params.firstname}}" required="" autocomplete=""></paper-input>
+                           <paper-input class="flex" label="Last Name" value="{{params.lastname}}" required="" autocomplete=""></paper-input>
+                        </div>
+                        <div class="layout horizontal wrap">
+                           <paper-input label="Email" id="email" class="flex" type="email" value="{{params.email}}" auto-validate="" required="" autocomplete=""></paper-input>
+                        </div>
+                        <div class="layout horizontal wrap">
+                           <paper-password-input class="flex" value="{{params.password}}" label="Password" auto-validate="" validator="user-access-password-validator" error-message="Enter at least 8 characters and contain at least one number and one special character" required=""></paper-password-input>
+                        </div>
+                        <div class="layout horizontal wrap">
+                           <paper-password-input class="flex" label="Confirm Password" auto-validate="" validator="match-passwords-validator" error-message="Needs to Match first Entry" required="">
+                           </paper-password-input>
+                        </div>
+                        <div class="layout horizontal wrap">
+                           <label style="font-style: italic;font-size: small; padding-top:10px">By clicking submit, you agree to comply with all requests to remove any
+                              content made available here from all in-store and online marketing materials within 10 days of receiving such a request
+                              from Amazon or its agents. Any failure to do so on your part may lead to your access to Amazon’s brand imagery and
+                              assets being revoked and/or the invalidation of any legal protections concerning marketing materials and assets that
+                              Amazon may make available to you under separate agreements between you and Amazon. You acknowledge and agree that any
+                              materials labeled for “Internal use only” cannot be made customer-facing, are for your internal training purposes only
+                              and are the confidential information of Amazon.
+                           </label>
+                        </div>
+                     </form>
+                  </iron-form>
+               </div>
+               <div class="card-actions">
+                  <paper-button on-tap="_submitRequest">SUBMIT</paper-button>
+               </div>
+            </paper-card>
+            <paper-material class="result layout horizontal" elevation="1">
+               <div class="center">
+                  Your request for a user account has successfully been submitted.
+               </div>
+            </paper-material>
+         </iron-pages>
+         <div class="footer"></div>
+      </div>
+      <div>
+      </div>
+   </template>
+   <script>
+      Polymer({
+         is: 'my-app',
+         properties: {
+            params: {
+               type: Object,
+               value: {}
+            },
+            selected: {
+               type: Number,
+               value: 0
+            },
+            list: {
+               type: Array,
+               value: [
+                  {
+                     "id": "US",
+                     "value": "US - United States"
+                  },
+                  {
+                     "id": "CA",
+                     "value": "CA - Canada"
+                  },
+                  {
+                     "id": "MX",
+                     "value": "MX - Mexico"
+                  },
+                  {
+                     "id": "AU",
+                     "value": "AU - Australia"
+                  },
+                  {
+                     "id": "BR",
+                     "value": "BR - Brazil"
+                  },
+                  {
+                     "id": "CN",
+                     "value": "CN - China"
+                  },
+                  {
+                     "id": "DE",
+                     "value": "DE - Germany"
+                  },
+                  {
+                     "id": "ES",
+                     "value": "ES - Spain"
+                  },
+                  {
+                     "id": "FR",
+                     "value": "FR - France"
+                  },
+                  {
+                     "id": "IN",
+                     "value": "IN - India"
+                  },
+                  {
+                     "id": "IT",
+                     "value": "IT - Italy"
+                  },
+                  {
+                     "id": "JP",
+                     "value": "JP - Japan"
+                  },
+                  {
+                     "id": "NL",
+                     "value": "NL - Netherlands"
+                  },
+                  {
+                     "id": "NZ",
+                     "value": "NZ - New Zealand"
+                  },
+                  {
+                     "id": "UK",
+                     "value": "UK - United Kingdom"
+                  },
+                  {
+                     "id": "EU",
+                     "value": "EU - European Union"
+                  },
+                  {
+                     "id": "EMEA",
+                     "value": "EMEA - Europe - Middle East - Africa"
+                  },
+                  {
+                     "id": "NA",
+                     "value": "NA - North America"
+                  },
+               ]
+            }
+         },
+
+         _submitRequest: function () {
+            if (!this.$.form.validate()) return;
+            if (this.params.country) {
+               this.params.country = this.params.country.id;
+            }
+            this.$.xhr.body = JSON.stringify(this.params);
+            this.$.xhr.generateRequest();
+         },
+
+         _handleResponse: function (e) {
+            this.selected = 1;
+         },
+
+         _handleErrorResponse: function (e) {
+            if (e.detail.request.xhr.status == '409') {
+               this.$.email.invalid = true;
+               this.$.email.errorMessage = "Email already exists";
+            }
+         },
+
+         _isEqualTo(title, string) {
+            return title == string;
+         }
+
+      });
+   </script>
+</dom-module>

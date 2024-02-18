@@ -1,0 +1,266 @@
+<link rel="import" href="../../elements/nuxeo-se-collapse.html">
+<link rel="import" href="../../elements/amzd-keyword-suggestion.html">
+
+<!--
+`nuxeo-brandasset-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-brandasset-metadata-layout
+-->
+<dom-module id="nuxeo-brandasset-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+   
+    
+   
+
+    <div role="widget">
+      <label>Codename</label>
+      <div>[[document.properties.es:related_devices]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Marketing Streetname</label>
+      <div>[[document.properties.es:market_names]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Title</label>
+      <div>[[document.properties.dc:title]]</div>
+    </div>
+        
+    <div role="widget">
+      <label>Description</label>
+      <div>[[document.properties.dc:description]]</div>
+    </div>
+
+    <div role="widget">
+      <label>ASIN</label>
+      <div>[[document.properties.product:product_id]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Project Number</label>
+      <div>[[document.properties.project:agencies]]</div>
+    </div>
+
+    <template is="dom-if" if="[[hasFacet(document, 'AMZKeyword')]]">
+      <div role="widget">
+        <label>[[i18n('documentPage.keywords')]]<label>
+            <div>
+              <amzd-keyword-suggestion document="[[document]]" allow-new-keywords>
+              </amzd-keyword-suggestion>
+            </div>
+      </div>
+    </template>
+
+    <div role="widget">
+      <label>Product Type</label>
+      <div>[[document.properties.product_search:product_type]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Product Line</label>
+      <div>[[document.properties.product_search:pl]]</div>
+    </div>
+
+    <div role="widget">
+      <nuxeo-directory-suggestion value="[[document.properties.amz:asset_type]]" label="Asset Type" readonly="true" directory-name="BrandStrategyType" role="widget"></nuxeo-directory-suggestion>
+      <!-- <label>Asset Type</label>
+      <div>[[document.properties.amz:asset_type]]</div> -->
+    </div>
+
+    <div role="widget">
+      <label>Placement</label>
+      <div></div>
+    </div>
+
+    <div role="widget">
+      <label>Standard Angles</label>
+      <div></div>
+    </div>
+
+    <div role="widget">
+      <label>Format</label>
+      <div>[[document.properties.dc:format]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Brand</label>
+      <div>[[document.properties.product_search:brand]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Associated Event</label>
+      <div>[[document.properties.product_search:brand]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Launch Collections</label>
+      <div>[[document.properties.launchcollection:collection]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Active Period</label>
+      <div></div>
+    </div>
+
+    <div role="widget">
+      <!-- <nuxeo-directory-suggestion value="[[document.properties.usage:language]]" label="Approved" readonly="true" directory-name="language_codes" multiple="true"role="widget"></nuxeo-directory-suggestion> -->
+      <!-- <label>Approved </label>
+      <div>[[document.properties.approval:distribute_ADH]]</div> -->
+    </div>
+
+    <div role="widget">
+      <label>Approval Date</label>
+      <div>[[document.properties.approval:tm_approvers]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Announce Date</label>
+      <div>[[formatDate(document.properties.product:production_date)]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Street Date</label>
+      <div>[[formatDate(document.properties.product:purchase_date)]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Expiration Date</label>
+      <div>[[document.properties.dc:expired]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Ownership</label>
+      <div>[[document.properties.amz:original_creator_name]]</div>
+    </div>
+
+    <div role="widget">
+      <label>***Status</label>
+      <div>[[document.properties.dc:expired]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Is Retouched Version</label>
+      <div>[[document.properties.amz:is_retouched_version]]</div>
+    </div>
+
+    <div role="widget">
+      <label>***Usage Rights Statement</label>
+      <div>[[document.properties.dc:expired]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Talent</label>
+      <div>[[document.properties.talent:nationality]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Restrictions</label>
+      <div>[[document.properties.dc:rights]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Producer</label>
+      <div>[[document.properties.userAccess:fName]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Project Manager</label>
+      <div>[[document.properties.project:vendors]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Creators</label>
+      <div>[[document.properties.amz:original_creator_name]]-[[document.properties.amz:creator_role]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Access Permissions</label>
+      <div>[[document.properties.userAccess:typeOfAccess]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Release Year</label>
+      <div>[[document.properties.product:year]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Retail Asset Use </label>
+      <div>[[document.properties.amz:retailAssetUse]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Notes </label>
+      <div>[[document.properties.note:note]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Related Devcies and Accessories</label>
+      <div>[[document.properties.relations:product]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Related Content</label>
+      <div>[[document.properties.relations:referenceItem]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Distribution</label>
+      <div>[[document.properties.relations:product]]</div>
+    </div>
+
+    <div role="widget">
+      <!-- <label>Approved Locations</label>
+      <div>[[document.properties.usage:geography]]</div> -->
+      <nuxeo-directory-suggestion value="[[document.properties.usage:geography]]" label="Approved Locations" readonly="true" directory-name="language_codes" multiple="true"role="widget"></nuxeo-directory-suggestion>
+    </div>
+
+    <div role="widget">
+      <!-- <label>Approved Languages</label>
+      <div>[[document.properties.usage:language]]</div> -->
+      <nuxeo-directory-suggestion value="[[document.properties.usage:language]]" label="Approved Languages" readonly="true" directory-name="language_codes" multiple="true"role="widget"></nuxeo-directory-suggestion>
+    </div>
+
+    <div role="widget">
+      <nuxeo-directory-suggestion value="[[document.properties.amz:language]]" label="Content Language" readonly="true" directory-name="language_codes" role="widget"></nuxeo-directory-suggestion>
+
+      <!-- <label>Content Language</label>
+      <div>[[document.properties.amz:language]]</div> -->
+    </div>
+
+    
+    
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:asset_category]]" label="Asset Category" readonly="true" directory-name="BrandStrategyCategory" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:asset_type]]" label="Asset Type" readonly="true" directory-name="BrandStrategyType" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="[[document.properties.amz:retailAssetUse]]" label="Retail Asset Use" readonly="true" directory-name="amzdAssetCategory" name="retailAssetUse" role="widget"></nuxeo-directory-suggestion>
+
+    <amzd-amazon-metadata-layout document="[[document]]"></amzd-amazon-metadata-layout>
+
+    <pclm-usage-view-layout document="[[document]]"></pclm-usage-view-layout>
+
+    <pclm-relations-view-layout document="[[document]]"></pclm-relations-view-layout>
+
+    <amzd-approval-schema-view-layout document="[[document]]"></amzd-approval-schema-view-layout>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-brandasset-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      document: {
+        type: Object,
+      },
+    }
+  });
+  </script>
+</dom-module>

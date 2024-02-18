@@ -1,0 +1,101 @@
+<!--
+`nuxeo-product-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-product-metadata-layout
+-->
+<dom-module id="nuxeo-product-metadata-layout">
+  <template>
+    <style include="nuxeo-styles">
+      *[role=widget] {
+        padding: 5px;
+      }
+      label {
+        font-weight: var(--nuxeo-label_-_font-weight);
+        text-decoration: var(--nuxeo-label_-_text-decoration);
+      }
+      label:after {
+        content: var(--nuxeo-label-after_-_content);
+      }
+    </style>
+
+    <div role="widget"><label>Public Codename</label><div>[[_getDeviceName(document.properties.dc:title)]]</div></div>
+
+    <div role="widget"><label>ASIN</label><div>[[document.properties.product:product_id]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion value="[[document.properties.product:pl]]" label="Product Line" readonly="true" directory-name="Product_Line" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="{{document.properties.product:year}}" label="Year" directory-name="year" min-chars="0" readonly="true"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="[[document.properties.product:brand]]" label="Brand" readonly="true" directory-name="Brand" role="widget"></nuxeo-directory-suggestion>
+
+    <div role="widget"><label>Generation</label><div>[[document.properties.product:generation]]</div>
+    </div>
+
+    <div role="widget"><label>Version</label><div>[[document.properties.product:version]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion value="[[document.properties.product:category]]" label="Category" readonly="true" directory-name="ProductCategories" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="[[document.properties.product:product_type]]" label="Type" readonly="true" directory-name="Product_Type" role="widget"></nuxeo-directory-suggestion>
+
+    <div role="widget"><label>Size</label><div>[[document.properties.product:size]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion value="[[document.properties.product:launch_countries]]" label="Launch Countries" readonly="true" multiple="true" directory-name="Approved_Locations" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-document-suggestion value="[[document.properties.product:supported_device]]" label="Supported Device" multiple="true" readonly="true" role="widget"></nuxeo-document-suggestion>
+
+    <div role="widget"><label>Color</label><div>[[document.properties.product:color]]</div>
+    </div>
+
+    <div role="widget"><label>Product Life</label><div>[[document.properties.product:product_life]]</div>
+    </div>
+
+    <div role="widget"><label>Announce Date</label><div>[[formatDate(document.properties.product:production_date)]]</div>
+    </div>
+
+    <div role="widget"><label>Street Date</label><div>[[formatDate(document.properties.product:purchase_date)]]</div>
+    </div>
+
+    <div role="widget"><label>T-Week</label><div>[[document.properties.product:tminus_week]]</div>
+    </div>
+
+    <nuxeo-user-suggestion value="[[document.properties.product:device_asset_access_read]]" label="Read Device Asset Access" multiple="true" readonly="true" search-type="USER_GROUP_TYPE" role="widget"></nuxeo-user-suggestion>
+
+    <nuxeo-user-suggestion value="[[document.properties.product:device_asset_access_create]]" label="Create Device Asset Access" multiple="true" readonly="true" search-type="USER_GROUP_TYPE" role="widget"></nuxeo-user-suggestion>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-product-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior,Nuxeo.PclmFormBehavior],
+    properties: {
+
+      /**
+         * @doctype Product
+         */
+      document: {
+        type: Object,
+      },
+
+    },
+    
+    _getDeviceName: function(docTitle) {
+      let deviceName = docTitle;
+      if (this.document.properties['product:purchase_date'] && this.document.properties['product:market_name']) {
+        let streetDate = new Date(this.document.properties['product:purchase_date']);
+        if (streetDate != 'Invalid Date') {
+          let now = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+          if (streetDate < now) {
+            deviceName = this.document.properties['product:market_name'];
+          }
+        }
+      }
+      return deviceName;
+    }
+    
+  });
+  </script>
+</dom-module>

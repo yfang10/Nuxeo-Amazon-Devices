@@ -1,0 +1,61 @@
+<link rel="import" href="../../nuxeo-dam/nuxeo-picture-info.html">
+<link rel="import" href="../../nuxeo-dam/nuxeo-picture-formats.html">
+<link rel="import" href="../widgets/pclm-iptc-metadata.html">
+<link rel="import" href="../widgets/pclm-exif-metadata.html">
+
+<!--
+`nuxeo-picture-document-page`
+@group Nuxeo UI
+@element nuxeo-picture-document-page
+-->
+<dom-module id="pclm-picture-document-page">
+  <template>
+    <style>
+      .additional {
+        @apply --layout-horizontal;
+        @apply --layout-justified;
+        @apply --layout-wrap;
+        margin: -5px;
+      }
+
+      nuxeo-card {
+        @apply --layout-flex;
+        padding-right: 1.3rem;
+        padding-bottom: 1.3rem;
+        min-width: 384px;
+        margin: 5px;
+      }
+    </style>
+
+    <nuxeo-document-page document="[[document]]" opened></nuxeo-document-page>
+
+    <div class="additional">
+      <nuxeo-card heading="[[i18n('pictureViewLayout.info')]]">
+        <nuxeo-picture-info role="widget" document="[[document]]"></nuxeo-picture-info>
+      </nuxeo-card>
+
+      <nuxeo-card heading="[[i18n('pictureViewLayout.formats')]]">
+        <nuxeo-picture-formats role="widget" document="[[document]]"></nuxeo-picture-formats>
+      </nuxeo-card>
+
+      <nuxeo-card heading="[[i18n('pictureViewLayout.exif')]]">
+        <pclm-exif-metadata role="widget" document="[[document]]"></pclm-exif-metadata>
+      </nuxeo-card>
+
+      <nuxeo-card heading="[[i18n('pictureViewLayout.iptc')]]">
+        <pclm-iptc-metadata role="widget" document="[[document]]"></pclm-iptc-metadata>
+      </nuxeo-card>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'pclm-picture-document-page',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        document: {
+          type: Object
+        }
+      }
+    });
+  </script>
+</dom-module>

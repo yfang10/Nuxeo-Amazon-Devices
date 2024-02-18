@@ -1,0 +1,31 @@
+<!--
+`nuxeo-namecollection-view-layout`
+@group Nuxeo UI
+@element nuxeo-namecollection-view-layout
+-->
+<dom-module id="nuxeo-namecollection-view-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-namecollection-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype NameCollection
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,112 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+
+<!--
+`nuxeo-inventoryitem-import-layout`
+@group Nuxeo UI
+@element nuxeo-inventoryitem-import-layout
+-->
+<dom-module id="nuxeo-inventoryitem-import-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <nuxeo-input name="title" role="widget" value="{{document.properties.dc:title}}"
+                 label="[[i18n('title')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="dc:description" role="widget" value="{{document.properties.dc:description}}"
+                 label="[[i18n('label.description')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:brand" role="widget" value="{{document.properties.product:brand}}"
+                 label="[[i18n('label.product.brand')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:color" role="widget" value="{{document.properties.product:color}}"
+                 label="[[i18n('label.product.color')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:color_code" role="widget" value="{{document.properties.product:color_code}}"
+                 label="[[i18n('label.product.color_code')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:gtin13" role="widget" value="{{document.properties.product:gtin13}}"
+                 label="[[i18n('label.product.gtin13')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:height" role="widget" value="{{document.properties.product:height}}"
+                 label="[[i18n('label.product.height')]]" type="number" step="0.01">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:manufacturer" role="widget" value="{{document.properties.product:manufacturer}}"
+                 label="[[i18n('label.product.manufacturer')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:model" role="widget" value="{{document.properties.product:model}}"
+                 label="[[i18n('label.product.model')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:mpn" role="widget" value="{{document.properties.product:mpn}}"
+                 label="[[i18n('label.product.mpn')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:product_id" role="widget" value="{{document.properties.product:product_id}}"
+                 label="[[i18n('label.product.product_id')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-date-picker name="product:production_date" role="widget" value="{{document.properties.product:production_date}}"
+                       label="[[i18n('label.product.production_date')]]">
+    </nuxeo-date-picker>
+
+    <nuxeo-date-picker name="product:purchase_date" role="widget" value="{{document.properties.product:purchase_date}}"
+                       label="[[i18n('label.product.purchase_date')]]">
+    </nuxeo-date-picker>
+
+    <nuxeo-input name="product:sku" role="widget" value="{{document.properties.product:sku}}"
+                 label="[[i18n('label.product.sku')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:weight" role="widget" value="{{document.properties.product:weight}}"
+                 label="[[i18n('label.product.weight')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:width" role="widget" value="{{document.properties.product:width}}"
+                 label="[[i18n('label.product.width')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:alternateName" role="widget" value="{{document.properties.product:alternateName}}"
+                 label="[[i18n('label.product.alternateName')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-data-table name="product:features" role="widget" label="[[i18n('label.product.features')]]"
+                      items="{{document.properties.product:features}}" orderable="true" editable="true">
+      <nuxeo-data-table-column name="[[i18n('label.product.feature')]]">
+        <template>
+          [[item.description]]
+        </template>
+      </nuxeo-data-table-column>
+      <nuxeo-data-table-form>
+        <template>
+          <nuxeo-input value="{{item.description}}" label="[[i18n('label.product.feature')]]" type="text"></nuxeo-input>
+        </template>
+      </nuxeo-data-table-form>
+    </nuxeo-data-table>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-inventoryitem-import-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Product
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

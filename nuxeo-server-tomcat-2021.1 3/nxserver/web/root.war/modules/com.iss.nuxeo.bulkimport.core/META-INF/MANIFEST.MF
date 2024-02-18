@@ -1,0 +1,17 @@
+Manifest-Version: 2021.20.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: TCha54
+Build-Jdk: 11.0.15.1
+Bundle-ManifestVersion: 1
+Bundle-Version: 2021.20.0
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Bundle-Vendor: com.iss.nuxeo
+Bundle-Name: ISoftstone S3 Bulk Importer
+Bundle-SymbolicName: com.iss.nuxeo.bulkimport.core;singleton=true
+Nuxeo-WebModule: com.iss.nuxeo.bulkimport.jaxrs.BulkImportWebApp;name=
+ isoftstone-s3-bulk-importer-core;extends=base
+Nuxeo-Component: OSGI-INF/bulkimport-contrib.xml, OSGI-INF/bulkimport-
+ filesource-manager.xml
+

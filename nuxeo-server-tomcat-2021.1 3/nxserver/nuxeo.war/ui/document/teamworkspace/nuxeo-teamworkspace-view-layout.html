@@ -1,0 +1,402 @@
+<!--
+`nuxeo-teamworkspace-view-layout`
+@group Nuxeo UI
+@element nuxeo-teamworkspace-view-layout
+-->
+<dom-module id="nuxeo-teamworkspace-view-layout">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      *[role=widget] {
+        padding: 5px;
+      }
+
+      nuxeo-results {
+        --nuxeo-document-content-min-height: calc(100vh - 256px - var(--nuxeo-app-top));
+      }
+
+      .results {
+        @apply --layout-vertical;
+        @apply --layout-flex;
+        min-height: var(--nuxeo-document-content-min-height, calc(100vh - 216px - var(--nuxeo-app-top)));
+        margin-bottom: var(--nuxeo-document-content-margin-bottom, 0);
+      }
+
+      .results.dragging{
+        border: 2px dashed var(--nuxeo-primary-color);
+      }
+
+      .ellipsis {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+        width: calc(100% - 38px);
+      }
+
+      .capitalize {
+        text-transform: capitalize;
+      }
+
+      nuxeo-tag {
+        margin-right: 2px;
+      }
+
+      nuxeo-justified-grid {
+        height: calc(100vh - 10em);
+      }
+
+      .participants {
+        @apply --layout-vertical;
+        @apply --layout-flex;
+      }
+
+      .participant {
+        @apply --layout-horizontal;
+        @apply --layout-flex;
+      }
+
+      .role {
+        padding-left:8px;
+      }
+
+    </style>
+    <nuxeo-page-provider id="nxProvider"
+                         provider="team-workspace-content"
+                         page-size="40"
+                         aggregations="{{aggregations}}"
+                         enrichers="thumbnail, permissions"
+                         params="[[params]]"
+                         schemas="dublincore,common,uid,file,request,relations,usage"
+                         headers='{ "X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label" }'
+                         fetch-aggregates>
+    </nuxeo-page-provider>
+
+    <nuxeo-results id="results"
+                   display-mode="table"
+                   name="[[document.uid]]"
+                   nx-provider="[[nxProvider]]"
+                   selected-items="{{selectedItems}}"
+                   document="[[document]]"
+                   display-quick-filters
+                   display-sort="[[_canSort(document, sortOptions)]]"
+                   sort-options="[[sortOptions]]">
+
+      <nuxeo-data-table name="table" icon="nuxeo:view-list"
+                        class="results"
+                        settings-enabled
+                        selection-enabled
+                        on-row-clicked="_navigate"
+                        draggable$="[[_hasWritePermission(document)]]" drop-target-filter="[[_dropTargetFilter]]">
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.title')]]"
+                                 field="dc:title" sort-by="[[_displaySort(document, 'dc:title')]]"
+                                 filter-by="dublincore_title"  flex="100">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail>
+            <a class="title ellipsis" href$="[[urlFor('browse', item.path)]]" on-tap="_navigate">[[item.title]]</a>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.type')]]" field="type" hidden>
+          <template>
+            <nuxeo-tag>[[item.type]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.created')]]"
+                                 field="dc:created" sort-by="[[_displaySort(document, 'dc:created')]]"
+                                 flex="50">
+          <template>
+            <nuxeo-date datetime="[[item.properties.dc:created]]"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.author')]]"
+                                 filter-by="dublincore_creator_agg" flex="50"
+                                 field="dc:creator" sort-by="[[_displaySort(document, 'dc:creator')]]">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                                        placeholder="[[i18n('documentContentView.datatable.header.author')]]"
+                                        data="[[aggregations.dublincore_creator_agg]]"
+                                        value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:creator]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.modified')]]"
+                                 field="dc:modified" sort-by="[[_displaySort(document, 'dc:modified')]]"
+                                 filter-by="dublincore_modified_agg"
+                                 flex="50" hidden>
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                    placeholder="[[i18n('documentContentView.datatable.header.modified')]]"
+                    data="[[aggregations.dublincore_modified_agg]]"
+                    value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-date datetime="[[item.properties.dc:modified]]"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.lastContributor')]]"
+                                 filter-by="dc_last_contributor_agg" field="dc:lastContributor"
+                                 sort-by="[[_displaySort(document, 'dc:lastContributor')]]" flex="50" hidden>
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                    placeholder="[[i18n('documentContentView.datatable.header.lastContributor')]]"
+                    data="[[aggregations.dc_last_contributor_agg]]"
+                    value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:lastContributor]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+
+        <nuxeo-data-table-column name="[[i18n('label.request.deliverables')]]"
+                                 field="request:deliverables" flex="50"
+                                 sort-by="request:deliverables/type" hidden>
+          <template>
+            <div class="participants">
+              <dom-repeat items="{{item.properties.request:deliverables}}">
+                <template>
+                  <div class="participant">
+                    <span class="nowrap">[[formatDirectory(item.type)]]</span>
+                    <span class="nowrap role">[[item.description]]</span>
+                  </div>
+                </template>
+              </dom-repeat>
+            </div>
+          </template>
+        </nuxeo-data-table-column>
+
+
+        <nuxeo-data-table-column name="[[i18n('label.request.internal.participants')]]"
+                                 field="request:internal_participants" flex="50"
+                                 sort-by="request:internal_participants/username"
+                                 filter-by="request_internal_participants_username_agg">
+
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                                        placeholder="[[i18n('label.request.internal.participants')]]"
+                                        data="[[aggregations.request_internal_participants_username_agg]]"
+                                        value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <div class="participants">
+              <dom-repeat items="{{item.properties.request:internal_participants}}">
+                <template>
+                  <div class="participant">
+                    <nuxeo-user-tag user="[[item.username]]"></nuxeo-user-tag>
+                    <span class="nowrap role">[[formatDirectory(item.role)]]</span>
+                  </div>
+                </template>
+              </dom-repeat>
+            </div>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.request.external.participants')]]"
+                                 field="request:external_participants" flex="50"
+                                 sort-by="request:external_participants/name" hidden>
+          <template>
+            <div class="participants">
+              <dom-repeat items="{{item.properties.request:external_participants}}">
+                <template>
+                  <div class="participant">
+                    <span class="nowrap">[[item.name]]</span>
+                    <span class="nowrap role">[[formatDirectory(item.role)]]</span>
+                  </div>
+                </template>
+              </dom-repeat>
+            </div>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.request.additional_dates')]]"
+                                 field="request:additional_dates" flex="50"
+                                 sort-by="request:additional_dates/date" hidden>
+          <template>
+            <div class="participants">
+              <dom-repeat items="{{item.properties.request:additional_dates}}">
+                <template>
+                  <div class="participant">
+                    <span class="nowrap">[[formatDate(item.date)]]</span>
+                    <span class="nowrap role">[[item.type]]</span>
+                  </div>
+                </template>
+              </dom-repeat>
+            </div>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.relations.products')]]" field="relations:products"
+                              	 filter-by="relations_products_agg" flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                                        placeholder="[[i18n('label.relations.products')]]"
+                                        data="[[aggregations.relations_products_agg]]"
+                                        value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-document-suggestion value="[[item.properties.relations:products]]"
+                                     readonly="readonly" multiple>
+            </nuxeo-document-suggestion>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.relations.talents')]]" field="relations:talents" hidden
+                              	 filter-by="relations_talents_agg" flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                                        placeholder="[[i18n('label.relations.talents')]]"
+                                        data="[[aggregations.relations_talents_agg]]"
+                                        value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-document-suggestion value="[[item.properties.relations:talents]]"
+                                     readonly="readonly" multiple>
+            </nuxeo-document-suggestion>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.relations.locations')]]" field="relations:locations" hidden
+                              	 filter-by="relations_locations_agg" flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                                        placeholder="[[i18n('label.relations.locations')]]"
+                                        data="[[aggregations.relations_locations_agg]]"
+                                        value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-document-suggestion value="[[item.properties.relations:locations]]"
+                                     readonly="readonly" multiple>
+            </nuxeo-document-suggestion>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.relations.usages')]]" field="relations:usages" hidden
+                              	 filter-by="relations_usages_agg" flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                                        placeholder="[[i18n('label.relations.usages')]]"
+                                        data="[[aggregations.relations_usages_agg]]"
+                                        value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-document-suggestion value="[[item.properties.relations:usages]]"
+                                     readonly="readonly" multiple>
+            </nuxeo-document-suggestion>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.usage.channel')]]" field="usage:channel"
+                                 sort-by="[[_displaySort(document, 'usage:channel')]]" hidden
+                              	 filter-by="usage_channel_agg" flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                                        placeholder="[[i18n('label.usage.channel')]]"
+                                        data="[[aggregations.usage_channel_agg]]"
+                                        value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+              [[formatDirectory(item.properties.usage:channel)]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.usage.geography')]]" field="usage:geography"
+                                 sort-by="[[_displaySort(document, 'usage:geography')]]" hidden
+                                 filter-by="usage_geography_agg" flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                                        placeholder="[[i18n('label.usage.geography')]]"
+                                        data="[[aggregations.usage_geography_agg]]"
+                                        value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+               [[formatDirectory(item.properties.usage:geography)]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.usage.rights_type')]]" field="usage:rights_type"
+                                 sort-by="[[_displaySort(document, 'usage:rights_type')]]" hidden
+                              	 filter-by="usage_rights_type_agg" flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                                        placeholder="[[i18n('label.usage.rights_type')]]"
+                                        data="[[aggregations.usage_rights_type_agg]]"
+                                        value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+              [[formatDirectory(item.properties.usage:rights_type)]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.version')]]"
+                                 field="versionLabel" hidden>
+          <template>
+            [[formatVersion(item)]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.state')]]"
+                                 field="currentLifeCycleState" flex="50"
+                                 sort-by="[[_displaySort(document, 'ecm:currentLifeCycleState')]]"
+                                 filter-by="system_currentLifeCycleState_agg">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                                        placeholder="[[i18n('documentContentView.datatable.header.state')]]"
+                                        data="[[aggregations.system_currentLifeCycleState_agg]]"
+                                        value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+
+          <template><span class="capitalize">[[formatLifecycleState(item.state)]]</span></template>
+        </nuxeo-data-table-column>
+
+
+
+      </nuxeo-data-table>
+    </nuxeo-results>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-teamworkspace-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.DocumentContentBehavior],
+      properties: {
+
+        /**
+         * @doctype TeamWorkspace
+         */
+        document: {
+          type: Object,
+        },
+
+      },
+
+      _computeParams: function(document) {
+        return document ? { 'system_parentId': document.uid, 'system_isTrashed': this.isTrashed(document) } :
+                          {};
+      }
+
+    });
+  </script>
+</dom-module>

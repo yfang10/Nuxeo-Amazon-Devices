@@ -1,0 +1,222 @@
+<link rel="import" href="../styles/pclm-form-styles.html">
+
+<!--
+`pclm-approval-start-action`
+@group Nuxeo UI
+@element pclm-approval-start-action
+-->
+<dom-module id="pclm-approval-start-action">
+  <template>
+    <style include="nuxeo-action-button-styles pclm-form-styles">
+      .content {
+        @apply(--layout-vertical);
+      }
+
+      nuxeo-select {
+        margin-bottom: 32px !important;
+      }
+    </style>
+
+    <nuxeo-operation id="startWfOp" input="[[input]]" params="[[params]]"
+                     op="javascript.api_asset_approval_wf_start">
+    </nuxeo-operation>
+
+    <dom-if if="[[_isAvailable(document, selection)]]">
+      <template>
+        <paper-icon-button id="bt" icon="[[icon]]" on-tap="_ok"></paper-icon-button>
+        <paper-tooltip for="bt">[[i18n(label)]]</paper-tooltip>
+         <span class="label" hidden$="[[!showLabel]]">[[i18n(label)]]</span>
+      </template>
+    </dom-if>
+
+    <!-- <nuxeo-dialog id="dialog" on-iron-overlay-closed="_dialogClosed" with-backdrop>
+      <h2>[[i18n(label)]]</h2>
+      <div class="content">
+
+        <nuxeo-select role="widget" label="[[i18n('label.action.select.workflow')]]"
+                      options="[[workflowOptions]]" selected="{{workflow}}">
+        </nuxeo-select>
+
+        <iron-form id="form">
+          <form>
+
+            <!-- <template is="dom-if" if="[[_is(workflow,'OneStageApproval')]]" restamp>
+              <nuxeo-user-suggestion role="widget" value="{{variables.approver}}"
+                                     label="[[i18n('label.task.variables.approver')]]"
+                                     search-type="USER_TYPE" required></nuxeo-user-suggestion>
+            </template> -->
+
+        <!--    <template is="dom-if" if="[[_is(workflow,'TwoStageApproval')]]" restamp>
+              <nuxeo-user-suggestion role="widget" value="{{variables.first_level_approver}}"
+                                     label="[[i18n('label.task.variables.first_level_approver')]]"
+                                     search-type="USER_TYPE" required></nuxeo-user-suggestion>
+
+              <nuxeo-user-suggestion role="widget" value="{{variables.second_level_approver}}"
+                                     label="[[i18n('label.task.variables.second_level_approver')]]"
+                                     search-type="USER_TYPE" required></nuxeo-user-suggestion>
+            </template>
+
+            <!--nuxeo-textarea role="widget" value="{{params.comment}}"
+                            placeholder="[[i18n('tasks.assignment.comment')]]"
+                            label="[[i18n('wf.serialDocumentReview.comment')]]">
+            </nuxeo-textarea-->
+
+    <!--      </form>
+        </iron-form>
+      </div>
+      <div class="buttons">
+        <paper-button noink dialog-dismiss on-tap="_close">
+          [[i18n('label.dialog.button.cancel')]]
+        </paper-button>
+        <paper-button id="proceed" noink class="primary" on-tap="_ok">
+          [[i18n('label.dialog.button.proceed')]]
+        </paper-button>
+      </div>
+    </nuxeo-dialog> -->
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-approval-start-action',
+      behaviors: [Nuxeo.I18nBehavior,Nuxeo.FiltersBehavior,Nuxeo.RoutingBehavior],
+      properties: {
+
+        document: {
+          type: Object
+        },
+
+        /**
+         * Label to display in the action button.
+         */
+        label: {
+          type: String,
+          value: 'label.action.start.approval'
+        },
+
+        /**
+         * `true` if the action should display the label, `false` otherwise.
+         */
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        /**
+         * Icon to use (iconset_name:icon_name) in the action button.
+         */
+        icon: {
+          type: String,
+          value: 'icons:check-box'
+        },
+
+        selection: {
+          type:Array
+        },
+
+        workflowOptions: {
+          type: Array,
+          computed: '_computeWorkflowOptions()'
+        },
+
+        variables: {
+          type: Object,
+          value: function() {
+            return {};
+          }
+        },
+
+        params: {
+          type: Object,
+          value: function() {
+            return {};
+          }
+        }
+      },
+
+			_toggleDialog: function() {
+        this.$.dialog.toggle();
+      },
+
+      /**
+       * Callback executed when the user presses the "ok" button.
+       */
+      _ok: function() {
+        //if (!this.$.form.validate()) return;
+        if (this.selection && this.selection.length && this.selection.length>0) {
+          this.input = this.selection;
+        } else {
+          this.input = [this.document];
+        }
+        this.params.wfname = "OneStageApproval";
+        this.params.variables = JSON.stringify(this.variables);
+        //this.$.proceed.disabled = true;
+        this.$.startWfOp.execute().then(function(response) {
+          this.fire('notify', {
+            message: this.i18n('label.action.start.approval.sucess')
+          });
+          this.fire('document-updated');
+          //this._toggleDialog();
+          //this.$.proceed.disabled = false;
+        }.bind(this),function(error) {
+          this.fire('notify', {
+            message: this.i18n('label.action.start.approval.error')
+          });
+          //this.$.proceed.disabled = false;
+        }.bind(this));;
+      },
+
+      /**
+       * Callback executed when the user presses the "close" button.
+       *
+       * Note that the "close" button already have a "dialog-dismiss" property that makes the button close the dialog
+       * when clicked. If you don't need to perform additional actions, this method is not needed.
+       */
+      _close: function() {
+        // implement me
+      },
+
+      /**
+       * Useful callback to execute some action after the dialog is closed. Can be removed if it's not necessary.
+       */
+      _dialogClosed: function() {
+        // implement me
+      },
+
+      _isAvailable(document, selection) {
+          if(document) {
+            return true;
+          }
+					const notAllowed = ['SubFolder','Fixture','Shoot','Planning'];
+          if(selection && selection.length && selection.length > 0) {
+            for(var i = 0; i < selection.length; i++) {
+              if(notAllowed.includes(selection[i].type)) {
+                return false;
+              }
+              continue;
+            }
+          }
+          return true;
+      },
+
+
+      _computeWorkflowOptions: function(document) {
+        return [
+          {
+            id: "OneStageApproval",
+            label: this.i18n('OneStageApproval'),
+          },{
+            id: "TwoStageApproval",
+            label: this.i18n('TwoStageApproval'),
+          }
+        ];
+      },
+
+      _is: function(workflow,id) {
+       return id === workflow;
+      }
+
+
+    });
+  </script>
+</dom-module>

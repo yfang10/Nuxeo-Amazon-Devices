@@ -1,0 +1,46 @@
+<!--
+`nuxeo-splashconfig-create-layout`
+@group Nuxeo UI
+@element nuxeo-splashconfig-create-layout
+-->
+<dom-module id="nuxeo-splashconfig-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Name" type="Title" required="true" name="title"></nuxeo-input>
+
+    <nuxeo-textarea role="widget" label="[[i18n('label.description')]]" name="dc:description" value="{{document.properties.dc:description}}"></nuxeo-textarea>
+    
+     <nuxeo-input role="widget" value="{{document.properties.splashconfig:optionalTitle}}" label="Display Banner" name="optionalTitle"></nuxeo-input>
+    
+    <nuxeo-input role="widget" value="{{document.properties.quickLink:order}}" required="true" label="Order" type="number" min="1" name="order"></nuxeo-input>
+    
+    <nuxeo-dropzone role="widget" label="Thumbnail(175x175)" name="content" document="[[document]]"></nuxeo-dropzone>
+
+    <div role="widget">
+      <label>Active</label>
+      <paper-checkbox checked="{{document.properties.quickLink:active}}" name="active"></paper-checkbox>
+    </div>
+    
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-splashconfig-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype SplashConfig
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

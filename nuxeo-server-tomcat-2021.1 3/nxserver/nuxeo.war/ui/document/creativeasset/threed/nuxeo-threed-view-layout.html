@@ -1,0 +1,38 @@
+<!--
+`nuxeo-threed-view-layout`
+@group Nuxeo UI
+@element nuxeo-threed-view-layout
+-->
+<dom-module id="nuxeo-threed-view-layout">
+  <template>
+    <style include="nuxeo-styles">
+      nuxeo-3d-preview,
+      nuxeo-3d-render-views,
+      nuxeo-3d-transmission-formats {
+        @apply --paper-card;
+      }
+    </style>
+
+    <nuxeo-3d-preview document="{{document}}"></nuxeo-3d-preview>
+    <nuxeo-3d-render-views document="{{document}}"></nuxeo-3d-render-views>
+    <nuxeo-3d-transmission-formats document="{{document}}"></nuxeo-3d-transmission-formats>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-threed-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype ThreeD
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

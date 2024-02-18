@@ -1,0 +1,58 @@
+<link rel="import" href="layouts/dam-home-single-image-layout.html">
+<!--
+`dam-home-element`
+@group Nuxeo UI
+@element dam-home-element
+-->
+<dom-module id="dam-home-element">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+    
+      .collapse {
+        width:100%
+      }
+      
+      .collapse .icon {
+        margin: 0 auto;
+        display: block;
+      }
+
+    </style>
+
+    <iron-collapse id="collapse" opened="{{opened}}">
+      <dam-home-single-image-layout id="damHomeLayout"></dam-home-single-image-layout>
+    </iron-collapse>
+    <div class="collapse">
+      <iron-icon class="icon" icon="[[_getIcon(opened)]]" on-tap="_toggle"></iron-icon>
+    </div>
+
+    
+  </template>
+
+  <script>
+  Polymer({
+    is: 'dam-home-element',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      opened: {
+        type: Boolean,
+        value: true
+      }
+    },
+    
+    _toggle: function() {
+      const collapsibleElement = this.shadowRoot.querySelector('#collapse');
+      collapsibleElement.toggle();
+    },
+    
+    _getIcon:function(opened) {
+			return opened ? "icons:expand-less" : "icons:expand-more";
+    },
+
+    refresh: function() {
+      this.$.damHomeLayout.refresh();
+    }
+
+  });
+  </script>
+</dom-module>

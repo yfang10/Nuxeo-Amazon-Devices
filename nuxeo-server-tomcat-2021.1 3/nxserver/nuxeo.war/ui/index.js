@@ -1,0 +1,2 @@
+/*! For license information please see index.js.LICENSE.txt */
+import".${window.location.pathname}/nuxeo-wopi-link.js";import html from"./nuxeo-wopi.html";const Nuxeo=window.Nuxeo||{};Nuxeo.UI=Nuxeo.UI||{},Nuxeo.UI.config=Nuxeo.UI.config||{},Nuxeo.UI.config.enrichers=Nuxeo.UI.config.enrichers||{},Nuxeo.UI.config.enrichers.blob=Nuxeo.UI.config.enrichers.blob||[],Nuxeo.UI.config.enrichers.blob.push("wopi");const tmpl=document.createElement("template");tmpl.innerHTML=html,document.head.appendChild(tmpl.content);

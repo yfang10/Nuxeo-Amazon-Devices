@@ -1,0 +1,113 @@
+<link rel="import" href="../behaviors/pclm-form-behavior.html">
+
+<dom-module id="pclm-exif-metadata">
+  <template>
+
+    <style include="nuxeo-styles">
+      .properties label {
+        min-width: 10em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .item {
+        @apply --layout-horizontal;
+        @apply --layout-flex;
+        line-height: 2.2rem;
+      }
+    </style>
+
+    <div class="properties">
+      <div hidden$="[[_isEmpty(document,'imd:date_time_original')]]">
+        <div class="item" >
+          <label>[[i18n('label.picture.exif.date')]]</label>
+          <div name="imd:date_time_original">[[formatDate(document.properties.imd:date_time_original)]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:copyright')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.copyright')]]</label>
+          <div name="imd:copyright">[[document.properties.imd:copyright]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:equipment')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.equipment')]]</label>
+          <div name="imd:equipment">[[document.properties.imd:equipment]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:iso_speed_ratings')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.iso')]]</label>
+          <div name="imd:iso_speed_ratings">[[document.properties.imd:iso_speed_ratings]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:exposure_time')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.exposure.time')]]</label>
+          <div name="imd:exposure_time">[[document.properties.imd:exposure_time]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:fnumber')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.fnumber')]]</label>
+          <div name="imd:fnumber">[[document.properties.imd:fnumber]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:focal_length')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.focal.length')]]</label>
+          <div name="imd:focal_length">[[document.properties.imd:focal_length]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:orientation')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.orientation')]]</label>
+          <div name="imd:orientation">[[document.properties.imd:orientation]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:white_balance')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.white.balance')]]</label>
+          <div name="imd:white_balance">[[document.properties.imd:white_balance]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:color_space')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.color.space')]]</label>
+          <div name="imd:color_space">[[document.properties.imd:color_space]]</div>
+        </div>
+      </div>
+
+      <div hidden$="[[_isEmpty(document,'imd:icc_profile')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.icc.profile')]]</label>
+          <div name="imd:icc_profile">[[document.properties.imd:icc_profile]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:image_description')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.image.description')]]</label>
+          <div name="imd:image_description">[[document.properties.imd:image_description]]</div>
+        </div>
+      </div>
+      <div hidden$="[[_isEmpty(document,'imd:user_comment')]]">
+        <div class="item">
+          <label>[[i18n('label.picture.exif.user.comment')]]</label>
+          <div name="imd:user_comment">[[document.properties.imd:user_comment]]</div>
+        </div>
+      </div>
+    </div>
+
+  </template>
+  <script>
+  Polymer({
+    is: 'pclm-exif-metadata',
+    behaviors: [Nuxeo.LayoutBehavior,Nuxeo.PclmFormBehavior],
+    properties: {
+      document: {
+        type: Object
+      }
+    }
+  });
+  </script>
+</dom-module>

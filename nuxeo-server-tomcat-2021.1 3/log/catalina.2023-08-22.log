@@ -1,0 +1,77 @@
+2023-08-22 14:19:03 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[679]毫秒内初始化
+2023-08-22 14:20:01 信息 [main] org.apache.catalina.startup.Catalina.start [58391]毫秒后服务器启动
+2023-08-22 16:27:20 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-22 16:30:42 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[886]毫秒内初始化
+2023-08-22 16:31:55 信息 [main] org.apache.catalina.startup.Catalina.start [72499]毫秒后服务器启动
+2023-08-22 16:31:55 严重 [http-nio-0.0.0.0-8080-Acceptor] org.apache.tomcat.util.net.NioEndpoint.setSocketOptions 设置套接字选项时出错
+	java.net.SocketException: Invalid argument
+		at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+		at java.base/sun.nio.ch.Net.setSocketOption(Net.java:373)
+		at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:234)
+		at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:280)
+		at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:315)
+		at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:219)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:503)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:79)
+		at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:149)
+		at java.base/java.lang.Thread.run(Thread.java:834)
+2023-08-22 16:31:55 严重 [http-nio-0.0.0.0-8080-Acceptor] org.apache.tomcat.util.net.NioEndpoint.setSocketOptions 设置套接字选项时出错
+	java.net.SocketException: Invalid argument
+		at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+		at java.base/sun.nio.ch.Net.setSocketOption(Net.java:373)
+		at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:234)
+		at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:280)
+		at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:315)
+		at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:219)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:503)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:79)
+		at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:149)
+		at java.base/java.lang.Thread.run(Thread.java:834)
+2023-08-22 16:31:55 严重 [http-nio-0.0.0.0-8080-Acceptor] org.apache.tomcat.util.net.NioEndpoint.setSocketOptions 设置套接字选项时出错
+	java.net.SocketException: Invalid argument
+		at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+		at java.base/sun.nio.ch.Net.setSocketOption(Net.java:373)
+		at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:234)
+		at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:280)
+		at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:315)
+		at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:219)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:503)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:79)
+		at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:149)
+		at java.base/java.lang.Thread.run(Thread.java:834)
+2023-08-22 16:31:55 严重 [http-nio-0.0.0.0-8080-Acceptor] org.apache.tomcat.util.net.NioEndpoint.setSocketOptions 设置套接字选项时出错
+	java.net.SocketException: Invalid argument
+		at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+		at java.base/sun.nio.ch.Net.setSocketOption(Net.java:373)
+		at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:234)
+		at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:280)
+		at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:315)
+		at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:219)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:503)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:79)
+		at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:149)
+		at java.base/java.lang.Thread.run(Thread.java:834)
+2023-08-22 16:31:55 严重 [http-nio-0.0.0.0-8080-Acceptor] org.apache.tomcat.util.net.NioEndpoint.setSocketOptions 设置套接字选项时出错
+	java.net.SocketException: Invalid argument
+		at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+		at java.base/sun.nio.ch.Net.setSocketOption(Net.java:373)
+		at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:234)
+		at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:280)
+		at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:315)
+		at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:219)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:503)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:79)
+		at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:149)
+		at java.base/java.lang.Thread.run(Thread.java:834)
+2023-08-22 16:31:55 严重 [http-nio-0.0.0.0-8080-Acceptor] org.apache.tomcat.util.net.NioEndpoint.setSocketOptions 设置套接字选项时出错
+	java.net.SocketException: Invalid argument
+		at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+		at java.base/sun.nio.ch.Net.setSocketOption(Net.java:373)
+		at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:234)
+		at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:280)
+		at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:315)
+		at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:219)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:503)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:79)
+		at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:149)
+		at java.base/java.lang.Thread.run(Thread.java:834)

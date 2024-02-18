@@ -1,0 +1,20 @@
+<!--
+***
+CUSTOM CODE SPACE
+***
+Use this file to put any custom code you want to deploy on top of Studio's automatically generated configuration.
+-->
+
+<link rel="import" href="elements/studio-template-dam-dashboard/administration/dam-homepage-admin.html">
+
+<nuxeo-slot-content name="damHomePageAdmin" slot="ADMINISTRATION_MENU" order="10">
+  <template>
+    <nuxeo-menu-item label="Dashboard Configuration" name="home-page-admin" route="administration:home-page-admin"></nuxeo-menu-item>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="damHomePageAdmin" slot="ADMINISTRATION_PAGES">
+  <template>
+    <dam-homepage-admin name="home-page-admin"></dam-homepage-admin>
+  </template>
+</nuxeo-slot-content>

@@ -1,0 +1,53 @@
+<!--
+`nuxeo-brandlink-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-brandlink-metadata-layout
+-->
+<dom-module id="nuxeo-brandlink-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>[[i18n(&#x27;label.dublincore.title&#x27;)]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.brandlink:brand_name]]" label="Brand Name" readonly="true" directory-name="Brand" name="brand_name"></nuxeo-directory-suggestion>
+
+    <div role="widget">
+      <label>[[i18n(&#x27;label.dublincore.description&#x27;)]]</label>
+      <div name="dc:description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Order</label>
+      <div name="order">[[document.properties.quickLink:order]]</div>
+    </div>
+    
+    <div role="widget">
+      <label>Active</label>
+      <paper-checkbox checked="[[document.properties.quickLink:active]]" disabled="true" name="active"></paper-checkbox>
+    </div>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-brandlink-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype BrandLink
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

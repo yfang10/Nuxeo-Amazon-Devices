@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.runtime.metrics.default.contrib">
+
+  <extension target="org.nuxeo.runtime.metrics.MetricsService" point="configuration">
+    <configuration enabled="false">
+      <instrument name="jvm" enabled="true" />
+      <instrument name="log4j" enabled="true" />
+      <instrument name="tomcat" enabled="true" />
+      <filter>
+        <allow>
+          <prefix>nuxeo.cache.default-cache.</prefix>
+          <prefix>nuxeo.cache.user-entry-cache.</prefix>
+          <prefix>nuxeo.cache.group-entry-cache.</prefix>
+          <prefix>nuxeo.directories.directory.userDirectory</prefix>
+          <prefix>nuxeo.directories.directory.groupDirectory</prefix>
+        </allow>
+        <deny>
+          <prefix>nuxeo.cache</prefix>
+          <prefix>nuxeo.directories</prefix>
+          <prefix>nuxeo.ActionService</prefix>
+          <prefix>org.apache.logging.log4j.core.Appender.debug.count</prefix>
+          <prefix>org.apache.logging.log4j.core.Appender.info</prefix>
+          <prefix>org.apache.logging.log4j.core.Appender.debug</prefix>
+          <prefix>org.apache.logging.log4j.core.Appender.trace</prefix>
+          <prefix>org.nuxeo.ecm.core.management.standby.StandbyComponent</prefix>
+          <!-- Timer expansion to remove -->
+          <expansion>stddev</expansion>
+          <expansion>p75</expansion>
+          <expansion>p98</expansion>
+          <expansion>p999</expansion>
+          <expansion>m5_rate</expansion>
+          <expansion>m15_rate</expansion>
+          <expansion>mean_rate</expansion>
+        </deny>
+      </filter>
+    </configuration>
+  </extension>
+
+  <extension target="org.nuxeo.runtime.metrics.MetricsService" point="reporter">
+    <reporter enabled="true" name="jmx" class="org.nuxeo.runtime.metrics.reporter.JmxReporter" />
+
+    <reporter enabled="false" name="graphite" pollInterval="30"
+      class="org.nuxeo.runtime.metrics.reporter.GraphiteReporter">
+      <option name="prefix"></option>
+      <option name="udp">false</option>
+      <option name="host">graphite</option>
+      <option name="port">2003</option>
+    </reporter>
+
+    <reporter enabled="false" name="datadog" pollInterval="60"
+      class="org.nuxeo.runtime.metrics.reporter.DatadogReporter">
+      <option name="hostname"></option>
+      <option name="apiKey"></option>
+      <option name="udp">false</option>
+      <option name="host">localhost</option>
+      <option name="port">8125</option>
+      <option name="tags">nuxeo</option>
+    </reporter>
+
+    <reporter enabled="false" name="prometheus"
+      class="org.nuxeo.runtime.metrics.reporter.PrometheusReporter">
+      <option name="port">9090</option>
+    </reporter>
+
+    <reporter enabled="false" name="jaeger"
+      class="org.nuxeo.runtime.metrics.reporter.JaegerReporter">
+      <option name="url"></option>
+      <option name="timeout">10s</option>
+      <option name="maxAttributes">128</option>
+      <option name="maxAnnotations">128</option>
+      <option name="samplerProbability">0</option>
+    </reporter>
+
+    <reporter enabled="false" name="zipkin"
+      class="org.nuxeo.runtime.metrics.reporter.ZipkinReporter">
+      <option name="url"></option>
+      <option name="timeout">10s</option>
+      <option name="maxAttributes">128</option>
+      <option name="maxAnnotations">128</option>
+      <option name="samplerProbability">0</option>
+    </reporter>
+
+    <reporter enabled="false" name="zpage"
+      class="org.nuxeo.runtime.metrics.reporter.ZPageReporter">
+      <option name="port">8887</option>
+    </reporter>
+
+    <reporter enabled="false" name="datadogTrace"
+      class="org.nuxeo.runtime.metrics.reporter.DatadogTraceReporter">
+      <option name="url">http://localhost:8126/v0.3/traces</option>
+      <option name="service">nuxeo</option>
+      <option name="timeout">10s</option>
+      <option name="maxAttributes">128</option>
+      <option name="maxAnnotations">128</option>
+      <option name="samplerProbability">0</option>
+    </reporter>
+
+    <reporter enabled="false" name="stackdriver" pollInterval="60"
+      class="org.nuxeo.runtime.metrics.reporter.StackdriverReporter">
+      <option name="gcpProjectId"></option>
+      <option name="timeout">30s</option>
+    </reporter>
+
+    <reporter enabled="false" name="stackdriverTrace"
+      class="org.nuxeo.runtime.metrics.reporter.StackdriverTraceReporter">
+      <option name="gcpProjectId"></option>
+      <option name="timeout">30s</option>
+      <option name="maxAttributes">128</option>
+      <option name="maxAnnotations">128</option>
+      <option name="samplerProbability">0</option>
+    </reporter>
+
+    <reporter enabled="true" name="stream" pollInterval="60"
+      class="org.nuxeo.runtime.stream.StreamMetricsNuxeoReporter">
+    </reporter>
+
+  </extension>
+
+  <extension target="org.nuxeo.runtime.ConfigurationService" point="configuration">
+    <property name="metrics.streams.interval">60s</property>
+  </extension>
+
+</component>

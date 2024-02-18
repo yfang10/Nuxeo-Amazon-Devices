@@ -1,0 +1,475 @@
+<dom-module id="amzd-display-vocabulary">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      nuxeo-data-table {
+        min-height: calc(100vh - 280px);
+      }
+
+      .top.actions {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        @apply --layout-end-justified;
+        margin: 1em 0 1em 0;
+      }
+
+      nuxeo-dialog {
+        min-width: 480px;
+      }
+
+      @media (max-width: 1024px) {
+        nuxeo-dialog {
+          min-width: 0;
+          width: 90%;
+        }
+      }
+
+      nuxeo-dialog .buttons {
+        @apply --layout-horizontal;
+        @apply --layout-justified;
+        margin-top: 16px;
+      }
+
+      paper-item span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+
+    <nuxeo-resource
+      id="directory"
+      path="/directory"
+      params='{"pageSize": 0}'
+    ></nuxeo-resource>
+    <nuxeo-resource id="schema"></nuxeo-resource>
+
+    <nuxeo-page>
+      <div slot="header">
+        <span>[[i18n('vocabularyManagement.heading')]]</span>
+      </div>
+
+      <div>
+        <nuxeo-card>
+          <nuxeo-select
+            label="[[i18n('vocabularyManagement.vocabulary')]]"
+            placeholder="[[i18n('vocabularyManagement.select')]]"
+            selected="{{selectedVocabulary}}"
+            attr-for-selected="name"
+          >
+            <template
+              is="dom-repeat"
+              items="[[_labelChange(vocabularies)]]"
+              as="vocabulary"
+            >
+              <paper-item name$="[[vocabulary.name]]"
+                ><span title="[[vocabulary.name]]"
+                  >[[vocabulary.name]]</span
+                ></paper-item
+              >
+            </template>
+          </nuxeo-select>
+        </nuxeo-card>
+
+        <template
+          is="dom-if"
+          if="[[_isVocabularySelected(selectedVocabulary)]]"
+        >
+          <div class="top actions">
+            <paper-button
+              id="addEntry"
+              class="text"
+              on-tap="_createEntry"
+              aria-labelledby="addEntryLabel"
+            >
+              <span id="addEntryLabel"
+                >+ [[i18n('vocabularyManagement.addEntry')]]</span
+              >
+            </paper-button>
+          </div>
+          <nuxeo-data-table
+            id="table"
+            empty-label="[[i18n('vocabularyManagement.noEntry')]]"
+            empty-label-when-filtered="[[i18n('vocabularyManagement.noEntryWhenFiltered')]]"
+            style$="[[_visibleDataTableStyle(entries)]]"
+          >
+            <template is="dom-repeat" items="[[colDef]]" as="col">
+              <nuxeo-data-table-column
+                name="[[i18n(col.name)]]"
+                key="[[col.key]]"
+              >
+                <template>
+                  <template is="dom-if" if="[[!_entryActions(column.key)]]">
+                    [[_value(index, column.key)]]
+                  </template>
+                  <template is="dom-if" if="[[_entryActions(column.key)]]">
+                    <paper-icon-button
+                      id="edit-button-[[index]]"
+                      icon="nuxeo:edit"
+                      on-tap="_editEntry"
+                      aria-labelledby="editButtonTooltip"
+                    ></paper-icon-button>
+                    <nuxeo-tooltip
+                      for="edit-button-[[index]]"
+                      id="editButtonTooltip"
+                      >[[i18n('vocabularyManagement.editEntry')]]</nuxeo-tooltip
+                    >
+                    <paper-icon-button
+                      id="delete-button-[[index]]"
+                      name="delete"
+                      icon="nuxeo:delete"
+                      on-tap="_deleteEntry"
+                      aria-labelledby="deleteButtonTooltip"
+                    ></paper-icon-button>
+                    <nuxeo-tooltip
+                      for="delete-button-[[index]]"
+                      id="deleteButtonTooltip"
+                      >[[i18n('vocabularyManagement.deleteEntry')]]</nuxeo-tooltip
+                    >
+                  </template>
+                </template>
+              </nuxeo-data-table-column>
+            </template>
+          </nuxeo-data-table>
+        </template>
+      </div>
+    </nuxeo-page>
+
+    <nuxeo-dialog id="vocabularyEditDialog" with-backdrop>
+      <h2>[[_computeDialogHeading(_new)]]</h2>
+      <iron-form id="form">
+        <form>
+          <nuxeo-layout
+            id="layout"
+            href="[[_layoutHref(_selectedSchema)]]"
+            model="[[_layoutModel(_selectedEntry)]]"
+            error="[[i18n('documentVocabularyManagement.layoutNotFound', _selectedSchema)]]"
+            on-element-changed="_elementChanged"
+          >
+          </nuxeo-layout>
+        </form>
+      </iron-form>
+      <div class="buttons">
+        <paper-button name="cancel" noink class="secondary" dialog-dismiss
+          >[[i18n('command.cancel')]]</paper-button
+        >
+        <paper-button name="save" noink class="primary" on-tap="_save"
+          >[[i18n('command.save')]]</paper-button
+        >
+      </div>
+    </nuxeo-dialog>
+  </template>
+
+  <script>
+    Polymer({
+      is: "amzd-display-vocabulary",
+      behaviors: [Nuxeo.NotifyBehavior, Nuxeo.I18nBehavior],
+      importMeta: {
+        url: `${window.location.protocol}//${window.location.host}${window.location.pathname}/directory/nuxeo-vocabulary-management.js`,
+      },
+      properties: {
+        vocabularies: Array,
+        selectedVocabulary: String,
+        entries: { type: Array, value: [] },
+        colDef: { type: Object, notify: !0 },
+        visible: { type: Boolean, observer: "_visibleChanged" },
+        _selectedEntry: { type: Object },
+        _selectedSchema: {
+          type: String,
+          computed: "_schemaFor(selectedVocabulary)",
+        },
+      },
+      observers: ["_refresh(selectedVocabulary)"],
+      _visibleDataTableStyle: (e) =>
+        e.length ? "display: block;" : "display: none;",
+      _visibleChanged() {
+        this.visible &&
+          !this.vocabularies &&
+          this.$.directory.get().then((e) => {
+            this.vocabularies = e.entries.sort((e, t) =>
+              e.name.localeCompare(t.name)
+            );
+          });
+      },
+      _layoutHref(e) {
+        const t = e.toLowerCase();
+        return this.resolveUrl(`${t}/nuxeo-${t}-edit-layout.html`);
+      },
+      _layoutModel() {
+        return {
+          entry: this._selectedEntry,
+          directory: this.selectedVocabulary,
+          parentDirectory: this._getParentDirectoryFor(this._selectedEntry),
+          entries: this.entries,
+          new: this._new,
+        };
+      },
+      _schemaFor() {
+        if (!this._isVocabularySelected()) return;
+        let e = "";
+        return (
+          Object.keys(this.vocabularies).some(
+            (t) =>
+              this.vocabularies[t].name === this.selectedVocabulary &&
+              (({ schema: e } = this.vocabularies[t]), !0)
+          ),
+          e && 0 !== e.length ? e : "vocabulary"
+        );
+      },
+      _getParentDirectoryFor(e) {
+        let t = "";
+        return (
+          Object.keys(this.vocabularies).some(
+            (i) =>
+              this.vocabularies[i].name === e.directoryName &&
+              (({ parent: t } = this.vocabularies[i]), !0)
+          ),
+          t
+        );
+      },
+      _entryActions: (e) => "actions" === e,
+      _refresh() {
+        this._isVocabularySelected() &&
+          ((this.$.directory.path = `/directory/${this.selectedVocabulary}`),
+          (this.entries = []),
+          (this.colDef = []),
+          this.$.directory.get().then((e) => {
+            let t = [];
+            e.entries.length > 0 &&
+              (t = Object.keys(e.entries[0].properties).map((e) => ({
+                key: e,
+                name: `vocabularyManagement.edit.${e}`,
+                pos: this._computeColPos(e),
+              }))),
+              t.push({
+                key: "actions",
+                name: "vocabularyManagement.edit.actions",
+                pos: 1e3,
+                actions: !0,
+              }),
+              t.sort((e, t) => e.pos - t.pos),
+              (this.colDef = t),
+              (this.entries = e.entries);
+            const i = this.$$("#table");
+            (i.items = []), (i.items = this.entries);
+          }));
+      },
+      _value(e, t) {
+        const i = this.entries[e];
+        return i && i.properties && t
+          ? "obsolete" === t
+            ? i.properties[t] > 0
+              ? this.i18n("label.yes")
+              : this.i18n("label.no")
+            : i.properties[t]
+          : "N/A";
+      },
+      _computeColPos: (e) =>
+        "parent" === e
+          ? 1
+          : "id" === e
+          ? 2
+          : "obsolete" === e
+          ? 98
+          : "ordering" === e
+          ? 99
+          : 50,
+      _deleteEntry(e) {
+        if (window.confirm(this.i18n("vocabularyManagement.confirmDelete"))) {
+          const { item: t } = e.target.parentNode;
+          (this.$.directory.path = `/directory/${t.directoryName}/${t.properties.id}`),
+            this.$.directory.remove().then(
+              () => {
+                this._refresh(),
+                  this.notify({
+                    message: this.i18n(
+                      "vocabularyManagement.successfullyDeleted"
+                    ),
+                  });
+              },
+              (e) => {
+                409 === e.status
+                  ? this.notify({
+                      message: `${this.i18n(
+                        "label.error"
+                      ).toUpperCase()}: ${this.i18n(
+                        "vocabularyManagement.cannotDelete.referencedEntry"
+                      )}`,
+                    })
+                  : this.notify({
+                      message: `${this.i18n(
+                        "label.error"
+                      ).toUpperCase()}: ${this.i18n(
+                        "vocabularyManagement.cannotDelete.error"
+                      )}`,
+                    });
+              }
+            );
+        }
+      },
+      _editEntry(e) {
+        (this._new = !1),
+          (this._selectedEntry = e.target.parentNode.item),
+          this.$.vocabularyEditDialog.toggle();
+      },
+      _elementChanged() {
+        this.$.vocabularyEditDialog.opened &&
+          this.async(
+            this.$.vocabularyEditDialog.notifyResize.bind(
+              this.$.vocabularyEditDialog
+            )
+          );
+      },
+      _save() {
+        if (this.$.layout.validate()) {
+          if (
+            this._selectedEntry &&
+            this._selectedEntry.properties &&
+            ![null, void 0, ""].includes(
+              this._selectedEntry.properties.ordering
+            )
+          )
+            try {
+              this._selectedEntry.properties.ordering = Number(
+                this._selectedEntry.properties.ordering
+              );
+            } catch (e) {
+              console.warn(
+                `unable to convert ${this._selectedEntry.properties.ordering} to a number`
+              );
+            }
+          (this.$.directory.data = this._selectedEntry),
+            this._new
+              ? ((this.$.directory.path = `/directory/${this._selectedEntry.directoryName}`),
+                this.$.directory.post().then(
+                  () => {
+                    this.$.vocabularyEditDialog.toggle(),
+                      this.notify({
+                        message: this.i18n(
+                          "vocabularyManagement.successfullyCreated"
+                        ),
+                      }),
+                      this._refresh();
+                  },
+                  (e) => {
+                    this.notify({
+                      message: `${this.i18n("label.error").toUpperCase()}: ${
+                        e.message && e.message.length > 0
+                          ? e.message
+                          : this.i18n("vocabularyManagement.cannotCreate")
+                      }`,
+                    });
+                  }
+                ))
+              : ((this.$.directory.path = `/directory/${this._selectedEntry.directoryName}/${this._selectedEntry.properties.id}`),
+                this.$.directory.put().then(
+                  () => {
+                    this.$.vocabularyEditDialog.toggle(),
+                      this.notify({
+                        message: this.i18n(
+                          "vocabularyManagement.successfullyEdited"
+                        ),
+                      }),
+                      this._refresh();
+                  },
+                  (e) => {
+                    this.notify({
+                      message: `${this.i18n("label.error").toUpperCase()}: ${
+                        e.message && e.message.length > 0
+                          ? e.message
+                          : this.i18n("vocabularyManagement.cannotEdit")
+                      }`,
+                    });
+                  }
+                ));
+        }
+      },
+      _isVocabularySelected() {
+        return this.selectedVocabulary && this.selectedVocabulary.length > 0;
+      },
+      _createEntry() {
+        const e = {
+          "entity-type": "directoryEntry",
+          directoryName: this.selectedVocabulary,
+          id: void 0,
+          properties: {},
+        };
+        this._getSchemaFields().then((t) => {
+          t.forEach((t) => {
+            e.properties[t] = void 0;
+          }),
+            (this._new = !0),
+            (this._selectedEntry = e),
+            this.$.vocabularyEditDialog.toggle();
+        });
+      },
+      _getSchemaFields() {
+        const e = this._selectedSchema;
+        const w = {};
+        if (w[e]) return Promise.resolve(w[e]);
+        if (this.entries.length > 0) {
+          const t = Object.keys(this.entries[0].properties);
+          return (w[e] = t), Promise.resolve(t);
+        }
+        return (
+          (this.$.schema.path = `/config/schemas/${e}`),
+          this.$.schema
+            .get()
+            .then((t) => {
+              const i = Object.keys(t.fields);
+              return (w[e] = i), i;
+            })
+            .catch(function (e) {
+              if (
+                (this.notify({
+                  message: this.i18n("vocabularyManagement.cannotGetSchema"),
+                }),
+                404 !== e.status)
+              )
+                throw e;
+            })
+        );
+      },
+      _computeDialogHeading(e) {
+        return this.i18n(
+          e
+            ? "vocabularyManagement.popup.addEntry"
+            : "vocabularyManagement.popup.editEntry"
+        );
+      },
+
+      _labelChange(arr) {
+        const validStrings = [
+          "Product_Type",
+          "Product_Line",
+          "Asset_Type",
+          "Retail_Asset_Type",
+          "Placement",
+          "Standard_Angles",
+          "Format",
+          "Brand",
+          "Associated_Event",
+          "Launch_Collections",
+          "Active_Period",
+          "Approved",
+          "Ownership",
+          "Status",
+          "Is_Retouched_Version",
+          "Rights_Type",
+          "Restrictions",
+          "Access_Permissions",
+          "Retail_Asset_Use",
+          "Related_Devices_and_Accessories",
+          "Distribution",
+          "Approved_Locations",
+          "Approved_Languages",
+          "Content_Language",
+        ];
+        return arr.filter((item) => validStrings.includes(item.name));
+      },
+    });
+  </script>
+</dom-module>

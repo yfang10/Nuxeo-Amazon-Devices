@@ -1,0 +1,52 @@
+<!--
+`nuxeo-producttile-create-layout`
+@group Nuxeo UI
+@element nuxeo-producttile-create-layout
+-->
+<dom-module id="nuxeo-producttile-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <nuxeo-input role="widget" label="[[i18n('title')]]" name="title" value="{{document.properties.dc:title}}"
+                 autofocus="" required=""></nuxeo-input>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.producttile:product_name}}"
+                                label="Product Name" min-chars="0" directory-name="Products" name="product_name"></nuxeo-directory-suggestion>
+
+    <nuxeo-dropzone role="widget" label="Thumbnail(175x175)" name="content" document="[[document]]">
+    </nuxeo-dropzone>
+
+    <nuxeo-textarea role="widget" label="[[i18n('label.description')]]" name="dc:description"
+                    value="{{document.properties.dc:description}}"></nuxeo-textarea>
+
+    <nuxeo-input role="widget" value="{{document.properties.quicklink:order}}" required="true" label="Order"
+                 type="number" min="1" name="order"></nuxeo-input>
+
+    <div role="widget">
+      <label>Active</label>
+      <paper-checkbox checked="{{document.properties.quicklink:active}}" name="active"></paper-checkbox>
+    </div>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-producttile-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+                 * @doctype ProductTile
+                 */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

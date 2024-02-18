@@ -1,0 +1,57 @@
+<!--
+`nuxeo-campaigncollection-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-campaigncollection-metadata-layout
+-->
+<dom-module id="nuxeo-campaigncollection-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>Title</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Subtitle</label>
+      <div name="subtitle">[[document.properties.quicklink:subtitle]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Order</label>
+      <div name="order">[[document.properties.quicklink:order]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Active</label>
+      <paper-checkbox checked="[[document.properties.quicklink:active]]" disabled="true" name="active"></paper-checkbox>
+    </div>
+
+
+    <div role="widget">
+      <label>Description</label>
+      <div name="description">[[document.properties.dc:description]]</div>
+    </div>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-campaigncollection-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype CampaignCollection
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

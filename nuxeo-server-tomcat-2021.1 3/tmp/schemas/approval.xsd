@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:nxs="http://www.nuxeo.org/ecm/project/schemas/amazon-devices-global-dam/approval" xmlns:nxsv="http://www.nuxeo.org/ecm/schemas/core/validation/" xmlns:ref="http://www.nuxeo.org/ecm/schemas/core/external-references/" targetNamespace="http://www.nuxeo.org/ecm/project/schemas/amazon-devices-global-dam/approval">  
+  <!-- helper XSD definitions for list types -->  
+  <xs:complexType name="content"> 
+    <xs:sequence> 
+      <xs:element name="encoding" type="xs:string"/>  
+      <xs:element name="mime-type" type="xs:string"/>  
+      <xs:element name="data" type="xs:base64Binary"/>  
+      <xs:element name="name" type="xs:string"/>  
+      <xs:element name="length" type="xs:long"/>  
+      <xs:element name="digest" type="xs:string"/> 
+    </xs:sequence> 
+  </xs:complexType>  
+  <xs:simpleType name="stringList"> 
+    <xs:list itemType="xs:string"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="doubleList"> 
+    <xs:list itemType="xs:double"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="dateList"> 
+    <xs:list itemType="xs:date"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="integerList"> 
+    <xs:list itemType="xs:integer"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="booleanList"> 
+    <xs:list itemType="xs:boolean"/> 
+  </xs:simpleType>  
+  <xs:complexType name="blobList"> 
+    <xs:sequence> 
+      <xs:element name="item" type="nxs:content" minOccurs="0" maxOccurs="unbounded"/> 
+    </xs:sequence> 
+  </xs:complexType>  
+  <xs:element name="accessibility_approvers">
+    <xs:simpleType>
+      <xs:list>
+        <xs:simpleType>
+          <xs:restriction base="xs:string" ref:resolver="userManagerResolver" ref:type="all"/>
+        </xs:simpleType>
+      </xs:list>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="announce_date" type="xs:date"/>
+  <xs:element name="approved">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Approved"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="approved_date" type="xs:date"/>
+  <xs:element name="copy_approvers">
+    <xs:simpleType>
+      <xs:list>
+        <xs:simpleType>
+          <xs:restriction base="xs:string" ref:resolver="userManagerResolver" ref:type="all"/>
+        </xs:simpleType>
+      </xs:list>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="distribute_ADH" default="No">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="distribute_CXLabs" default="Yes">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="distribute_selects" default="Yes">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="distribution">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Distribution"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="has_accessibility">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="has_copy">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="has_legal">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="has_requester">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="has_retailer">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="has_tm">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="has_utterance">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="legal_approvers">
+    <xs:simpleType>
+      <xs:list>
+        <xs:simpleType>
+          <xs:restriction base="xs:string" ref:resolver="userManagerResolver" ref:type="all"/>
+        </xs:simpleType>
+      </xs:list>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="need_accessibility">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="need_copy">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="need_legal">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="need_requester">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="need_retailer">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="need_tm">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="need_utterance">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Yes_No_Vocabulary"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="requester_approvers">
+    <xs:simpleType>
+      <xs:list>
+        <xs:simpleType>
+          <xs:restriction base="xs:string" ref:resolver="userManagerResolver" ref:type="all"/>
+        </xs:simpleType>
+      </xs:list>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="retailer_approvers">
+    <xs:simpleType>
+      <xs:list>
+        <xs:simpleType>
+          <xs:restriction base="xs:string" ref:resolver="userManagerResolver" ref:type="all"/>
+        </xs:simpleType>
+      </xs:list>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="street_date" type="xs:date"/>
+  <xs:element name="tm_approvers">
+    <xs:simpleType>
+      <xs:list>
+        <xs:simpleType>
+          <xs:restriction base="xs:string" ref:resolver="userManagerResolver" ref:type="all"/>
+        </xs:simpleType>
+      </xs:list>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="utterance_approvers">
+    <xs:simpleType>
+      <xs:list>
+        <xs:simpleType>
+          <xs:restriction base="xs:string" ref:resolver="userManagerResolver" ref:type="all"/>
+        </xs:simpleType>
+      </xs:list>
+    </xs:simpleType>
+  </xs:element>
+</xs:schema>

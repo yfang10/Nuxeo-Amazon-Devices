@@ -1,0 +1,75 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+
+<!--
+`nuxeo-talent-edit-layout`
+@group Nuxeo UI
+@element nuxeo-talent-edit-layout
+-->
+<dom-module id="nuxeo-talent-edit-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <nuxeo-input name="title"
+                 role="widget" value="{{document.properties.dc:title}}"
+                 label="[[i18n('title')]]" type="text" required>
+    </nuxeo-input>
+
+    <nuxeo-input name="dc:description" role="widget" value="{{document.properties.dc:description}}"
+                 label="[[i18n('label.description')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="talent:alternate_name" role="widget" value="{{document.properties.talent:alternate_name}}"
+                 label="[[i18n('label.talent.alternate_name')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="talent:affiliation" role="widget" value="{{document.properties.talent:affiliation}}"
+                 label="[[i18n('label.talent.affiliation')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="talent:memberOf" role="widget" value="{{document.properties.talent:memberOf}}"
+                 label="[[i18n('label.talent.member_of')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="talent:job_title" role="widget" value="{{document.properties.talent:job_title}}"
+                 label="[[i18n('label.talent.jobTitle')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-directory-suggestion name="talent:gender" role="widget" value="{{document.properties.talent:gender}}"
+                                label="[[i18n('label.talent.gender')]]" directory-name="genders" min-chars="0">
+    </nuxeo-directory-suggestion>
+
+    <nuxeo-input name="talent:height" role="widget" value="{{document.properties.talent:height}}"
+                 label="[[i18n('label.talent.height')]]" type="number" step="0.01">
+    </nuxeo-input>
+
+    <nuxeo-input name="talent:nationality" role="widget" value="{{document.properties.talent:nationality}}"
+                 label="[[i18n('label.talent.nationality')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="talent:email" role="widget" value="{{document.properties.talent:email}}"
+                 label="[[i18n('label.talent.email')]]" type="email">
+    </nuxeo-input>
+
+    <nuxeo-input name="talent:telephone_number" role="widget" value="{{document.properties.talent:telephone_number}}"
+                 label="[[i18n('label.talent.telephone')]]" type="text">
+    </nuxeo-input>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-talent-edit-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype Talent
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

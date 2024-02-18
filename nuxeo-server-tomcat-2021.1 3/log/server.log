@@ -1,0 +1,39 @@
+2023-08-30T14:08:58,737 WARN  [main] [org.nuxeo.launcher.config.ConfigurationGenerator] Nuxeo Dev mode is enabled
+2023-08-30T14:09:08,449 INFO  [main] [org.nuxeo.osgi.application.loader.FrameworkLoader] 
+======================================================================
+= Starting Nuxeo Framework
+======================================================================
+  * Distribution Version = 2021.41.3
+  * Distribution Date = 202307260904
+  * Server home = /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3
+  * Runtime home = /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/nxserver
+  * Data Directory = /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/nxserver/data
+  * Log Directory = /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/log
+  * Configuration Directory = /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/nxserver/config
+  * Temp Directory = /Users/issuser/Documents/Workspace/nuxeo-server-tomcat-2021.1 3/tmp
+======================================================================
+2023-08-30T14:09:13,735 WARN  [main] [org.nuxeo.runtime.logging.DeprecationLogger] Since version 7.4: Property 'metrics.streams.interval' should now be contributed to extension point 'org.nuxeo.runtime.ConfigurationService', using target 'configuration'
+2023-08-30T14:09:14,177 WARN  [main] [org.nuxeo.runtime.logging.DeprecationLogger] Since version 7.4: Property 'org.nuxeo.download.url.follow.redirect' should now be contributed to extension point 'org.nuxeo.runtime.ConfigurationService', using target 'configuration'
+2023-08-30T14:09:14,828 WARN  [main] [org.nuxeo.ecm.platform.commandline.executor.service.CommandLineExecutorComponent] Command not available: timeout (command timeout not found in system path (descriptor CommandLineDescriptor[available=false,command=timeout,enabled=true,installErrorMessage=<null>,installationDirective=<null>,name=timeout,parameterString=--version,readOutput=true,testParameterString=,tester=<null>,timeout=<null>,winCommand=<null>,winParameterString=<null>,winTestParameterString=]). null)
+2023-08-30T14:09:14,828 WARN  [main] [org.nuxeo.ecm.platform.commandline.executor.service.CommandLineExecutorComponent] There is no timeout command available, command executions won't be time-boxed.
+2023-08-30T14:09:18,867 WARN  [main] [org.nuxeo.ecm.platform.commandline.executor.service.CommandLineExecutorComponent] Command not available: soffice (command soffice not found in system path (descriptor CommandLineDescriptor[available=false,command=soffice,enabled=true,installErrorMessage=<null>,installationDirective=You need to install LibreOffice and add soffice to the PATH environment variable.,name=soffice,parameterString=--headless --norestore --writer --convert-to #{format} #{sourceFilePath} --outdir #{outDirPath} -env:UserInstallation=#{userInstallation},readOutput=true,testParameterString=--version,tester=<null>,timeout=<null>,winCommand=soffice.exe,winParameterString=<null>,winTestParameterString=--headless --cat test]). You need to install LibreOffice and add soffice to the PATH environment variable.)
+2023-08-30T14:09:31,769 WARN  [main] [org.nuxeo.ecm.core.schema.SchemaManagerImpl] Undeclared facet: HiddenInFacetedSearch used in document type: DownloadRecord
+2023-08-30T14:09:31,771 WARN  [main] [org.nuxeo.ecm.core.schema.SchemaManagerImpl] Undeclared facet: ThreeD used in document type: ThreeD
+2023-08-30T14:09:35,197 WARN  [main] [org.nuxeo.elasticsearch.core.ElasticSearchEmbeddedNode] Elasticsearch embedded configuration is ONLY for testing purpose. You need to create a dedicated Elasticsearch cluster for production.
+2023-08-30T14:09:41,213 WARN  [main] [org.elasticsearch.gateway.DanglingIndicesState] gateway.auto_import_dangling_indices is disabled, dangling indices will not be automatically detected or imported and must be managed manually
+2023-08-30T14:09:43,418 WARN  [elasticsearch[nuxeoNode][clusterApplierService#updateTask][T#1]] [org.elasticsearch.deprecation.analysis.common.CommonAnalysisPlugin] The [nGram] tokenizer name is deprecated and will be removed in a future version. Please change the tokenizer name to [ngram] instead.
+2023-08-30T14:09:46,604 WARN  [main] [org.nuxeo.ecm.core.storage.sql.RepositoryImpl] Database contains additional unused columns for table "DEVICE-SEARCHPP_PP": AMAZON_ASIN
+2023-08-30T14:09:46,626 WARN  [main] [org.nuxeo.ecm.core.storage.sql.RepositoryImpl] Database contains additional unused columns for table "AMAZON-DEVICE-HUBSEARCHPP_PP": AMAZON_ASIN
+2023-08-30T14:09:47,523 WARN  [stream/metricsPool-00] [org.nuxeo.runtime.stream.StreamMetricsComputation] Instance elected to report stream metrics
+2023-08-30T14:09:47,611 WARN  [stream/introspectionPool-00] [org.nuxeo.ecm.core.bulk.introspection.StreamIntrospectionComputation] Instance elected to introspect Nuxeo Stream activity
+2023-08-30T14:09:48,230 INFO  [main] [org.nuxeo.runtime.osgi.OSGiRuntimeService] Nuxeo Platform Started
+======================================================================
+= Component Loading Status: Pending: 0 / Missing: 0 / Unstarted: 0 / Total: 851
+======================================================================
+2023-08-30T14:09:52,495 INFO  [main] [javax.enterprise.resource.webcontainer.jsf.application] jsf.core.injection.provider_generic_web_configured
+2023-08-30T21:21:27,617 WARN  [stream/metricsPool-00,in:0,inCheckpoint:0,out:0,lastRead:1693375787522,lastTimer:1693401350693,wm:0,loop:111056,timer] [net.openhft.chronicle.queue.impl.table.SingleTableStore] Took 291 ms to performClose
+2023-08-30T21:21:27,715 WARN  [stream/metricsPool-00,in:0,inCheckpoint:0,out:0,lastRead:1693375787522,lastTimer:1693401350693,wm:0,loop:111056,timer] [net.openhft.chronicle.queue.impl.single.SingleChronicleQueue] Took 559 ms to performClose
+2023-08-30T21:27:03,994 WARN  [stream/metricsPool-00,in:0,inCheckpoint:0,out:0,lastRead:1693375787522,lastTimer:1693401687061,wm:0,loop:111398,timer] [net.openhft.chronicle.queue.impl.single.SingleChronicleQueue$StoreSupplier] Took 77 ms to performClose
+2023-08-30T21:27:04,039 WARN  [stream/metricsPool-00,in:0,inCheckpoint:0,out:0,lastRead:1693375787522,lastTimer:1693401687061,wm:0,loop:111398,timer] [net.openhft.chronicle.queue.impl.single.SingleChronicleQueue] Took 140 ms to performClose
+2023-08-31T02:19:16,926 WARN  [stream/metricsPool-00,in:0,inCheckpoint:0,out:0,lastRead:1693375787522,lastTimer:1693419218984,wm:0,loop:129220,timer] [net.openhft.chronicle.queue.impl.single.SingleChronicleQueueStore] Took 51 ms to performClose
+2023-08-31T02:24:52,393 WARN  [stream/metricsPool-00,in:0,inCheckpoint:0,out:0,lastRead:1693375787522,lastTimer:1693419555282,wm:0,loop:129561,timer] [net.openhft.chronicle.queue.impl.single.SingleChronicleQueueStore] Took 43 ms to performClose

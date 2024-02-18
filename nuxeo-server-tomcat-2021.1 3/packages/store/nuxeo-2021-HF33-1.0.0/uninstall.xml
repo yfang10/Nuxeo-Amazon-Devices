@@ -1,0 +1,28 @@
+<uninstall>
+  <rollback key="nxserver/lib/jcl-over-slf4j" pkgId="nuxeo-2021-HF33-1.0.0" version="1.7.30"/>
+  <rollback key="nxserver/lib/logback-core" pkgId="nuxeo-2021-HF33-1.0.0" version="1.2.10"/>
+  <rollback key="nxserver/lib/opensaml" pkgId="nuxeo-2021-HF33-1.0.0" version="2.6.5"/>
+  <rollback key="nxserver/lib/commons-jexl3" pkgId="nuxeo-2021-HF33-1.0.0" version="3.2"/>
+  <rollback key="nxserver/lib/jxls" pkgId="nuxeo-2021-HF33-1.0.0" version="2.12.0"/>
+  <rollback key="nxserver/lib/xstream" pkgId="nuxeo-2021-HF33-1.0.0" version="1.4.20"/>
+  <rollback key="nxserver/lib/jxls-poi" pkgId="nuxeo-2021-HF33-1.0.0" version="2.12.0"/>
+  <rollback key="nxserver/lib/jul-to-slf4j" pkgId="nuxeo-2021-HF33-1.0.0" version="1.7.5"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF33-1.0.0/backup/33a188dbfd2ac421e4bc27bebd7bb2d0_nuxeo.defaults" tofile="${env.server.home}/templates/common-base/nuxeo.defaults" overwrite="true" md5="4d7f954dbfd7a5efbfeab87273f7c959"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF33-1.0.0/backup/9709729503cef7825cde8f68c67bc892_distribution.properties" tofile="${env.server.home}/templates/common/config/distribution.properties" overwrite="true" md5="2d3d139d533191ace16a078880515378"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF33-1.0.0/backup/0db46d3e8f665e3627d2b130ae4fb9d4_nuxeo.defaults" tofile="${env.server.home}/templates/nuxeo.defaults" overwrite="true" md5="b9fd34064eba5549b9d0bb9e2348d373"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-query-api" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-core-api" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-core-event" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-automation-features" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-lang" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-core" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-webdav" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-audit-core" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-rest-api-server" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-suggestbox-core" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-core-storage-mongodb" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-template-rendering-core" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-core-cache" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-login-cas2" pkgId="nuxeo-2021-HF33-1.0.0" version="2021.33.9"/>
+</uninstall>

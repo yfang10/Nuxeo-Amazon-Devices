@@ -1,0 +1,64 @@
+<!--
+`nuxeo-isspicture-view-layout`
+@group Nuxeo UI
+@element nuxeo-isspicture-view-layout
+-->
+<dom-module id="nuxeo-isspicture-view-layout">
+  <template>
+    <style include="nuxeo-styles"></style>
+    <nuxeo-document-viewer role="widget" role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.commonFields:approved_locations]]" label="Approved Locations" readonly="true" directory-name="approved_locations" name="approved_locations" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.commonFields:aprroved_languages]]" label="Aprroved Languages" readonly="true" directory-name="approved_languages" name="aprroved_languages" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.commonFields:brands]]" label="Brands" readonly="true" directory-name="brands" name="brands" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.commonFields:content_language]]" label="Content Language" readonly="true" directory-name="content_language" name="content_language" role="widget"></nuxeo-directory-suggestion>
+
+    <div role="widget">
+      <label>Image Alt Text</label>
+      <div name="image_alt_text">[[document.properties.commonFields:image_alt_text]]</div>
+</div>
+
+    <div role="widget">
+      <label>Image Description</label>
+      <div name="image_description">[[document.properties.commonFields:image_description]]</div>
+</div>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.commonFields:marketing_placement]]" label="Marketing Placement" readonly="true" directory-name="marketing_placement" name="marketing_placement" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.commonFields:product_category]]" label="Product Category" readonly="true" directory-name="product_category" name="product_category" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.commonFields:product_line]]" label="Product Line" readonly="true" directory-name="product_line" name="product_line" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.commonFields:publish_status]]" label="Publish Status" readonly="true" directory-name="publish_status" name="publish_status" role="widget"></nuxeo-directory-suggestion>
+
+    <div role="widget">
+      <label>Rights Owner</label>
+      <div name="rights_owner">[[document.properties.commonFields:rights_owner]]</div>
+</div>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.commonFields:rights_type]]" label="Rights Type" readonly="true" directory-name="rights_type" name="rights_type" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.commonFields:topic]]" label="Topic" readonly="true" directory-name="topic" name="topic" role="widget"></nuxeo-directory-suggestion>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-isspicture-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype issPicture
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

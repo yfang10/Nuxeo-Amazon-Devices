@@ -1,0 +1,43 @@
+<!--
+`nuxeo-useraccessfolder-edit-layout`
+@group Nuxeo UI
+@element nuxeo-useraccessfolder-edit-layout
+-->
+<dom-module id="nuxeo-useraccessfolder-edit-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" role="widget" label="[[i18n(&#x27;title&#x27;)]]" name="title" value="{{document.properties.dc:title}}" autofocus="" required=""></nuxeo-input>
+
+    <nuxeo-textarea role="widget" role="widget" label="[[i18n(&#x27;label.description&#x27;)]]" name="description" value="{{document.properties.dc:description}}"></nuxeo-textarea>
+
+    <nuxeo-directory-suggestion role="widget" role="widget" label="[[i18n(&#x27;label.dublincore.nature&#x27;)]]" name="nature" directory-name="nature" value="{{document.properties.dc:nature}}" placeholder="[[i18n(&#x27;dublincoreEdit.directorySuggestion.placeholder&#x27;)]]" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" role="widget" label="[[i18n(&#x27;label.dublincore.subjects&#x27;)]]" directory-name="l10nsubjects" name="subjects" value="{{document.properties.dc:subjects}}" multiple="true" dbl10n="true" placeholder="[[i18n(&#x27;dublincoreEdit.directorySuggestion.placeholder&#x27;)]]" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" role="widget" label="[[i18n(&#x27;label.dublincore.coverage&#x27;)]]" directory-name="l10ncoverage" name="coverage" value="{{document.properties.dc:coverage}}" dbl10n="true" placeholder="[[i18n(&#x27;dublincoreEdit.directorySuggestion.placeholder&#x27;)]]" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-date-picker role="widget" role="widget" label="[[i18n(&#x27;label.dublincore.expire&#x27;)]]" name="expired" value="{{document.properties.dc:expired}}"></nuxeo-date-picker>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-useraccessfolder-edit-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype UserAccessFolder
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

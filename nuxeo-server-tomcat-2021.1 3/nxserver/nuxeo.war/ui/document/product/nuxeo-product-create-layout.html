@@ -1,0 +1,76 @@
+<!--
+`nuxeo-product-create-layout`
+@group Nuxeo UI
+@element nuxeo-product-create-layout
+-->
+<dom-module id="nuxeo-product-create-layout">
+  <template>
+    <style include="nuxeo-styles">
+      label {
+        font-weight: var(--nuxeo-label_-_font-weight);
+        text-decoration: var(--nuxeo-label_-_text-decoration);
+      }
+      label:after {
+        content: var(--nuxeo-label-after_-_content);
+      }
+
+    </style>
+
+    <nuxeo-input name="title" role="widget" value="{{document.properties.dc:title}}" label="Public Codename" type="text" required="">
+    </nuxeo-input>
+
+    <nuxeo-input name="product:product_id" role="widget" value="{{document.properties.product:product_id}}" label="ASIN" type="text">
+    </nuxeo-input>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.product:pl}}" label="Product Line" directory-name="Product_Line" min-chars="0"></nuxeo-directory-suggestion>
+    
+     <nuxeo-directory-suggestion role="widget" value="{{document.properties.product:year}}" label="Year" directory-name="year" min-chars="0"></nuxeo-directory-suggestion>
+    
+    <nuxeo-directory-suggestion value="{{document.properties.product:brand}}" label="Brand" directory-name="Brand" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-input value="{{document.properties.product:generation}}" label="Generation" type="text" role="widget"></nuxeo-input>
+
+    <nuxeo-input value="{{document.properties.product:version}}" label="Version" type="text" role="widget"></nuxeo-input>
+
+    <nuxeo-directory-suggestion value="{{document.properties.product:category}}" label="Category" directory-name="ProductCategories" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion value="{{document.properties.product:product_type}}" label="Type" directory-name="Product_Type" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+    
+    <nuxeo-directory-suggestion value="{{document.properties.product:size}}" label="Size"directory-name="size" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+    
+
+    <nuxeo-directory-suggestion value="{{document.properties.product:launch_countries}}" label="Launch Countries" multiple="true" directory-name="Approved_Locations" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-document-suggestion value="{{document.properties.product:supported_device}}" label="Supported Device" multiple="true" role="widget" min-chars="0" page-provider="product-suggestions"></nuxeo-document-suggestion>
+
+    <nuxeo-input value="{{document.properties.product:color}}" label="Color" type="text" role="widget"></nuxeo-input>
+
+    <nuxeo-input value="{{document.properties.product:product_life}}" label="Product Life" type="text" role="widget"></nuxeo-input>
+
+    <nuxeo-date-picker value="{{document.properties.product:production_date}}" label="Announce Date" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-date-picker value="{{document.properties.product:purchase_date}}" label="Street Date" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-user-suggestion value="{{document.properties.product:device_asset_access_read}}" label="Read Device Asset Access" multiple="true" search-type="USER_GROUP_TYPE" role="widget" min-chars="0"></nuxeo-user-suggestion>
+
+    <nuxeo-user-suggestion value="{{document.properties.product:device_asset_access_create}}" label="Create Device Asset Access" multiple="true" search-type="USER_GROUP_TYPE" role="widget" min-chars="0"></nuxeo-user-suggestion>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-product-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype Product
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

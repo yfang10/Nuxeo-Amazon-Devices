@@ -1,0 +1,33 @@
+<!--
+`nuxeo-brandlink-view-layout`
+@group Nuxeo UI
+@element nuxeo-brandlink-view-layout
+-->
+<dom-module id="nuxeo-brandlink-view-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-document-viewer role="widget" role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-brandlink-view-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype BrandLink
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

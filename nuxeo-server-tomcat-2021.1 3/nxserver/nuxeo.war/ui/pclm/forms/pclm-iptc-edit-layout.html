@@ -1,0 +1,65 @@
+<link rel="import" href="../styles/pclm-form-styles.html">
+
+<!--
+`pclm-exif-edit-layout`
+@group Nuxeo UI
+@element pclm-exif-edit-layout
+-->
+<dom-module id="pclm-iptc-edit-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <nuxeo-input name="iptc:by_line" role="widget"
+      value="{{document.properties.iptc:by_line}}"
+      label="[[i18n('label.picture.iptc.by.line')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="iptc:copyright_notice" role="widget"
+      value="{{document.properties.iptc:copyright_notice}}"
+      label="[[i18n('label.picture.iptc.copyright.notice')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="iptc:category" role="widget"
+      value="{{document.properties.iptc:category}}"
+      label="[[i18n('label.picture.iptc.category')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="iptc:country_or_primary_location" role="widget"
+      value="{{document.properties.iptc:country_or_primary_location}}"
+      label="[[i18n('label.picture.iptc.primary.location')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="iptc:city" role="widget"
+      value="{{document.properties.iptc:city}}"
+      label="[[i18n('label.picture.iptc.city')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-input name="iptc:credit" role="widget"
+      value="{{document.properties.iptc:credit}}"
+      label="[[i18n('label.picture.iptc.credit')]]" type="text">
+    </nuxeo-input>
+
+    <nuxeo-date-picker name="iptc:time_created" role="widget"
+      value="{{document.properties.iptc:time_created}}"
+      label="[[i18n('label.picture.iptc.date')]]">
+    </nuxeo-date-picker>
+
+    <nuxeo-input name="iptc:keywords" role="widget"
+      value="{{document.properties.iptc:keywords}}"
+      label="[[i18n('label.picture.iptc.keywords')]]" type="text">
+    </nuxeo-input>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'pclm-iptc-edit-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      document: {
+        type: Object
+      }
+    }
+  });
+  </script>
+</dom-module>

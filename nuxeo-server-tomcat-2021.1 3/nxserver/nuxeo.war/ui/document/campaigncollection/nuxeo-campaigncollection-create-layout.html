@@ -1,0 +1,44 @@
+<!--
+`nuxeo-campaigncollection-create-layout`
+@group Nuxeo UI
+@element nuxeo-campaigncollection-create-layout
+-->
+<dom-module id="nuxeo-campaigncollection-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true" name="title"></nuxeo-input>
+    <nuxeo-input role="widget" value="{{document.properties.quicklink:subtitle}}" label="Subtitle" type="text" name="subtitle"></nuxeo-input>
+    <nuxeo-input role="widget" value="{{document.properties.quicklink:order}}" required="true" label="Order" type="number" min="1" name="order"></nuxeo-input>
+
+    <div role="widget">
+      <label>Active</label>
+      <paper-checkbox checked="{{document.properties.quicklink:active}}" name="active"></paper-checkbox>
+    </div>
+
+    <nuxeo-dropzone role="widget" label="Thumbnail(500x500)" name="content" document="[[document]]"></nuxeo-dropzone>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text" name="description"></nuxeo-input>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-campaigncollection-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype CampaignCollection
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

@@ -1,0 +1,272 @@
+<!--
+
+-->
+<dom-module id="amzd-submit-newcodename-button">
+    <template>
+    <style include="nuxeo-action-button-styles">
+      .content {
+        @apply(--layout-vertical);
+      }
+    </style>
+
+    <nuxeo-operation id="taskOp" op="[[operation]]"
+                     input="[[input]]" params="[[Params]]">
+    </nuxeo-operation>
+    <nuxeo-operation id="getDevicesOp" op="AMZD.GetDevicesFromRelations"
+                     input="[[document]]"> 
+    </nuxeo-operation>
+
+    <div class="action" on-tap="_toggleDialog">
+      <paper-icon-button id="bt" icon="[[icon]]"></paper-icon-button>
+      <span class="label" hidden$="[[!showLabel]]">[[i18n(label)]]</span>
+    </div>
+    <paper-tooltip for="bt">[[i18n(label)]]</paper-tooltip>
+
+    <nuxeo-dialog id="dialog" on-iron-overlay-closed="_dialogClosed" with-backdrop>
+      <h2>[[i18n(label)]]</h2>
+      <div class="content">
+        <iron-form id="form">
+          <form>
+  
+            <amzd-document-suggestion id="deviceDropdown" role="widget"  value="{{device_name}}" page-provider="product-suggestions" min-chars="0" label="Device" document="[[document]]" on-tap="_displayDeviceList"></amzd-document-suggestion>
+             
+             <nuxeo-directory-suggestion value="{{name_type}}" required="true"label="What Grouping" directory-name="CodnameTypes" min-chars="0"></nuxeo-directory-suggestion>
+             
+             <nuxeo-user-suggestion hidden$="{{isuser}}" label="User Identifier" value="{{name_value}}"
+                  search-type="USER_TYPE" min-chars="0" >
+             </nuxeo-user-suggestion>
+
+             <nuxeo-user-suggestion  hidden$="{{isgroup}}" label="Group Identifier" value="{{name_value}}"
+                  search-type="GROUP_TYPE" min-chars="0" >
+             </nuxeo-user-suggestion>
+
+            <system-document-suggestion hidden$="{{isVendor}}"role="widget" value="{{name_value}}" label="Vendors"  min-chars="0" page-provider="vendors-suggestions"></system-document-suggestion>
+
+            <system-document-suggestion hidden$="{{isAgency}}"role="widget" value="{{name_value}}" label="Agencies"  min-chars="0" page-provider="agencies-suggestions"></system-document-suggestion>
+
+            <system-document-suggestion hidden$="{{isRetail}}"role="widget" value="{{name_value}}" label="Retailers"  min-chars="0" page-provider="retails-suggestions"></system-document-suggestion>
+              
+              <nuxeo-input value="{{name_codename}}" required="true"label="New Codename" type="text"></nuxeo-input>
+</form>
+        </iron-form>
+      </div>
+      <div class="buttons">
+        <paper-button noink dialog-dismiss on-tap="_close">
+          [[i18n('label.dialog.button.cancel')]]
+        </paper-button>
+        <paper-button noink class="primary" on-tap="_ok">
+          [[i18n('submit')]]
+        </paper-button>
+      </div>
+    </nuxeo-dialog>
+
+  </template>
+
+    <script>
+        Polymer({
+            is: 'amzd-submit-newcodename-button',
+            behaviors: [Nuxeo.LayoutBehavior],
+            properties: {
+
+                document: {
+                    type: Object
+                },
+
+                device_name: {
+                    type: String,
+                },
+                name_type: {
+                    type: String,
+                },
+                name_value: {
+                    type: String,
+                },
+                name_codename: {
+                    type: String,
+                },
+
+                isuser: {
+                    type: Boolean,
+                    value: true
+                },
+                isgroup: {
+                    type: Boolean,
+                    value: true
+                },
+                isVendor: {
+                    type: Boolean,
+                    value: true
+                },
+                isRetail: {
+                    type: Boolean,
+                    value: true
+                },
+                isAgency: {
+                    type: Boolean,
+                    value: true
+                },
+
+
+                Params: {
+                    type: Object,
+                    value: function() {
+                        return {};
+                    }
+                },
+                /**
+                 * Label to display in the action button.
+                 */
+                label: {
+                    type: String,
+                    value: 'Action Label'
+                },
+
+                operation: {
+                    type: String,
+                    value: 'AMZD.SubmitNewCodenameOperation',
+                },
+                groupprovider: {
+                    type: String,
+                    computed: '_getpp(name_type)'
+                },
+
+                /**
+                 * `true` if the action should display the label, `false` otherwise.
+                 */
+                showLabel: {
+                    type: Boolean,
+                    value: false,
+                },
+
+                /**
+                 * Icon to use (iconset_name:icon_name) in the action button.
+                 */
+                icon: {
+                    type: String,
+                    value: 'iconset_name:icon_name'
+                }
+            },
+            observers: [
+                '_selectedGroupChanged(name_type)'
+            ],
+            _toggleDialog: function() {
+                this.$.dialog.toggle();
+            },
+
+            /**
+             * Callback executed when the user presses the "ok" button.
+             */
+
+            _selectedGroupChanged: function(nametype) {
+                console.log(nametype);
+                switch (nametype) {
+                    case "user":
+                        this.isgroup = true;
+                        this.isuser = false;
+                        this.isVendor = true;
+                        this.isRetail = true;
+                        this.isAgency = true;
+                        break;
+                    case "group":
+                        this.isgroup = false;
+                        this.isuser = true;
+                        this.isVendor = true;
+                        this.isRetail = true;
+                        this.isAgency = true;
+                        break;
+                    case "retail":
+                        this.isgroup = true;
+                        this.isuser = true;
+                        this.isVendor = true;
+                        this.isRetail = false;
+                        this.isAgency = true;
+                        break;
+                    case "agency":
+                        this.isgroup = true;
+                        this.isuser = true;
+                        this.isVendor = true;
+                        this.isRetail = true;
+                        this.isAgency = false;
+                        break;
+                    case "vendor":
+                        this.isgroup = true;
+                        this.isuser = true;
+                        this.isVendor = false;
+                        this.isRetail = true;
+                        this.isAgency = true;
+                        break;
+
+
+
+                }
+            },
+
+
+
+
+
+
+            _ok: function(document) {
+
+                this.Params = {
+                    "device_name": this.device_name,
+                    "name_type": this.name_type,
+                    "name_value": this.name_value,
+                    "name_codename": this.name_codename
+                };
+
+                this.$.taskOp.execute().then(function(response) {
+                    this.fire('notify', {
+                        message: this.i18n('label.action.assign.task.success')
+                    });
+                    this._toggleDialog();
+                }.bind(this), function(error) {
+                    this.fire('notify', {
+                        message: this.i18n('label.action.assign.task.failure')
+                    });
+                }.bind(this));;
+            },
+
+            /**
+             * Callback executed when the user presses the "close" button.
+             *
+             * Note that the "close" button already have a "dialog-dismiss" property that makes the button close the dialog
+             * when clicked. If you don't need to perform additional actions, this method is not needed.
+             */
+            _close: function() {
+                // implement me
+            },
+
+            /**
+             * Useful callback to execute some action after the dialog is closed. Can be removed if it's not necessary.
+             */
+            _dialogClosed: function() {
+                this.device_name = null;
+                this.name_type = null;
+                this.name_value = null;
+                this.name_codename = null;
+            },
+
+            _displayDeviceList: function() {
+                if (this.document && this.document.type != 'Codename') {
+
+                    this.$.getDevicesOp.execute().then(function(response) {
+
+                        this.$.deviceDropdown.params = {
+                            namedParameters: {
+                                system_uuid: JSON.stringify(response.value)
+                            }
+                        };
+
+
+                    }.bind(this), function(error) {
+                        this.fire('notify', {
+                            message: this.i18n('label.action.assign.task.failure')
+                        });
+                    }.bind(this));
+                }
+            }
+
+        });
+    </script>
+</dom-module>

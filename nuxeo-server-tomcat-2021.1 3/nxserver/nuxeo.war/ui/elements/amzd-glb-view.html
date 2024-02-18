@@ -1,0 +1,45 @@
+<!--
+`amzd-glb-view`
+@group Nuxeo UI
+@element amzd-glb-view
+-->
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script> 
+<dom-module id="amzd-glb-view">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+      model-viewer, iframe {
+        width: 100%;
+        height: 75vh;
+      }
+      .warning {
+        color: red;
+        font-weight: bold;
+      }
+    </style>
+    <nuxeo-card>
+      <template is="dom-if" if="{{document.properties.amz:ThreeD_GLB_blob}}">
+        <model-viewer poster="[[document.properties.file:content.data]]"
+                        src="[[document.properties.amz:ThreeD_GLB_blob.data]]"
+                        camera-controls background-color="#455A64"
+                        reveal-when-loaded
+                        preload>
+        </model-viewer>
+      </template>
+    </nuxeo-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'amzd-glb-view',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        document: {
+          type: Object
+        }
+      }
+    });
+  </script>
+</dom-module>

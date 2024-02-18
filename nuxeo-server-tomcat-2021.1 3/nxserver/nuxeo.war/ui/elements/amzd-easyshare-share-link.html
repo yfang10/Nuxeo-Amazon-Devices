@@ -1,0 +1,94 @@
+<!--
+`amzd-easyshare-share-link`
+@group Nuxeo UI
+@element amzd-easyshare-share-link
+-->
+<dom-module id="amzd-easyshare-share-link">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+
+      .heading {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        @apply --layout-justified;
+      }
+    </style>
+    <nuxeo-connection id="nxcon"></nuxeo-connection>
+
+    <template is="dom-if" if="[[_isAvailable(document)]]">
+      <div class="action" on-tap="_toggleDialog">
+        <paper-icon-button id="shareBtn" icon="[[icon]]" noink></paper-icon-button>
+        <span class="label" hidden$="[[!showLabel]]">EasyShare Link</span>
+      </div>
+      <nuxeo-tooltip for="shareBtn">[[i18n('label.easyshareButton.tooltip')]]</nuxeo-tooltip>
+    </template>
+
+    <nuxeo-dialog id="dialog" with-backdrop>
+      <div class="heading">
+        <h2>[[i18n('shareButton.dialog.heading')]]</h2>
+      </div>
+      <nuxeo-input id="permalink"
+                   label="[[i18n('easyshare.copy.label', document.properties.dc:title)]]"
+                   value="[[_buildPermalink(document)]]"
+                   autofocus
+                   readonly>
+      </nuxeo-input>
+
+      <template is="dom-if" if="[[_isEasyshare(document)]]">
+        <nuxeo-input id="easyshareLink"
+                     label="[[i18n('easysharefolder.share', document.properties.dc:title)]]"
+                     value="[[_buildEasysharelink(document)]]"
+                     autofocus
+                     readonly>
+        </nuxeo-input>
+      </template>
+      <div class="buttons">
+        <paper-button dialog-dismiss>[[i18n('shareButton.dialog.close')]]</paper-button>
+      </div>
+    </nuxeo-dialog>
+  </template> 
+  
+  <script>
+    Polymer({
+      is: 'amzd-easyshare-share-link',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        document: {
+          type: Object
+        },
+        label: {
+          type: String,
+          value: 'Action Label'
+        },
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+        icon: {
+          type: String,
+          value: 'iconset_name:icon_name'
+        }
+      },
+      _toggleDialog: function() {
+        this.$.dialog.toggle();
+        this.$.permalink.inputElement.inputElement.select();
+      },
+      _isAvailable: function(document) {
+        return document;
+      },
+      _isEasyshare: function(document) {
+        return document && document.type === 'EasyShareFolder';
+      },
+      _buildPermalink: function(document) {
+        return document ? location.origin + location.pathname + '#!/doc/' + document.uid : '';
+      },
+      _buildEasysharelink: function(document) {
+        var baseUrl = location.origin + this.$.nxcon.url;
+        return document ? baseUrl + '/site/easyshare/' + this.document.uid : '';
+      } 
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,303 @@
+<link rel="import" href="iss-keywords.html">
+
+<dom-module id="iss-bulk-edit-keywords-button">
+  <template>
+    <style include="nuxeo-action-button-styles nuxeo-styles">
+      .saving-label {
+        margin-right: 8px;
+      }
+
+      nuxeo-dialog {
+        height: 100%;
+        max-height: var(--nuxeo-document-form-popup-max-height, 60vh);
+        max-width: 915px;
+        margin: 0;
+      }
+
+      .actions {
+        @apply --buttons-bar;
+        @apply --layout-horizontal;
+        @apply --layout-justified;
+      }
+
+      .scrollable {
+        margin-top: 24px;
+        padding: 0 24px;
+        @apply --layout-scroll;
+        @apply --layout-flex;
+        @apply --layout-vertical;
+      }
+
+      #form {
+        margin: 0;
+        padding: 0;
+      }
+
+      #form,
+      form {
+        @apply --layout-vertical;
+        height: 100%;
+      }
+    </style>
+    <nuxeo-operation id="bulkEditOp" op="Services.BulkEditKeywords"></nuxeo-operation>
+
+    <div class="action" on-click="_togglePopup" hidden="[[hidden]]">
+      <paper-icon-button icon="[[icon]]" noink></paper-icon-button>
+      <nuxeo-tooltip>Bulk Edit Keywords</nuxeo-tooltip>
+    </div>
+
+    <nuxeo-dialog id="editPopup" with-backdrop>
+      <iron-form id="form">
+        <form>
+          <div class="scrollable">
+            <h2>Bulk Edit Keywords</h2>
+            <div>
+              <paper-radio-group selected="{{updateMode}}">
+                <paper-radio-button name="append">
+                  Append
+                </paper-radio-button>
+                <paper-radio-button name="remove">
+                  Remove
+                </paper-radio-button>
+              </paper-radio-group>
+            </div>
+
+            <div hidden$="[[_isToRemove(updateMode)]]">
+              <nuxeo-selectivity id="kwSelect" operation="Keyword.Suggestion" label="" min-chars="1" tagging="true"
+                multiple value="{{value}}" new-entry-formatter="[[newEntryFormatter]]"
+                result-formatter="[[resultFormatter]]" init-selection="[[initSelection]]">
+              </nuxeo-selectivity>
+            </div>
+
+            <div>
+              <h3>Common Keywords</h3>
+              <iss-keywords items="{{keywordsCommon}}" keywords-flagged="{{keywordsToRemove}}" type="[[updateMode]]">
+              </iss-keywords>
+            </div>
+
+          </div>
+          <div class="actions">
+            <paper-button dialog-dismiss noink class="secondary" on-click="_close">Close</paper-button>
+            <paper-button noink class="primary" on-click="_reset">Reset</paper-button>
+            <paper-button noink class="primary" on-click="_save" disabled$="[[saving]]">
+              <template is="dom-if" if="[[!saving]]">
+                Save
+              </template>
+              <template is="dom-if" if="[[saving]]">
+                <span class="saving-label">Saving</span>
+                <paper-spinner-lite active></paper-spinner-lite>
+              </template>
+            </paper-button>
+          </div>
+        </form>
+      </iron-form>
+    </nuxeo-dialog>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'iss-bulk-edit-keywords-button',
+      behaviors: [Nuxeo.I18nBehavior, Nuxeo.FormatBehavior, Nuxeo.FiltersBehavior],
+      properties: {
+        icon: {
+          type: String,
+          value: 'nuxeo:edit',
+        },
+
+        hidden: {
+          type: Boolean,
+          value: false
+        },
+
+        documents: {
+          type: Array
+        //   observer: '_filter'
+        },
+
+        value: {
+          type: String,
+          value: '',
+          notify: true,
+        },
+
+        keywordsCommon: {
+          type: Array
+        },
+
+        keywordsToRemove: {
+          type: Array,
+          value: []
+        },
+
+        updateMode: {
+          type: String,
+          value: 'append'
+        },
+
+        saving: {
+          type: Boolean,
+          value: false,
+          readOnly: true,
+        },
+
+
+        initSelection: {
+          type: Function,
+          value() {
+            return this._initSelection.bind(this);
+          },
+        },
+
+        newEntryFormatter: {
+          type: Function,
+          value() {
+            return this._newEntryFormatter.bind(this);
+          },
+        },
+
+        resultFormatter: {
+          type: Function,
+          value() {
+            return this._resultFormatter.bind(this);
+          },
+        }
+      },
+
+      _initSelection(element, callback) {
+        return callback(
+          this.value.map((entry) => {
+            return {
+              id: entry,
+              displayLabel: entry
+            }
+          }),
+        )
+      },
+
+      _newEntryFormatter(term) {
+        return {
+          id: term,
+          displayLabel: term,
+          newKeyword: true
+        }
+      },
+
+      _resultFormatter(term) {
+        if (term.newKeyword) {
+          return `<span>+ ${this.$.kwSelect.escapeHTML(term.displayLabel)}</span>`
+        }
+        return `<span>${this.$.kwSelect.escapeHTML(term.displayLabel)}</span>`
+      },
+
+      _togglePopup() {
+        this.$.editPopup.toggle()
+        this._fillCommonKeywords()
+      },
+
+      _fillCommonKeywords() {
+        if (this.documents) {
+          let keywordsAll = []
+
+          for (let i = 0; i < this.documents.length; i++) {
+            if (this.documents[i].properties && this.documents[i].properties['isskeyword:keywords']) {
+              if (this.documents[i].properties['isskeyword:keywords'].length == 0) {
+                keywordsAll = []
+                break
+              } else {
+                keywordsAll.push(this.documents[i].properties['isskeyword:keywords'].map(k => k.label))
+              }
+            }
+          }
+
+          if (keywordsAll.length > 0) {
+            this.keywordsCommon = keywordsAll.reduce((p, c) => p.filter(e => c.includes(e))).sort()
+          } else {
+            this.keywordsCommon = []
+          }
+        }
+      },
+
+
+      _execute() { //call backend operation
+        this._setSaving(true)
+        let op = this.$.bulkEditOp
+        op.input = this.documents
+        op.params = {
+          'keywords': this._isToRemove(this.updateMode) ? this.keywordsToRemove : this.value,
+          'updateMode': this.updateMode.toUpperCase()
+        }
+        op.execute().then(function (resp) {
+          this.fire('notify', {
+            message: 'The selected keywords have been ' + this.updateMode + 'ed successfully.'
+          })
+
+          this.keywordsCommon = []
+          this._reset()
+          this._setSaving(false)
+          this.$.editPopup.toggle()
+          this.fire('refresh')
+
+        }.bind(this), function (error) {
+          this.fire('notify', {
+            message: 'Currently unable to bulk edit keywords.'
+          })
+
+          this._setSaving(false)
+          this.$.editPopup.toggle()
+        }.bind(this))
+      },
+
+
+      _save() {
+        if (this._isToRemove(this.updateMode)) {
+          if (this.keywordsToRemove.length == 0) {
+            this.fire('notify', {
+              message: 'No keywords are selected to remove.'
+            })
+            this.$.editPopup.toggle()
+          } else {
+            this._execute()
+          }
+        } else if (!this.value || this.value.length == 0) {
+          this.fire('notify', {
+            message: 'No keywords are selected to append.'
+          })
+          this.$.editPopup.toggle()
+        } else {
+          this._execute()
+        }
+      },
+
+      _close() {
+        this._reset()
+      },
+
+      _reset() {
+        this.value = ''
+        this.set('keywordsToRemove', [])
+      },
+
+      _isToRemove(updateMode) {
+        if (updateMode === 'remove') {
+          return true
+        } else {
+          return false
+        }
+      },
+
+    //   _filter() {
+    //     if (this.documents && this.documents.length > 0) {
+    //       let path = decodeURIComponent(window.location.href)
+    //       if (path.indexOf('/default-domain/Amazon Device Hub/Amazon Device Hub Externa') > -1 ||
+    //         path.indexOf('/default-domain/Amazon Device Hub/Amazon Device Hub Internal') > -1 ||
+    //         path.indexOf('/default-domain/Amazon Device Hub/Amazon Device Hub Archive') > -1 ||
+    //         path.indexOf('/search/amazon-device-hubsearchpp') > -1) {
+    //         this.hidden = true
+    //       } else {
+    //         this.hidden = false
+    //       }
+    //     }
+    //   }
+    })
+  </script>
+</dom-module>

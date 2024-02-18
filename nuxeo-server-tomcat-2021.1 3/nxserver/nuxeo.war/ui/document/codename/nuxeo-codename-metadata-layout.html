@@ -1,0 +1,81 @@
+<!--
+`nuxeo-codename-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-codename-metadata-layout
+-->
+<dom-module id="nuxeo-codename-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 15px;
+      }
+      label {
+        font-weight: var(--nuxeo-label_-_font-weight);
+        text-decoration: var(--nuxeo-label_-_text-decoration);
+      }
+      label:after {
+        content: var(--nuxeo-label-after_-_content);
+      }
+    </style>
+    <div role="widget">
+      <label>Public Codename</label>
+      <div>[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Market Name</label>
+      <div>[[document.properties.codename:market_name]]</div>
+    </div>
+    
+    <nuxeo-document-suggestion role="widget" value="[[document.properties.codename:device]]" label="Device" readonly="true"></nuxeo-document-suggestion>
+
+    <nuxeo-user-suggestion role="widget" value="[[document.properties.codename:user_access]]" label="Users With Access" multiple="true" readonly="true" search-type="USER_GROUP_TYPE"></nuxeo-user-suggestion>
+
+    <nuxeo-data-table role="widget" label="Specific Names" items="{{document.properties.codename:specific_names}}">
+
+
+<nuxeo-data-table-column name="Link Type">
+<template>
+<nuxeo-directory-suggestion role="widget" value="[[item.name_type]]" readonly="true" directory-name="CodnameTypes"></nuxeo-directory-suggestion>
+</template>
+</nuxeo-data-table-column>
+
+<nuxeo-data-table-column name="Link Value">
+<template>
+[[item.name_value]]
+</template>
+</nuxeo-data-table-column>
+
+<nuxeo-data-table-column name="Codename">
+<template>
+[[item.name_codename]]
+</template>
+</nuxeo-data-table-column>
+
+<nuxeo-data-table-form>
+  <template>
+    <nuxeo-directory-suggestion value="{{item.name_type}}" label="Link Type" directory-name="CodnameTypes"></nuxeo-directory-suggestion>
+    <nuxeo-input value="{{item.name_value}}" label="Link Value" type="text"></nuxeo-input>
+    <nuxeo-input value="{{item.name_codename}}" label="Codename" type="text"></nuxeo-input>
+  </template>
+</nuxeo-data-table-form>
+</nuxeo-data-table>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-codename-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Codename
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

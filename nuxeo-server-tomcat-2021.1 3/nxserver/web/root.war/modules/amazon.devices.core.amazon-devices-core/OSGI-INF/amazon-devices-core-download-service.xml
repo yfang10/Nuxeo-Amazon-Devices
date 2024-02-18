@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="amazon.devices.core.download.service.contrib">
+    <require>org.nuxeo.ecm.core.io.download.DownloadService</require>
+
+    <implementation class="amazon.devices.core.download.CustomDownloadServiceImpl" />
+
+    <service>
+        <provide interface="org.nuxeo.ecm.core.io.download.DownloadService" />
+    </service>
+</component>

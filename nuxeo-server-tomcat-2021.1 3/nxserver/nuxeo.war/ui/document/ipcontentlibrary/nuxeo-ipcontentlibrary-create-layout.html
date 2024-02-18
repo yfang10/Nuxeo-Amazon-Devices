@@ -1,0 +1,34 @@
+<!--
+`nuxeo-ipcontentlibrary-create-layout`
+@group Nuxeo UI
+@element nuxeo-ipcontentlibrary-create-layout
+-->
+<dom-module id="nuxeo-ipcontentlibrary-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text"></nuxeo-input>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-ipcontentlibrary-create-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype IPContentLibrary
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

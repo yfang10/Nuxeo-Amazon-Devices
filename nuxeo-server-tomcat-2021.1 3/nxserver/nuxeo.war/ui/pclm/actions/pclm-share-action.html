@@ -1,0 +1,189 @@
+<!--
+`pclm-share-action`
+@group Nuxeo UI
+@element pclm-share-action
+-->
+<dom-module id="pclm-share-action">
+  <template>
+    <style include="nuxeo-styles nuxeo-action-button-styles">
+      .content {
+        @apply(--layout-vertical);
+      }
+           
+      nuxeo-input {
+        cursor: pointer;
+        overflow: hidden;
+        @apply --layout-flex;
+      }
+      
+      .email_title {
+        margin-top: 32px;
+      }
+      
+      .acknowledge {
+        margin-top:24px;
+      }
+      
+    </style>
+
+    <nuxeo-operation id="shareOp" op="javascript.api_share" 
+                     input="[[input]]" params="[[params]]">
+    </nuxeo-operation>
+    
+    <div class="action" on-tap="_toggleDialog">
+      <paper-icon-button id="bt" icon="[[icon]]"></paper-icon-button>
+      <span class="label" hidden$="[[!showLabel]]">[[i18n(label)]]</span>
+    </div>
+    <paper-tooltip for="bt">[[i18n(label)]]</paper-tooltip>
+
+    <nuxeo-dialog id="dialog" on-iron-overlay-closed="_dialogClosed" with-backdrop>
+      <h2>[[i18n(label)]]</h2>
+      <div class="content">
+        
+        <h3>[[i18n('label.action.share.permalink')]]</h3>
+        <div>
+          <nuxeo-input id="permalink"
+                       value="[[_buildPermalink(document)]]"
+                       on-click="_copyPermalink"
+                       autofocus
+                       readonly>
+          </nuxeo-input>
+        </div>
+        <div>[[i18n('label.action.share.permalink.prerequisite')]]</div>
+  
+        <h3 class="email_title">[[i18n('label.action.share.send.email')]]</h3>
+        <iron-form id="form">
+          <form>
+            <nuxeo-user-suggestion label="[[i18n('label.action.share.users')]]" value="{{usernames}}"
+                                   name="userGroup" search-type="USER_TYPE" multiple required>
+            </nuxeo-user-suggestion>
+            
+            <paper-textarea value="{{comment}}" label="[[i18n('label.action.share.comment')]]">
+            </paper-textarea>
+            
+            <paper-checkbox required class="acknowledge">[[i18n('label.action.share.warning')]]</paper-checkbox>
+ 
+          </form>
+        </iron-form>
+      </div>
+      <div class="buttons">
+        <paper-button noink dialog-dismiss on-tap="_close">
+          [[i18n('label.dialog.button.cancel')]]
+        </paper-button>
+        <paper-button noink class="primary" on-tap="_ok">
+          [[i18n('label.dialog.button.send')]]
+        </paper-button>
+      </div>
+    </nuxeo-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-share-action',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        document: {
+          type: Object
+        },
+        
+        usernames: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        },
+        
+        /**
+         * Label to display in the action button.
+         */
+        label: {
+          type: String,
+          value: 'Action Label'
+        },
+
+        /**
+         * `true` if the action should display the label, `false` otherwise.
+         */
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        /**
+         * Icon to use (iconset_name:icon_name) in the action button.
+         */
+        icon: {
+          type: String,
+          value: 'iconset_name:icon_name'
+        }
+      },
+
+      _toggleDialog: function() {
+        this.$.dialog.toggle();
+      },
+
+      /**
+       * Callback executed when the user presses the "ok" button.
+       */
+      _ok: function() {
+        if (!this.$.form.validate()) return;
+        this.params = {
+          usernames: JSON.stringify(this.usernames),
+          comment: this.comment,
+        };
+        this.input = 'doc:'+this.document.uid;
+        this.$.shareOp.execute().then(function(response) {
+          this.fire('notify', { message: this.i18n('label.action.share.success') });
+          this._toggleDialog();
+        }.bind(this),function(error) {
+          this.fire('notify', { message: this.i18n('label.action.share.failure') });
+        }.bind(this));;
+      },
+
+      /**
+       * Callback executed when the user presses the "close" button.
+       *
+       * Note that the "close" button already have a "dialog-dismiss" property that makes the button close the dialog
+       * when clicked. If you don't need to perform additional actions, this method is not needed.
+       */
+      _close: function() {
+        // implement me
+      },
+
+      /**
+       * Useful callback to execute some action after the dialog is closed. Can be removed if it's not necessary.
+       */
+      _dialogClosed: function() {
+        this.$.form.reset();
+      },
+      
+      _buildPermalink: function(document) {
+        return document ? `${location.origin + location.pathname}#!/doc/${document.uid}` : '';
+      },
+
+      _copyPermalink: function() {
+        this._selectPermalink();
+        if (!window.document.execCommand('copy')) {
+          return;
+        }
+
+        const link = this.$.copyLink;
+        this._debouncer = Debouncer.debounce(
+          this._debouncer,
+          timeOut.after(3000), () => {
+            link.innerText = this.i18n('shareButton.operation.copy');
+          },
+        );
+        link.innerText = this.i18n('shareButton.operation.copied');
+      },
+
+      _selectPermalink: function() {
+        this.$.permalink.$.paperInput.inputElement.inputElement.select();
+      }
+   
+    });
+  </script>
+</dom-module>
+

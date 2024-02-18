@@ -1,0 +1,56 @@
+<!--
+`nuxeo-easysharefolder-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-easysharefolder-metadata-layout
+-->
+<dom-module id="nuxeo-easysharefolder-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>[[i18n(&#x27;label.dublincore.title&#x27;)]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n(&#x27;label.dublincore.description&#x27;)]]</label>
+      <div name="description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Access Expiration Date</label>
+      <div>[[formatDate(document.properties.dc:expired)]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Send Access Notifications</label>
+      <div>[[document.properties.eshare:hasNotification]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Access Notifications Email Address</label>
+      <div>[[document.properties.eshare:contactEmail]]</div>
+    </div>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-easysharefolder-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype EasyShareFolder
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

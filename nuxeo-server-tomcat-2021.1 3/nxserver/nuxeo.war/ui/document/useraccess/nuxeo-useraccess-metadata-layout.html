@@ -1,0 +1,69 @@
+<!--
+`nuxeo-useraccess-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-useraccess-metadata-layout
+-->
+<dom-module id="nuxeo-useraccess-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 15px;
+      }
+      label {
+        font-weight: var(--nuxeo-label_-_font-weight);
+        text-decoration: var(--nuxeo-label_-_text-decoration);
+      }
+      label:after {
+        content: var(--nuxeo-label-after_-_content);
+      }
+    </style>
+    <div role="widget">
+      <label>Title</label>
+      <div>[[document.properties.dc:title]]</div>
+    </div>
+    
+     <nuxeo-directory-suggestion role="widget" value="[[document.properties.userAccess:typeOfAccess]]" label="Access Type" readonly="true" directory-name="Access_Permissions"></nuxeo-directory-suggestion>
+
+    <div role="widget">
+      <label>Company</label>
+      <div>[[document.properties.userAccess:company]]</div>
+    </div>
+
+    <div role="widget">
+      <label>First Name</label>
+      <div>[[document.properties.userAccess:fName]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Last Name</label>
+      <div>[[document.properties.userAccess:lName]]</div>
+    </div>
+    
+    <div role="widget">
+      <label>Email</label>
+      <div>[[document.properties.userAccess:email]]</div>
+    </div>
+    
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.userAccess:country]]" label="Country" readonly="true" directory-name="Approved_Locations"></nuxeo-directory-suggestion>
+
+    <nuxeo-user-suggestion role="widget" value="[[document.properties.userAccess:related_User]]" label="Related User" readonly="true" search-type="USER_GROUP_TYPE"></nuxeo-user-suggestion>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-useraccess-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype UserAccess
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

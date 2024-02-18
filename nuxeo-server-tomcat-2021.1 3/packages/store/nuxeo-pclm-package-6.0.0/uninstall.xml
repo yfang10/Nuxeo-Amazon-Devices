@@ -1,0 +1,6 @@
+<uninstall>
+  <config rmtemplate="pclm-package"/>
+  <delete file="${env.server.home}/templates/pclm-package/nuxeo.defaults" md5="f4c53467a266179a42c726b3a0f5dbf4"/>
+  <rollback key="nxserver/lib/protobuf-java" pkgId="nuxeo-pclm-package-6.0.0" version="3.7.1"/>
+  <rollback key="nxserver/bundles/nuxeo-pclm-core" pkgId="nuxeo-pclm-package-6.0.0" version="6.0.0"/>
+</uninstall>

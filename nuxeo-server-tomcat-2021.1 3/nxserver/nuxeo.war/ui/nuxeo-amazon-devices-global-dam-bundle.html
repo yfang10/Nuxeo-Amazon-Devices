@@ -1,0 +1,1084 @@
+<!--
+***
+STUDIO CODE SPACE
+***
+Studio will use this file to generate your configuration.
+You may tweak it, but note that any configuration seen as invalid by Studio will automatically be removed.
+
+Should you wish to add custom code, we recommend using the nuxeo-amazon-devices-global-dam-custom-bundle.html file instead.
+-->
+
+<link rel="import" href="pclm/document-view/pclm-picture-document-page.html">
+<link rel="import" href="nuxeo-pclm-custom-bundle.html">
+<link rel="import" href="elements/amzd-document-suggestion.html">
+<link rel="import" href="elements/amzd-collection-download.html">
+<link rel="import" href="elements/custom-requestdownload-op-button.html">
+<link rel="import" href="forms/amzd-amazon-create-layout.html">
+<link rel="import" href="forms/amzd-amazon-edit-layout.html">
+<link rel="import" href="forms/amzd-amazon-metadata-layout.html">
+<link rel="import" href="forms/amzd-approval-schema-edit-layout.html">
+<link rel="import" href="forms/amzd-project-approval-schema-edit-layout.html">
+<link rel="import" href="forms/amzd-approval-schema-view-layout.html">
+<link rel="import" href="forms/amzd-metadata-schema-create-layout.html">
+<link rel="import" href="forms/amzd-project-approval-schema-view-layout.html">
+<link rel="import" href="forms/amzd-metadata-schema-import-layout.html">
+<link rel="import" href="forms/amzd-metadata-schema-view-layout.html">
+<link rel="import" href="forms/amzd-metadata-schema-edit-layout.html">
+<link rel="import" href="pclm/forms/pclm-usage-view-layout.html">
+<link rel="import" href="pclm/forms/pclm-usage-edit-layout.html">
+<link rel="import" href="pclm/forms/pclm-relations-view-layout.html">
+<link rel="import" href="pclm/forms/pclm-relations-edit-layout.html">
+<link rel="import" href="pclm/actions/pclm-assign-task-action.html">
+<link rel="import" href="pclm/actions/pclm-create-translation-action.html">
+<link rel="import" href="pclm/actions/pclm-select-assets-action.html">
+<link rel="import" href="pclm/actions/pclm-deselect-assets-action.html">
+<link rel="import" href="pclm/actions/pclm-create-derivative-action.html">
+<link rel="import" href="pclm/actions/pclm-share-action.html">
+<link rel="import" href="pclm/actions/pclm-approval-start-action.html">
+<link rel="import" href="elements/device-assets-listing.html">
+<link rel="import" href="elements/amzd-document-suggestion.html">
+<link rel="import" href="elements/system-document-suggestion.html">
+<link rel="import" href="elements/nuxeo-customized-document-viewer.html">
+<link rel="import" href="elements/nuxeo-customized-picture-format.html">
+<link rel="import" href="elements/nuxeo-customized-video-conversions.html">
+<link rel="import" href="document/amzd-asset-create.html">
+<link rel="import" href="elements/amzd-submit-newcodename-button.html">
+<link rel="import" href="elements/create-project-popup.html">
+<link rel="import" href="nuxeo-amazon-devices-global-dam-iconset.html">
+<link rel="import" href="elements/publish-contents-button.html">
+<link rel="import" href="elements/active-expired-assets.html">
+<link rel="import" href="elements/amzd-internal-publish.html">
+<link rel="import" href="elements/amzd-internal-active.html">
+<link rel="import" href="elements/amzd-glb-view.html">
+<link rel="import" href="elements/nuxeo-home.html">
+<link rel="import" href="elements/nuxeo-tasks.html">
+<link rel="import" href="elements/amzd-easyshare-share-link.html">
+<link rel="import" href="elements/nuxeo-drive-sync-toggle-button.html">
+<link rel="import" href="elements/amzd-create-user.html">
+<link rel="import" href="elements/amzd-edit-user.html">
+<link rel="import" href="elements/amzd-user-group-management.html">
+<link rel="import" href="elements/amzd-user-group-management-page.html">
+<link rel="import" href="elements/amzd-send-to-participant-button.html">
+<link rel="import" href="elements/amzd-document-grid-thumbnail.html">
+<link rel="import" href="elements/amzd-checkbox-aggregation.html">
+<link rel="import" href="elements/amzd-form-checkbox-aggregation.html">
+<link rel="import" href="nuxeo-nuxeo-for-adobe-cc-nuxeo-bundle.html">
+<link rel="import" href="forms/amzd-amazon-3D-create-layout.html">
+<link rel="import" href="forms/amzd-amazon-3D-edit-layout.html">
+<link rel="import" href="forms/amzd-amazon-3D-metadata-layout.html">
+<link rel="import" href="forms/amzd-amazon-Project-edit-layout.html">
+<link rel="import" href="forms/amzd-amazon-Project-create-layout.html">
+<link rel="import" href="nuxeo-studio-template-dam-custom-bundle.html">
+<link rel="import" href="nuxeo-studio-template-dam-bundle.html">
+<link rel="import" href="nuxeo-amazon-devices-global-dam-custom-bundle.html">
+<link rel="import" href="elements/amzd-add-to-launch-collection.html">
+<link rel="import" href="elements/amzd-launch-collection-suggestion.html">
+<link rel="import" href="elements/amzd-download-audit-log.html">
+<link rel="import" href="elements/amzd-download-button.html">
+<link rel="import" href="elements/amzd-document-history.html">
+<link rel="import" href="elements/amzd-audit-page-provider.html">
+<link rel="import" href="elements/amzd-audit.html">
+<link rel="import" href="elements/amzd-bulk-archive-button.html">
+<link rel="import" href="elements/amzd-download-documents-button.html">
+<link rel="import" href="elements/amzd-bulk-edit-keywords-button.html">
+<link rel="import" href="elements/amzd-nuxeo-document-page.html">
+<link rel="import" href="elements/amzd-display-vocabulary.html">
+<link rel="import" href="elements/amzd-default-result.html">
+<!-- Contribution of element 'amzd-internal-active' for slot 'ACTIVE_CONTENTS_PAGES' -->
+<nuxeo-slot-content name="archiveActivePage" slot="ACTIVE_CONTENTS_PAGES" order="10">
+  <template>
+    <amzd-internal-active id="archivePage" name="archiveactive" document="[[document]]" documents="[[documents]]">
+    </amzd-internal-active>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-asset-create' for slot 'CREATE_POPUP_PAGES' -->
+<nuxeo-slot-content name="assetDocumentCreatePopup" slot="CREATE_POPUP_PAGES">
+  <template>
+    <amzd-asset-create id="assetCreation" name="create" parent="[[parent]]" target-path="{{parentPath}}" suggester-children="{{suggesterChildren}}"></amzd-asset-create>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-drive-sync-toggle-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="amzdDriveSyncToggleButton" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.path &amp;&amp; document.path.startsWith &amp;&amp;  document.path.startsWith(&#x27;/default-domain/Approved Content&#x27;) &#x3D;&#x3D; false &amp;&amp; document.path.startsWith(&#x27;/default-domain/Amazon Device Hub&#x27;) &#x3D;&#x3D; false" type="Collection,CreativeProject,ThreeDProject,BrandStrategyProject,RetailExperienceProject,ProductionProject,SubFolder,Shoot,Planning,Product,CreativeProjectTemplate,EasyShareFolder" user="[[user]]">
+      <template>
+        <amzd-drive-sync-toggle-button document="[[document]]"></amzd-drive-sync-toggle-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-operation-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="archiveDocumentAction" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Amazon Device Hub/Amazon Device Hub Internal&#x27;)|| document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Amazon Device Hub/Amazon Device Hub External&#x27;)" facet="Asset" group="ADH_Manager, Librarian, administrators" user="[[user]]">
+      <template>
+        <nuxeo-operation-button icon="icons:archive" label="Archive" tooltip="Archive Document" operation="javascript.AS_ArchiveAssets" input="[[document]]" params="{&quot;eventName&quot;:&quot;documentArchived&quot;}" notification="Document Archived"></nuxeo-operation-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-approval-start-action' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="assetApproval" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="!document.isVersion &amp;&amp; !(document.isProxy &amp;&amp; document.versionableId) &amp;&amp; document.path.indexOf(&quot;/TemplateLibrary/&quot;) &#x3D;&#x3D; -1" facet="Asset" permission="ReadWrite,CreateContents" state="inProgress" user="[[user]]">
+      <template>
+        <pclm-approval-start-action document="[[document]]"></pclm-approval-start-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-assign-task-action' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="assignAdhocTask" slot="DOCUMENT_ACTIONS">
+  <template>
+    <pclm-assign-task-action document="[[document]]" icon="icons:gavel" label="label.action.assign.task.label"></pclm-assign-task-action>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-create-derivative-action' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="createAssetDerivative" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="!document.isVersion &amp;&amp; !(document.isProxy &amp;&amp; document.versionableId)" facet="Asset" permission="ReadWrite" user="[[user]]">
+      <template>
+        <pclm-create-derivative-action document="{{document}}"></pclm-create-derivative-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-create-translation-action' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="createAssetTranslation" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="!document.isVersion &amp;&amp; !(document.isProxy &amp;&amp; document.versionableId)" facet="Asset" permission="ReadWrite" user="[[user]]">
+      <template>
+        <pclm-create-translation-action document="[[document]]"></pclm-create-translation-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'create-project-popup' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="createProject" slot="DOCUMENT_ACTIONS" order="13">
+  <template>
+    <nuxeo-filter document="[[document]]" permission="CreateContents" type="Year" user="[[user]]">
+      <template>
+        <create-project-popup document="[[document]]" icon="amazon-devices-global-dam:post_add-24px2" input="[[document]]" label="Create Project"></create-project-popup>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-download-audit-log' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="downloadAuditLog" slot="DOCUMENT_ACTIONS">
+  <template>
+    <amzd-download-audit-log document="[[document]]" poll-interval="1000"></amzd-download-audit-log>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-drive-sync-toggle-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="driveSyncToggleButton" slot="DOCUMENT_ACTIONS" disabled>
+  <template>
+    <nuxeo-drive-sync-toggle-button document="[[document]]"></nuxeo-drive-sync-toggle-button>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-easyshare-share-link' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="easyShareDocumentAction" slot="DOCUMENT_ACTIONS" order="40">
+  <template>
+    <nuxeo-filter document="[[document]]" group="administrators, EasyShare_Manager, Librarian" type="EasyShareFolder" user="[[user]]">
+      <template>
+        <amzd-easyshare-share-link document="[[document]]" icon="nuxeo:user-space" label="EasyShare Link" show-label="true"></amzd-easyshare-share-link>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-share-action' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="pclmShareDocumentAction" slot="DOCUMENT_ACTIONS" order="40" priority="100">
+  <template>
+    <pclm-share-action document="[[document]]" icon="nuxeo:share" label="shareButton.tooltip">
+    </pclm-share-action>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'custom-requestdownload-op-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="requestDownloadPerm" slot="DOCUMENT_ACTIONS" order="-1">
+  <template>
+    <nuxeo-filter document="[[document]]" facet="Asset" permission="DownloadWithRequest" user="[[user]]">
+      <template>
+        <custom-requestdownload-op-button document="[[document]]" event="document-updated" input="[[document]]" download="true" icon="icons:cloud-download" label="Request Download Permission" operation="javascript.api_request_for_download_wf_start" user="[[user]]"></custom-requestdownload-op-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-send-to-participant-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="sendToParticipantDocumentAction" slot="DOCUMENT_ACTIONS" order="20">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Approved Content/Amazon Device Hub Staging&#x27;) || document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Approved Content/Production Approved&#x27;)|| document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Approved Content/CXLabs Content Library&#x27;) || document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Content Creation/&#x27;) " group="administrators, Librarian, RetailExperienceGeneric" user="[[user]]">
+      <template>
+        <amzd-send-to-participant-button document="[[document]]" icon="amazon-devices-global-dam:cube-send" input="[[document]]" label="Send to Participant"></amzd-send-to-participant-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-submit-newcodename-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="submitnewcodename" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" permission="Edit" type="Codename,BrandStrategyProject,ProductionProject,CreativeProjectTemplate,CreativeProject,RetailExperienceProject,Fixture,ThreeDProject,SubFolder" user="[[user]]">
+      <template>
+        <amzd-submit-newcodename-button document="[[document]]" icon="icons:create" label="Submit a new codename" operation="AMZD.SubmitNewCodenameOperation" tooltip="Submit a new codename" input="[[document]]"></amzd-submit-newcodename-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-operation-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="transitionToApproved" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="!document.isVersion &amp;&amp; !document.isProxy" path="/default-domain/Approved Content" permission="Edit,Everything" state="inProgress" user="[[user]]">
+      <template>
+        <nuxeo-operation-button icon="icons:arrow-forward" label="Quick Approve" tooltip="Transition the Selected Documents to Approved" show-label="true" operation="AC_Lifecycle_ToApproved" input="[[document]]" notification="Document is Now Approved" event="document-updated"></nuxeo-operation-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-operation-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="transitionToInProgress" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="!document.isVersion &amp;&amp; !document.isProxy" permission="Edit,Everything" state="approved" user="[[user]]">
+      <template>
+        <nuxeo-operation-button icon="icons:arrow-back" label="Quick UnApprove" tooltip="Transition the Selected Documents to In Progress" show-label="true" operation="AC_Lifecycle_ToInProgress" input="[[document]]" notification="Document is Now In Progress" event="document-updated"></nuxeo-operation-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-page-item' for slot 'DOCUMENT_VIEWS_ITEMS' -->
+<nuxeo-slot-content name="DeviceAssetsTab" slot="DOCUMENT_VIEWS_ITEMS" order="100">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.type&#x3D;&#x3D;&#x27;Product&#x27; &amp;&amp; document.contextParameters &amp;&amp; document.contextParameters.hasProductAssetsReadAccess" user="[[user]]">
+      <template>
+        <nuxeo-page-item label="Device Support" name="assetDevice"></nuxeo-page-item>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-page-item' for slot 'DOCUMENT_VIEWS_ITEMS' -->
+<nuxeo-slot-content name="glbViewTab" slot="DOCUMENT_VIEWS_ITEMS" order="15">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.properties[&#x27;amz:ThreeD_GLB_blob&#x27;]" user="[[user]]">
+      <template>
+        <nuxeo-page-item label="3D View" name="3D View"></nuxeo-page-item>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'device-assets-listing' for slot 'DOCUMENT_VIEWS_PAGES' -->
+<nuxeo-slot-content name="DeviceAssetsTab" slot="DOCUMENT_VIEWS_PAGES">
+  <template>
+    <device-assets-listing document="[[document]]" name="assetDevice"></device-assets-listing>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-glb-view' for slot 'DOCUMENT_VIEWS_PAGES' -->
+<nuxeo-slot-content name="glbViewTab" slot="DOCUMENT_VIEWS_PAGES">
+  <template>
+    <amzd-glb-view document="[[document]]" name="3D View"></amzd-glb-view>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="AmazonHubSectionSearch" slot="DRAWER_ITEMS" order="23">
+  <template>
+    <nuxeo-menu-icon label="Amazon Device Hub Search" name="amazonhubsectionsearch" icon="amazon-devices-global-dam:card-search-outline"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="DeviceSearch" slot="DRAWER_ITEMS" order="21">
+  <template>
+    <nuxeo-menu-icon label="Device Search" name="devicesearch" icon="amazon-devices-global-dam:toy-brick-search-outline"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="GeneralSearch" slot="DRAWER_ITEMS" order="20">
+  <template>
+    <nuxeo-menu-icon name="generalsearch" icon="amazon-devices-global-dam:magnify" label="General Search"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="UserSearch" slot="DRAWER_ITEMS" order="22">
+  <template>
+    <nuxeo-filter document="[[document]]" group="ADH_Manager,administrators,Librarian" user="[[user]]">
+      <template>
+        <nuxeo-menu-icon label="User Search" name="usersearch" icon="amazon-devices-global-dam:account-search-outline"></nuxeo-menu-icon>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="assetSearchMenuButton" slot="DRAWER_ITEMS" order="9" disabled>
+  <template>
+    <nuxeo-menu-icon name="assetSearch" icon="icons:perm-media" label="dam.assets.heading"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="requestSearch" slot="DRAWER_ITEMS" disabled>
+  <template>
+    <nuxeo-menu-icon label="app.title.search.request-search" name="requestsearch" icon="icons:assignment"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="AmazonHubSectionSearch" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form provider="Amazon-Device-HubSearchPP" enrichers="thumbnail, permissions, highlight,documentSize" schemas="system,dublincore,amazon,project,usage,relations,facetedKeyword,facetedTag,approval,product_search" search-name="amazon-device-hubsearchpp" auto="true" name="amazonhubsectionsearch" params="{&quot;dublincore_title&quot;:&quot;&quot;,&quot;amazon_original_creator_name&quot;:&quot;&quot;,&quot;dublincore_publisher&quot;:&quot;&quot;}"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="DeviceSearch" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form label="Create Project" provider="Device-SearchPP" enrichers="thumbnail, permissions, highlight,documentSize" schemas="system,dublincore,amazon,project,usage,relations,facetedKeyword,facetedTag,approval,product_search" search-name="device-searchpp" auto="true" name="devicesearch" params="{&quot;product_product_id&quot;:&quot;&quot;,&quot;dublincore_title&quot;:&quot;&quot;}"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="GeneralSearch" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form provider="General-SearchPP" schemas="system,dublincore,amazon,project,usage,relations,facetedKeyword,facetedTag,approval,product_search" search-name="general-searchpp" enrichers="thumbnail, permissions, highlight,documentSize" auto="true" name="generalsearch" params="{&quot;dublincore_title&quot;:&quot;&quot;,&quot;amazon_original_creator_name&quot;:&quot;&quot;,&quot;dublincore_publisher&quot;:&quot;&quot;,&quot;system_fulltext&quot;:&quot;&quot;,&quot;project_review_date_min&quot;:&quot;&quot;,&quot;project_review_date_max&quot;:&quot;&quot;,&quot;project_delivery_date_min&quot;:&quot;&quot;,&quot;project_delivery_date_max&quot;:&quot;&quot;,&quot;project_live_send_date_min&quot;:&quot;&quot;,&quot;project_live_send_date_max&quot;:&quot;&quot;}"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="UserSearch" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form provider="User-searchPP" schemas="system,userAccess" search-name="user-searchpp" auto="true" name="usersearch" params="{&quot;userAccess_fName&quot;:&quot;&quot;,&quot;userAccess_lName&quot;:&quot;&quot;,&quot;userAccess_email&quot;:&quot;&quot;}"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="assertSearchMenuPage" slot="DRAWER_PAGES" disabled>
+  <template>
+    <nuxeo-search-form provider="asset-search" schemas="dublincore,common,uid,system,relations,facetedTag,picture,usage,file,select,picture,approval,product_search,amazon,project" search-name="asset-search" auto="true" display-auto-control="true" name="assetSearch"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="requestSearch" slot="DRAWER_PAGES" disabled>
+  <template>
+    <nuxeo-search-form provider="request-search" schemas="system,request,dublincore" search-name="request-search" name="requestsearch"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-internal-publish' for slot 'PUBLISH_CONTENTS_PAGES' -->
+<nuxeo-slot-content name="stagingPublishContentsPage" slot="PUBLISH_CONTENTS_PAGES" order="10">
+  <template>
+    <amzd-internal-publish id="stagingPublish" name="staging" document="[[document]]" documents="[[documents]]">
+    </amzd-internal-publish>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-operation-button' for slot 'RESULTS_ACTIONS' -->
+<nuxeo-slot-content name="downloadRecordCsvExportBtn" slot="RESULTS_ACTIONS" order="100">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="window.location.href.indexOf(&#x27;analytics&#x27;) &gt;&#x3D; 0" user="[[user]]">
+      <template>
+        <nuxeo-operation-button icon="nuxeo:csv-export" label="Export Download Records" operation="AMZD.DownloadRecordCsvExport" input="[[items]]" download="true" async="true"></nuxeo-operation-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'active-expired-assets' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="ActiveExpiredAssets" slot="RESULTS_SELECTION_ACTIONS" order="26">
+  <template>
+    <nuxeo-filter document="[[document]]" path="/default-domain/Amazon Device Hub/Amazon Device Hub Archive" user="[[user]]">
+      <template>
+        <active-expired-assets documents="[[selectedItems]]" icon="icons:add"></active-expired-assets>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-operation-button' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="bulkArchiveAction" slot="RESULTS_SELECTION_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="(document.length&gt;0 || document.path) ? (document.length&gt;0 ? !(document.findIndex(function(doc){return !doc.path.startsWith(&#x27;/default-domain/Amazon Device Hub/Amazon Device Hub Internal&#x27;) &amp;&amp; !doc.path.startsWith(&#x27;/default-domain/Amazon Device Hub/Amazon Device Hub External&#x27;);}) &gt; -1) : (document.path.startsWith(&#x27;/default-domain/Amazon Device Hub/Amazon Device Hub Internal&#x27;)|| document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Amazon Device Hub/Amazon Device Hub External&#x27;))) : false" group="ADH_Manager, Librarian, administrators" user="[[user]]">
+      <template>
+        <nuxeo-operation-button icon="icons:archive" label="Archive" tooltip="Archive Document" operation="javascript.AS_ArchiveAssets" input="[[selectedItems]]" params="{&quot;eventName&quot;:&quot;documentArchived&quot;}" notification="Documents Archived" event="document-updated"></nuxeo-operation-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-approval-start-action' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="bulkAssetApproval" slot="RESULTS_SELECTION_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.path.indexOf(&quot;/TemplateLibrary/&quot;) &#x3D;&#x3D; -1" group="creators,administrators" type="SubFolder,CreativeProject,BrandStrategyProject,ProductionProject,RetailExperienceProject,ThreeDProject,Fixture" user="[[user]]">
+      <template>
+        <pclm-approval-start-action selection="[[selectedItems]]"></pclm-approval-start-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-bulk-edit-keywords-button' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="bulkEditSelectionAction" slot="RESULTS_SELECTION_ACTIONS" order="5">
+  <template>
+    <nuxeo-filter group="administrators, Keyword_Mgmt" user="[[user]]">
+      <template>
+        <amzd-bulk-edit-keywords-button documents="[[selectedItems]]"> </amzd-bulk-edit-keywords-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-deselect-assets-action' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="deselectAssets" slot="RESULTS_SELECTION_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" permission="ReadWrite" type="Request,Collection,Workspace,Folder" user="[[user]]">
+      <template>
+        <pclm-deselect-assets-action document="[[document]]" icon="icons:block" selection="[[selectedItems]]">
+        </pclm-deselect-assets-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'publish-contents-button' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="publishSelectionActionFromStaging" slot="RESULTS_SELECTION_ACTIONS" order="25" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" path="/default-domain/Approved Content/Amazon Device Hub Staging" user="[[user]]">
+      <template>
+        <publish-contents-button documents="[[selectedItems]]"></publish-contents-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-add-to-launch-collection' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="publishToLaunchCollectionPage" slot="RESULTS_SELECTION_ACTIONS" order="10">
+  <template>
+    <nuxeo-filter document="[[document]]" expression=" document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Amazon Device Hub/Amazon Device Hub Internal&#x27;) || document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Amazon Device Hub/Amazon Device Hub External&#x27;)" group="ADH_Manager, Librarian, administrators" user="[[user]]">
+      <template>
+        <amzd-add-to-launch-collection document="[[document]]" documents="[[selectedItems]]" icon="nuxeo:add" id="publishToPortalCollection">
+              </amzd-add-to-launch-collection>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-select-assets-action' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="selectAssets" slot="RESULTS_SELECTION_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" permission="ReadWrite" type="Request,Collection,Workspace,Folder" user="[[user]]">
+      <template>
+        <pclm-select-assets-action document="[[document]]" icon="icons:check" selection="[[selectedItems]]"></pclm-select-assets-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-send-to-participant-button' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="sendToParticipantSelectionAction" slot="RESULTS_SELECTION_ACTIONS" order="5">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Approved Content/Amazon Device Hub Staging&#x27;) || document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Approved Content/Production Approved&#x27;)|| document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Approved Content/CXLabs Content Library&#x27;) || document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith(&#x27;/default-domain/Content Creation&#x27;) " group="administrators, Librarian, RetailExperienceGeneric" user="[[user]]">
+      <template>
+        <amzd-send-to-participant-button documents="[[selectedItems]]" icon="amazon-devices-global-dam:cube-send" input="[[document]]"></amzd-send-to-participant-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-operation-button' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="transitionToApproved_Bulk" slot="RESULTS_SELECTION_ACTIONS" order="25">
+  <template>
+    <nuxeo-filter document="[[document]]" path="/default-domain/Approved Content" permission="Everything,CreateContents" user="[[user]]">
+      <template>
+        <nuxeo-operation-button icon="icons:arrow-forward" label="Quick Approve" tooltip="Transition the Selected Documents to Approved" show-label="true" operation="AC_Lifecycle_ToApproved" input="[[selectedItems]]" notification="Asset(s) Approved" event="document-updated"></nuxeo-operation-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-operation-button' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="transitionToInProgress_Bulk" slot="RESULTS_SELECTION_ACTIONS" order="25">
+  <template>
+    <nuxeo-filter document="[[document]]" permission="Everything,CreateContents" user="[[user]]">
+      <template>
+        <nuxeo-operation-button icon="icons:arrow-back" label="Quick UnApprove" tooltip="Move Selected Items to In Progress" operation="AC_Lifecycle_ToInProgress" input="[[selectedItems]]" notification="Asset(s) Moved to In Progress" event="document-updated"></nuxeo-operation-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-theme' for slot 'THEMES' -->
+<nuxeo-slot-content name="amazon" slot="THEMES">
+  <template>
+    <nuxeo-theme name="default" original-name="amazon"></nuxeo-theme>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-theme' for slot 'THEMES' -->
+<nuxeo-slot-content name="defaultTheme" slot="THEMES" disabled>
+  <template>
+    <nuxeo-theme></nuxeo-theme>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-audit' for slot 'ADMINISTRATION_PAGES' -->
+<nuxeo-slot-content name="adminAuditPage" slot="ADMINISTRATION_PAGES" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="user.isAdministrator" user="[[user]]">
+      <template>
+        <amzd-audit name="audit" id="audit"></amzd-audit>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-user-group-management-page' for slot 'ADMINISTRATION_PAGES' -->
+<nuxeo-slot-content name="adminUserManagementPage" slot="ADMINISTRATION_PAGES" priority="1">
+  <template>
+    <amzd-user-group-management-page name="user-group-management" route="administration" route-params="[[routeParams]]"></amzd-user-group-management-page>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-display-vocabulary' for slot 'ADMINISTRATION_PAGES' -->
+<nuxeo-slot-content name="adminVocabManagementPage" slot="ADMINISTRATION_PAGES" priority="1">
+  <template>
+    <amzd-display-vocabulary name="vocabulary-management" id="vocabulary"></amzd-display-vocabulary>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-download-button' for slot 'BLOB_ACTIONS' -->
+<nuxeo-slot-content name="downloadBlobAction" slot="BLOB_ACTIONS" order="30" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" facet="Asset" permission="Download" user="[[user]]">
+      <template>
+        <amzd-download-button document="[[document]]" xpath="[[xpath]]" show-label="true"></amzd-download-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-download-documents-button' for slot 'COLLECTION_ACTIONS' -->
+<nuxeo-slot-content name="downloadSelectionAction" slot="COLLECTION_ACTIONS" order="15" priority="1">
+  <template>
+    <amzd-download-documents-button documents="[[selectedItems]]"></amzd-download-documents-button>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-delete-document-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="deleteDocumentAction" slot="DOCUMENT_ACTIONS" order="15" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="this.isProxy(document)" user="[[user]]">
+      <template>
+        <nuxeo-delete-document-button hard="true" document="[[document]]"></nuxeo-delete-document-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-download-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="downloadDocumentAction" slot="DOCUMENT_ACTIONS" order="90" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="(document.facets.indexOf(&#x27;Folderish&#x27;) !&#x3D;&#x3D; -1
+                                                   || document.facets.indexOf(&#x27;Collection&#x27;) !&#x3D;&#x3D; -1)
+                                                   &amp;&amp; document.contextParameters
+                                                   &amp;&amp; document.contextParameters.hasContent" facet="Asset" permission="Download" user="[[user]]">
+      <template>
+        <amzd-download-button document="[[document]]" xpath="[[xpath]]" show-label="true">
+        </amzd-download-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-export-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="exportDocumentAction" slot="DOCUMENT_ACTIONS" order="100" priority="1" disabled>
+  <template>
+    <nuxeo-filter document="[[document]]" facet="Asset" permission="Download" user="[[user]]">
+      <template>
+        <nuxeo-export-button document="[[document]]" show-label="true"></nuxeo-export-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-publish-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="publishDocumentAction" slot="DOCUMENT_ACTIONS" order="45" priority="1" disabled>
+  <template>
+    <nuxeo-publish-button document="[[document]]"></nuxeo-publish-button>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-share-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="shareDocumentAction" slot="DOCUMENT_ACTIONS" order="40" priority="100" disabled>
+  <template>
+    <nuxeo-share-button document="[[document]]"></nuxeo-share-button>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-workflow-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="workflowDocumentAction" slot="DOCUMENT_ACTIONS" order="110" priority="1" disabled>
+  <template>
+    <nuxeo-workflow-button document="[[document]]"></nuxeo-workflow-button>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-nuxeo-document-page' for slot 'DOCUMENT_VIEWS_PAGES' -->
+<nuxeo-slot-content name="documentViewPage" slot="DOCUMENT_VIEWS_PAGES" order="10" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="(document.facets.indexOf(&#x27;Folderish&#x27;) &#x3D;&#x3D;&#x3D; -1
+                                                   &amp;&amp; document.facets.indexOf(&#x27;Collection&#x27;) &#x3D;&#x3D;&#x3D; -1) || document.type &#x3D;&#x3D;&#x3D; &#x27;CreativeProjectTemplate&#x27; || document.type &#x3D;&#x3D;&#x3D; &#x27;CreativeProject&#x27; || document.type &#x3D;&#x3D;&#x3D; &#x27;BrandStrategyProject&#x27; || document.type &#x3D;&#x3D;&#x3D; &#x27;RetailExperienceProject&#x27; || document.type &#x3D;&#x3D;&#x3D; &#x27;ThreeDProject&#x27; || document.type &#x3D;&#x3D;&#x3D; &#x27;ProductionProject&#x27;" user="[[user]]">
+      <template>
+        <amzd-nuxeo-document-page name="view" document="[[document]]" opened=""></amzd-nuxeo-document-page>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="defaultSearchMenuButton" slot="DRAWER_ITEMS" order="30" priority="100" disabled>
+  <template>
+    <nuxeo-menu-icon name="defaultSearch" icon="nuxeo:search" label="app.search"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="expiredSearchMenuButton" slot="DRAWER_ITEMS" order="40" priority="100" disabled>
+  <template>
+    <nuxeo-menu-icon name="expiredSearch" icon="nuxeo:expired" label="app.expiredSearch"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="personalWorkspaceDrawerItem" slot="DRAWER_ITEMS" order="80" priority="1" disabled>
+  <template>
+    <nuxeo-menu-icon name="personalWorkspace" icon="nuxeo:user-space" label="app.personalSpace"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="trashMenuButton" slot="DRAWER_ITEMS" order="100" priority="100">
+  <template>
+    <nuxeo-filter group="administrators" user="[[user]]">
+      <template>
+        <nuxeo-menu-icon name="trash" icon="nuxeo:delete" label="app.trashSearch"></nuxeo-menu-icon>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="defaultSearchMenuPage" slot="DRAWER_PAGES" priority="100" disabled>
+  <template>
+    <nuxeo-search-form name="defaultSearch" search-name="default" auto="" provider="default_search" schemas="dublincore,common,uid,picture"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="expiredSearchMenuPage" slot="DRAWER_PAGES" priority="100" disabled>
+  <template>
+    <nuxeo-search-form name="expiredSearch" search-name="expired" queue="" auto="" provider="expired_search" schemas="dublincore,common,uid,picture" label="expiredSearch.expiredDocuments"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-document-tree' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="personalWorkspaceDrawerPage" slot="DRAWER_PAGES" priority="1" disabled>
+  <template>
+    <nuxeo-document-tree name="personalWorkspace" label="app.personalSpace" current-document="[[document]]" root-doc-path="[[userWorkspace]]"></nuxeo-document-tree>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="trashMenuPage" slot="DRAWER_PAGES" priority="100">
+  <template>
+    <nuxeo-search-form provider="default_trash_search" schemas="dublincore,common,uid,picture" search-name="trash" name="trash"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-csv-export-button' for slot 'RESULTS_ACTIONS' -->
+<nuxeo-slot-content name="csvExportSelectionAction" slot="RESULTS_ACTIONS" order="-100" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="window.location.href.indexOf(&#x27;analytics&#x27;) &lt; 0" user="[[user]]">
+      <template>
+        <nuxeo-csv-export-button provider="[[nxProvider]]"></nuxeo-csv-export-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-spreadsheet-button' for slot 'RESULTS_ACTIONS' -->
+<nuxeo-slot-content name="spreadsheetButton" slot="RESULTS_ACTIONS" order="-150" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="window.location.href.indexOf(&#x27;analytics&#x27;) &#x3D;&#x3D; -1" user="[[user]]">
+      <template>
+        <nuxeo-spreadsheet-button nx-provider="[[nxProvider]]" columns="[[columns]]"></nuxeo-spreadsheet-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-publish-button' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="publishSelectionAction" slot="RESULTS_SELECTION_ACTIONS" order="25" priority="1" disabled>
+  <template>
+    <nuxeo-publish-button documents="[[selectedItems]]"></nuxeo-publish-button>
+  </template>
+</nuxeo-slot-content>
+
+<!-- Custom code -->
+<nuxeo-filter document="[[document]]"> <!--="" contribution="" of="" element="" 'amzd-asset-create'="" for="" slot="" 'create_popup_pages'="" ="" -->
+<nuxeo-slot-content name="assetDocumentCreatePopup" slot="CREATE_POPUP_PAGES">
+  <template>
+    <amzd-asset-create id="assetCreation" name="create" parent="[[parent]]" target-path="{{parentPath}}" suggester-children="{{suggesterChildren}}"></amzd-asset-create>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-drive-sync-toggle-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="amzdDriveSyncToggleButton" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.path &amp;&amp; document.path.startsWith &amp;&amp;  document.path.startsWith('/default-domain/Approved Content') == false &amp;&amp; document.path.startsWith('/default-domain/Amazon Device Hub') == false" type="Collection,CreativeProject,ThreeDProject,BrandStrategyProject,RetailExperienceProject,ProductionProject,SubFolder,Shoot,Planning,Product,CreativeProjectTemplate,EasyShareFolder" user="[[user]]">
+      <template>
+        <amzd-drive-sync-toggle-button document="[[document]]"></amzd-drive-sync-toggle-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-approval-start-action' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="assetApproval" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="!document.isVersion &amp;&amp; !(document.isProxy &amp;&amp; document.versionableId) &amp;&amp; document.path.indexOf(&quot;/TemplateLibrary/&quot;) == -1" facet="Asset" permission="ReadWrite,CreateContents" state="inProgress" user="[[user]]">
+      <template>
+        <pclm-approval-start-action document="[[document]]"></pclm-approval-start-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-assign-task-action' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="assignAdhocTask" slot="DOCUMENT_ACTIONS">
+  <template>
+    <pclm-assign-task-action document="[[document]]" icon="icons:gavel" label="label.action.assign.task.label"></pclm-assign-task-action>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-create-derivative-action' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="createAssetDerivative" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="!document.isVersion &amp;&amp; !(document.isProxy &amp;&amp; document.versionableId)" facet="Asset" permission="ReadWrite" user="[[user]]">
+      <template>
+        <pclm-create-derivative-action document="{{document}}"></pclm-create-derivative-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-create-translation-action' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="createAssetTranslation" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="!document.isVersion &amp;&amp; !(document.isProxy &amp;&amp; document.versionableId)" facet="Asset" permission="ReadWrite" user="[[user]]">
+      <template>
+        <pclm-create-translation-action document="[[document]]"></pclm-create-translation-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'create-project-popup' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="createProject" slot="DOCUMENT_ACTIONS" order="13">
+  <template>
+    <nuxeo-filter document="[[document]]" permission="CreateContents" type="Year" user="[[user]]">
+      <template>
+        <create-project-popup document="[[document]]" icon="amazon-devices-global-dam:post_add-24px2" input="[[document]]" label="Create Project"></create-project-popup>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-drive-sync-toggle-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="driveSyncToggleButton" slot="DOCUMENT_ACTIONS" disabled="">
+  <template>
+    <nuxeo-drive-sync-toggle-button document="[[document]]"></nuxeo-drive-sync-toggle-button>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-easyshare-share-link' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="easyShareDocumentAction" slot="DOCUMENT_ACTIONS" order="40">
+  <template>
+    <nuxeo-filter document="[[document]]" group="administrators, EasyShare_Manager, Librarian" type="EasyShareFolder" user="[[user]]">
+      <template>
+        <amzd-easyshare-share-link document="[[document]]" icon="nuxeo:user-space" label="EasyShare Link" show-label="true"></amzd-easyshare-share-link>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-share-action' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="pclmShareDocumentAction" slot="DOCUMENT_ACTIONS" order="40" priority="100">
+  <template>
+    <pclm-share-action document="[[document]]" icon="nuxeo:share" label="shareButton.tooltip">
+    </pclm-share-action>
+  </template>
+</nuxeo-slot-content>
+
+<!-- Contribution of element 'custom-requestdownload-op-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="requestDownloadPerm" slot="DOCUMENT_ACTIONS" order="-1">
+  <template>
+    <nuxeo-filter document="[[document]]" facet="Asset" permission="DownloadWithRequest" user="[[user]]">
+      <template>
+        <custom-requestdownload-op-button document="[[document]]" event="document-updated" input="[[document]]" download="true" icon="icons:cloud-download" label="Request Download Permission" operation="javascript.api_request_for_download_wf_start" user="[[user]]"></custom-requestdownload-op-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-send-to-participant-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="sendToParticipantDocumentAction" slot="DOCUMENT_ACTIONS" order="20">
+    <template>
+    <nuxeo-filter document="[[document]]" expression="document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith('/default-domain/Approved Content/Amazon Device Hub Staging') || document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith('/default-domain/Approved Content/Production Approved')|| document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith('/default-domain/Approved Content/CXLabs Content Library') || document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith('/default-domain/Content Creation/') " group="administrators, Librarian, RetailExperienceGeneric" user="[[user]]">
+      <template>
+        <amzd-send-to-participant-button document="[[document]]" icon="amazon-devices-global-dam:cube-send" input="[[document]]" label="Send to Participant"></amzd-send-to-participant-button>
+      </template>
+    </nuxeo-filter>
+    </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-submit-newcodename-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="submitnewcodename" slot="DOCUMENT_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" permission="Edit" type="Codename,BrandStrategyProject,ProductionProject,CreativeProjectTemplate,CreativeProject,RetailExperienceProject,Fixture,ThreeDProject,SubFolder" user="[[user]]">
+      <template>
+        <amzd-submit-newcodename-button document="[[document]]" icon="icons:create" label="Submit a new codename" operation="AMZD.SubmitNewCodenameOperation" tooltip="Submit a new codename" input="[[document]]"></amzd-submit-newcodename-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-page-item' for slot 'DOCUMENT_VIEWS_ITEMS' -->
+<nuxeo-slot-content name="DeviceAssetsTab" slot="DOCUMENT_VIEWS_ITEMS" order="100">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.type=='Product' &amp;&amp; document.contextParameters &amp;&amp; document.contextParameters.hasProductAssetsReadAccess" user="[[user]]">
+      <template>
+        <nuxeo-page-item label="Device Support" name="assetDevice"></nuxeo-page-item>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-page-item' for slot 'DOCUMENT_VIEWS_ITEMS' -->
+<nuxeo-slot-content name="glbViewTab" slot="DOCUMENT_VIEWS_ITEMS" order="15">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.properties['amz:ThreeD_GLB_blob']" user="[[user]]">
+      <template>
+        <nuxeo-page-item label="3D View" name="3D View"></nuxeo-page-item>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'device-assets-listing' for slot 'DOCUMENT_VIEWS_PAGES' -->
+<nuxeo-slot-content name="DeviceAssetsTab" slot="DOCUMENT_VIEWS_PAGES">
+  <template>
+    <device-assets-listing document="[[document]]" name="assetDevice"></device-assets-listing>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-glb-view' for slot 'DOCUMENT_VIEWS_PAGES' -->
+<nuxeo-slot-content name="glbViewTab" slot="DOCUMENT_VIEWS_PAGES">
+  <template>
+    <amzd-glb-view document="[[document]]" name="3D View"></amzd-glb-view>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="AmazonHubSectionSearch" slot="DRAWER_ITEMS" order="23">
+  <template>
+    <nuxeo-menu-icon label="Amazon Device Hub Search" name="amazonhubsectionsearch" icon="amazon-devices-global-dam:card-search-outline"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="DeviceSearch" slot="DRAWER_ITEMS" order="21">
+  <template>
+    <nuxeo-menu-icon label="Device Search" name="devicesearch" icon="amazon-devices-global-dam:toy-brick-search-outline"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="GeneralSearch" slot="DRAWER_ITEMS" order="20">
+  <template>
+    <nuxeo-menu-icon name="generalsearch" icon="amazon-devices-global-dam:magnify" label="General Search"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="UserSearch" slot="DRAWER_ITEMS" order="22">
+  <template>
+    <nuxeo-filter document="[[document]]" group="ADH_Manager,administrators,Librarian" user="[[user]]">
+      <template>
+        <nuxeo-menu-icon label="User Search" name="usersearch" icon="amazon-devices-global-dam:account-search-outline"></nuxeo-menu-icon>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="assetSearchMenuButton" slot="DRAWER_ITEMS" order="9" disabled="">
+  <template>
+    <nuxeo-menu-icon name="assetSearch" icon="icons:perm-media" label="dam.assets.heading"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="requestSearch" slot="DRAWER_ITEMS" disabled="">
+  <template>
+    <nuxeo-menu-icon label="app.title.search.request-search" name="requestsearch" icon="icons:assignment"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="AmazonHubSectionSearch" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form provider="Amazon-Device-HubSearchPP" enrichers="thumbnail, permissions, highlight,documentSize" schemas="system,dublincore,amazon,project,usage,relations,facetedKeyword,facetedTag,approval,product_search" search-name="amazon-device-hubsearchpp" auto="true" name="amazonhubsectionsearch" params="{&quot;dublincore_title&quot;:&quot;&quot;,&quot;amazon_original_creator_name&quot;:&quot;&quot;,&quot;dublincore_publisher&quot;:&quot;&quot;}"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="DeviceSearch" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form label="Create Project" provider="Device-SearchPP" enrichers="thumbnail, permissions, highlight,documentSize" schemas="system,dublincore,amazon,project,usage,relations,facetedKeyword,facetedTag,approval,product_search" search-name="device-searchpp" auto="true" name="devicesearch" params="{&quot;product_product_id&quot;:&quot;&quot;,&quot;dublincore_title&quot;:&quot;&quot;}"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="GeneralSearch" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form provider="General-SearchPP" schemas="system,dublincore,amazon,project,usage,relations,facetedKeyword,facetedTag,approval,product_search" search-name="general-searchpp" enrichers="thumbnail, permissions, highlight,documentSize" auto="true" name="generalsearch" params="{&quot;dublincore_title&quot;:&quot;&quot;,&quot;amazon_original_creator_name&quot;:&quot;&quot;,&quot;dublincore_publisher&quot;:&quot;&quot;,&quot;system_fulltext&quot;:&quot;&quot;,&quot;project_review_date_min&quot;:&quot;&quot;,&quot;project_review_date_max&quot;:&quot;&quot;,&quot;project_delivery_date_min&quot;:&quot;&quot;,&quot;project_delivery_date_max&quot;:&quot;&quot;,&quot;project_live_send_date_min&quot;:&quot;&quot;,&quot;project_live_send_date_max&quot;:&quot;&quot;}"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="UserSearch" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form provider="User-searchPP" schemas="system,userAccess" search-name="user-searchpp" auto="true" name="usersearch" params="{&quot;userAccess_fName&quot;:&quot;&quot;,&quot;userAccess_lName&quot;:&quot;&quot;,&quot;userAccess_email&quot;:&quot;&quot;}"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="assertSearchMenuPage" slot="DRAWER_PAGES" disabled="">
+  <template>
+    <nuxeo-search-form provider="asset-search" schemas="dublincore,common,uid,system,relations,facetedTag,picture,usage,file,select,picture,approval,product_search,amazon,project" search-name="asset-search" auto="true" display-auto-control="true" name="assetSearch"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="requestSearch" slot="DRAWER_PAGES" disabled="">
+  <template>
+    <nuxeo-search-form provider="request-search" schemas="system,request,dublincore" search-name="request-search" name="requestsearch"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+
+<!-- Contribution of element 'pclm-approval-start-action' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="bulkAssetApproval" slot="RESULTS_SELECTION_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="document.path.indexOf(&quot;/TemplateLibrary/&quot;) == -1" group="creators,administrators" type="SubFolder,CreativeProject,BrandStrategyProject,ProductionProject,RetailExperienceProject,ThreeDProject,Fixture" user="[[user]]">
+      <template>
+        <pclm-approval-start-action selection="[[selectedItems]]"></pclm-approval-start-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'pclm-deselect-assets-action' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="deselectAssets" slot="RESULTS_SELECTION_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" permission="ReadWrite" type="Request,Collection,Workspace,Folder" user="[[user]]">
+      <template>
+        <pclm-deselect-assets-action document="[[document]]" icon="icons:block" selection="[[selectedItems]]">
+        </pclm-deselect-assets-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+<!-- Contribution of element 'pclm-select-assets-action' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="selectAssets" slot="RESULTS_SELECTION_ACTIONS">
+  <template>
+    <nuxeo-filter document="[[document]]" permission="ReadWrite" type="Request,Collection,Workspace,Folder" user="[[user]]">
+      <template>
+        <pclm-select-assets-action document="[[document]]" icon="icons:check" selection="[[selectedItems]]"></pclm-select-assets-action>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-send-to-participant-button' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="sendToParticipantSelectionAction" slot="RESULTS_SELECTION_ACTIONS" order="5">
+    <template>
+    <nuxeo-filter document="[[document]]" expression="document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith('/default-domain/Approved Content/Amazon Device Hub Staging') || document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith('/default-domain/Approved Content/Production Approved')|| document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith('/default-domain/Approved Content/CXLabs Content Library') || document.path &amp;&amp; document.path.startsWith &amp;&amp; document.path.startsWith('/default-domain/Content Creation') " group="administrators, Librarian, RetailExperienceGeneric" user="[[user]]">
+      <template>
+        <amzd-send-to-participant-button documents="[[selectedItems]]" icon="amazon-devices-global-dam:cube-send" input="[[document]]"></amzd-send-to-participant-button>
+      </template>
+    </nuxeo-filter>
+    </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-theme' for slot 'THEMES' -->
+<nuxeo-slot-content name="amazon" slot="THEMES">
+  <template>
+    <nuxeo-theme name="default" original-name="amazon"></nuxeo-theme>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-user-group-management-page' for slot 'ADMINISTRATION_PAGES' -->
+<nuxeo-slot-content name="adminUserManagementPage" slot="ADMINISTRATION_PAGES" priority="1">
+  <template>
+    <amzd-user-group-management-page name="user-group-management" route="administration" route-params="[[routeParams]]"></amzd-user-group-management-page>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-download-button' for slot 'BLOB_ACTIONS' -->
+<nuxeo-slot-content name="downloadBlobAction" slot="BLOB_ACTIONS" order="30" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" facet="Asset" permission="Download" user="[[user]]">
+      <template>
+        <amzd-download-button document="[[document]]" xpath="[[xpath]]" show-label="true"></amzd-download-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'amzd-download-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="downloadDocumentAction" slot="DOCUMENT_ACTIONS" order="90" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="(document.facets.indexOf('Folderish') !== -1
+                                                   || document.facets.indexOf('Collection') !== -1)
+                                                   &amp;&amp; document.contextParameters
+                                                   &amp;&amp; document.contextParameters.hasContent" facet="Asset" permission="Download" user="[[user]]">
+      <template>
+        <amzd-download-button document="[[document]]" xpath="[[xpath]]" show-label="true">
+        </amzd-download-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-export-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="exportDocumentAction" slot="DOCUMENT_ACTIONS" order="100" priority="1" disabled="">
+  <template>
+    <nuxeo-filter document="[[document]]" facet="Asset" permission="Download" user="[[user]]">
+      <template>
+        <nuxeo-export-button document="[[document]]" show-label="true"></nuxeo-export-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-share-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="shareDocumentAction" slot="DOCUMENT_ACTIONS" order="40" priority="100" disabled="">
+  <template>
+    <nuxeo-share-button document="[[document]]"></nuxeo-share-button>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-workflow-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="workflowDocumentAction" slot="DOCUMENT_ACTIONS" order="110" priority="1" disabled="">
+  <template>
+    <nuxeo-workflow-button document="[[document]]"></nuxeo-workflow-button>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-document-page' for slot 'DOCUMENT_VIEWS_PAGES' -->
+<nuxeo-slot-content name="documentViewPage" slot="DOCUMENT_VIEWS_PAGES" order="10" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="(document.facets.indexOf('Folderish') === -1
+                                                   &amp;&amp; document.facets.indexOf('Collection') === -1) || document.type === 'CreativeProjectTemplate' || document.type === 'CreativeProject' || document.type === 'BrandStrategyProject' || document.type === 'RetailExperienceProject' || document.type === 'ThreeDProject' || document.type === 'ProductionProject'" user="[[user]]">
+      <template>
+        <amzd-nuxeo-document-page name="view" document="[[document]]" opened=""></amzd-nuxeo-document-page>
+        <!-- <nuxeo-document-page name="view" document="[[document]]" opened=""></nuxeo-document-page> -->
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="defaultSearchMenuButton" slot="DRAWER_ITEMS" order="30" priority="100" disabled="">
+  <template>
+    <nuxeo-menu-icon name="defaultSearch" icon="nuxeo:search" label="app.search"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="expiredSearchMenuButton" slot="DRAWER_ITEMS" order="40" priority="100" disabled="">
+  <template>
+    <nuxeo-menu-icon name="expiredSearch" icon="nuxeo:expired" label="app.expiredSearch"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="personalWorkspaceDrawerItem" slot="DRAWER_ITEMS" order="80" priority="1" disabled="">
+  <template>
+    <nuxeo-menu-icon name="personalWorkspace" icon="nuxeo:user-space" label="app.personalSpace"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="trashMenuButton" slot="DRAWER_ITEMS" order="100" priority="100">
+  <template>
+    <nuxeo-filter group="administrators" user="[[user]]">
+      <template>
+        <nuxeo-menu-icon name="trash" icon="nuxeo:delete" label="app.trashSearch"></nuxeo-menu-icon>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="defaultSearchMenuPage" slot="DRAWER_PAGES" priority="100" disabled="">
+  <template>
+    <nuxeo-search-form name="defaultSearch" search-name="default" auto="" provider="default_search" schemas="dublincore,common,uid,picture"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="expiredSearchMenuPage" slot="DRAWER_PAGES" priority="100" disabled="">
+  <template>
+    <nuxeo-search-form name="expiredSearch" search-name="expired" queue="" auto="" provider="expired_search" schemas="dublincore,common,uid,picture" label="expiredSearch.expiredDocuments"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-document-tree' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="personalWorkspaceDrawerPage" slot="DRAWER_PAGES" priority="1" disabled="">
+  <template>
+    <nuxeo-document-tree name="personalWorkspace" label="app.personalSpace" current-document="[[document]]" root-doc-path="[[userWorkspace]]"></nuxeo-document-tree>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="trashMenuPage" slot="DRAWER_PAGES" priority="100">
+  <template>
+    <nuxeo-search-form provider="default_trash_search" schemas="dublincore,common,uid,picture" search-name="trash" name="trash"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+  
+<nuxeo-slot-content name="adminAuditPage" slot="ADMINISTRATION_PAGES">
+  <template>
+    <nuxeo-filter user="[[user]]" expression="user.isAdministrator">
+      <template>
+        <amzd-audit name="audit" id="audit"></amzd-audit>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="bulkEditSelectionAction" slot="RESULTS_SELECTION_ACTIONS" order="5">
+    <template>
+      <nuxeo-filter group="administrators, Keyword_Mgmt" user="[[user]]">
+        <template>
+          <amzd-bulk-edit-keywords-button documents="[[selectedItems]]"> </amzd-bulk-edit-keywords-button>
+        </template>
+      </nuxeo-filter>
+    </template>
+</nuxeo-slot-content>
+</nuxeo-filter>

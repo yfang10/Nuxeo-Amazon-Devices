@@ -1,0 +1,51 @@
+<uninstall>
+  <rollback key="nxserver/lib/json" pkgId="nuxeo-2021-HF37-1.0.0" version="20230227"/>
+  <rollback key="lib/annotations-api" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-i18n-ru" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/jasper-el" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-i18n-cs" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/catalina-tribes" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/el-api" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/websocket-api" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/catalina-ha" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-jni" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-dbcp" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-util-scan" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-coyote" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-i18n-es" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/catalina" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/servlet-api" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/jasper" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-i18n-pt-BR" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-i18n-ja" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/jaspic-api" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/catalina-ant" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-i18n-zh-CN" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-jdbc" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-api" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-i18n-fr" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-i18n-ko" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-util" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/catalina-storeconfig" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/jsp-api" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/catalina-ssi" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-i18n-de" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="lib/tomcat-websocket" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="bin/commons-daemon" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="bin/tomcat-juli" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <rollback key="bin/bootstrap" pkgId="nuxeo-2021-HF37-1.0.0" version="9.0.74"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF37-1.0.0/backup/a9500190fd9c606cc6adf3196d139c78_elasticsearch-config.xml.nxftl" tofile="${env.server.home}/templates/common-base/nxserver/config/elasticsearch-config.xml.nxftl" overwrite="true" md5="ff23048d8a0f1d1658186cf6b3086e5e"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF37-1.0.0/backup/33a188dbfd2ac421e4bc27bebd7bb2d0_nuxeo.defaults" tofile="${env.server.home}/templates/common-base/nuxeo.defaults" overwrite="true" md5="5daef1019d778fd98042a2eb7958356a"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF37-1.0.0/backup/9709729503cef7825cde8f68c67bc892_distribution.properties" tofile="${env.server.home}/templates/common/config/distribution.properties" overwrite="true" md5="6a4a900cfd31188cc1aa1045219b25c5"/>
+  <copy file="${env.server.home}/packages/store/nuxeo-2021-HF37-1.0.0/backup/0db46d3e8f665e3627d2b130ae4fb9d4_nuxeo.defaults" tofile="${env.server.home}/templates/nuxeo.defaults" overwrite="true" md5="4a8a16a458623d036631b974786cd4b3"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-login-openid" pkgId="nuxeo-2021-HF37-1.0.0" version="2021.37.4"/>
+  <rollback key="nxserver/bundles/nuxeo-permissions" pkgId="nuxeo-2021-HF37-1.0.0" version="2021.37.4"/>
+  <rollback key="nxserver/bundles/nuxeo-wopi" pkgId="nuxeo-2021-HF37-1.0.0" version="2021.37.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core-binarymanager-s3" pkgId="nuxeo-2021-HF37-1.0.0" version="2021.37.4"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-rendition-core" pkgId="nuxeo-2021-HF37-1.0.0" version="2021.37.4"/>
+  <rollback key="nxserver/bundles/nuxeo-platform-directory-multi" pkgId="nuxeo-2021-HF37-1.0.0" version="2021.37.4"/>
+  <rollback key="nxserver/bundles/nuxeo-runtime-stream" pkgId="nuxeo-2021-HF37-1.0.0" version="2021.37.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core-api" pkgId="nuxeo-2021-HF37-1.0.0" version="2021.37.4"/>
+  <rollback key="nxserver/bundles/nuxeo-elasticsearch-core" pkgId="nuxeo-2021-HF37-1.0.0" version="2021.37.4"/>
+  <rollback key="nxserver/bundles/nuxeo-core" pkgId="nuxeo-2021-HF37-1.0.0" version="2021.37.4"/>
+</uninstall>

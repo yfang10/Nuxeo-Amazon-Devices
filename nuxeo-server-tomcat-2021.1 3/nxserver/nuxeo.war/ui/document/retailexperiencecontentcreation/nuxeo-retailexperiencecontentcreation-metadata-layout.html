@@ -1,0 +1,43 @@
+<!--
+`nuxeo-retailexperiencecontentcreation-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-retailexperiencecontentcreation-metadata-layout
+-->
+<dom-module id="nuxeo-retailexperiencecontentcreation-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>[[i18n(&#x27;label.dublincore.title&#x27;)]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n(&#x27;label.dublincore.description&#x27;)]]</label>
+      <div name="description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-retailexperiencecontentcreation-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype RetailExperienceContentCreation
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

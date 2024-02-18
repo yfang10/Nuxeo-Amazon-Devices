@@ -1,0 +1,25 @@
+2023-07-18 10:20:27 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1254]毫秒内初始化
+2023-07-18 10:21:24 信息 [main] org.apache.catalina.startup.Catalina.start [57435]毫秒后服务器启动
+2023-07-18 10:45:20 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1102]毫秒内初始化
+2023-07-18 10:46:14 信息 [main] org.apache.catalina.startup.Catalina.start [53201]毫秒后服务器启动
+2023-07-18 11:06:42 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1221]毫秒内初始化
+2023-07-18 11:07:37 信息 [main] org.apache.catalina.startup.Catalina.start [54911]毫秒后服务器启动
+2023-07-18 11:21:45 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1062]毫秒内初始化
+2023-07-18 11:23:02 信息 [main] org.apache.catalina.startup.Catalina.start [76589]毫秒后服务器启动
+2023-07-18 13:00:01 警告 [main] org.apache.catalina.core.StandardServer.await 在调用accept()方法之后，侦听shutdown命令的套接字经历了意外的超时[5,819,539]毫秒。 这是bug 56684的一个例子？
+	java.net.SocketTimeoutException: Accept timed out
+		at java.base/java.net.PlainSocketImpl.socketAccept(Native Method)
+		at java.base/java.net.AbstractPlainSocketImpl.accept(AbstractPlainSocketImpl.java:474)
+		at java.base/java.net.ServerSocket.implAccept(ServerSocket.java:551)
+		at java.base/java.net.ServerSocket.accept(ServerSocket.java:519)
+		at org.apache.catalina.core.StandardServer.await(StandardServer.java:609)
+		at org.apache.catalina.startup.Catalina.await(Catalina.java:864)
+		at org.apache.catalina.startup.Catalina.start(Catalina.java:810)
+		at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+		at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+		at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+		at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:342)
+		at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:473)
+2023-07-18 14:01:55 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[1102]毫秒内初始化
+2023-07-18 14:02:45 信息 [main] org.apache.catalina.startup.Catalina.start [49717]毫秒后服务器启动

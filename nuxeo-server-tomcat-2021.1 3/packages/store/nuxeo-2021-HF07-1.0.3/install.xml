@@ -1,0 +1,6 @@
+<install>
+  <update upgradeOnly="true" file="${package.root}/install/bundlesupdate/nxserver/bundles" todir="${env.server.home}/nxserver/bundles" />
+  <copy file="${package.root}/install/bundlesupdate/nxserver/bundles/nuxeo-platform-video-rest-2021.7.15.jar" todir="${env.server.home}/nxserver/bundles" />
+  <copy overwrite="true" file="${package.root}/install/bin/nuxeo-launcher-2021.7.15-jar-with-dependencies.jar" tofile="${env.server.home}/bin/nuxeo-launcher.jar" />
+  <copy overwrite="true" file="${package.root}/templates" todir="${env.server.home}" />
+</install>

@@ -1,0 +1,163 @@
+<!--
+Copy of nuxeo-operation-button, with additional logic about error handling
+-->
+<dom-module id="custom-requestdownload-op-button">
+  <template>
+
+    <nuxeo-operation id="op" op="[[operation]]" input="[[input]]" params="[[params]]"></nuxeo-operation>
+
+    <dom-if if="[[_isAvailable(document)]]">
+      <template>
+        <paper-icon-button id="bt" icon="[[icon]]" class="primary" on-tap="_execute"></paper-icon-button>
+        <paper-tooltip for="bt">[[label]]</paper-tooltip>
+         <span class="label" hidden$="[[!showLabel]]">[[i18n(label)]]</span>
+      </template>
+    </dom-if>
+
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'custom-requestdownload-op-button',
+
+      behaviors: [Nuxeo.I18nBehavior],
+
+      properties: {
+        user: Object,
+        document: {
+              type: Object,
+        
+            },
+        /* Icon */
+        icon: String,
+
+        /* Label (shown as tooltip) */
+        label: String,
+
+        /* The id of the operation to call. */
+        operation: String,
+
+        /* The response from the server. */
+        response: {
+          type: Object,
+          value: null,
+          notify: true
+        },
+
+        /* The text or i18n key to display in the notification. */
+        notification: {
+          type: String
+        },
+        
+        /* The page to navigate to after completion.  */
+        page: {
+          type: String
+        },
+        
+        /* Trigger navigation to the response document page. */
+        navigate: {
+          type: Boolean,
+          value: false
+        },
+
+        /* The event type to fire on completion. */
+        event: {
+          type: String,
+          value: 'operation-executed'
+        },
+
+        /* The detail of the event fired on completion.  */
+        detail: {
+          type: String
+        },
+
+         showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        /* The operation input. */
+        input: String,
+
+        variables: {
+          type: Object,
+          value: function() {
+            return {};
+          }
+        },
+
+        params: {
+          type: Object,
+          value: function() {
+            return {};
+          }
+        },
+      },
+
+      _execute: function() {
+        this.params.wfname = 'RequestDownloadPerm';
+        this.params.variables = JSON.stringify(this.variables);
+
+        this.$.op.execute().then(function(response) {
+          if (response["entity-type"] == "exception") {
+            this.$.error.text = response.exception.originalMessage
+            this.$.error.open();
+            return;
+          }
+          if (this.notification && !response.exception) {
+            this.fire('notify', {'message': this.notification});
+          }
+          var detail = {response: response};
+          if (this.detail) {
+            // if the supplied params are a string, parse them as JSON
+            detail = typeof this.detail === 'string' ? JSON.parse(this.detail) : this.detail;
+          }
+          this.fire(this.event, detail);
+
+         
+          
+          if (this.page) {
+            var navigateTo = "/" + this.page;
+            if (this.navigate && response['uid']) {
+              navigateTo += "/" + response['uid'];
+            }
+            page(navigateTo);
+          }
+        }.bind(this))
+        .catch(function(error) {
+          this.$.error.text = error;
+          this.$.error.open();
+        }.bind(this));
+      },
+
+      // https://jira.nuxeo.com/browse/ELEMENTS-370
+      
+
+      _isAvailable(document) {
+          if (!document) {
+            return false;
+          }
+          this.processes = document.contextParameters.runnableWorkflows;
+          this.workflows = document.contextParameters.runningWorkflows;
+
+          for (var i = 0; i < this.processes.length; i++) {
+            if (this.processes[i].name == 'Downloadpermission')
+              this.hasDownloadWorkflow = true;
+          }
+
+          for (var j = 0; j < this.workflows.length; j++) {
+            if (this.workflows[j].title == 'Download Permission')
+              this.hasDownloadWorkflowRunning = true;
+          }
+
+          return document && this.hasDownloadWorkflow && !this.hasDownloadWorkflowRunning;
+        },
+
+        _toggleDialog: function() {
+          this.$.dialog.toggle();
+        }
+
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,94 @@
+<link rel="import" href="../elements/iss-nuxeo-document-blob.html">
+<!--
+`iss-nuxeo-document-viewer`
+@group Nuxeo UI
+@element iss-nuxeo-document-viewer
+-->
+<dom-module id="iss-nuxeo-document-viewer">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      iron-image,
+      nuxeo-document-preview {
+        width: 100%;
+        height: calc(80vh - 100px);
+      }
+
+      nuxeo-document-blob,
+      nuxeo-dropzone {
+        margin-top: 8px;
+      }
+    </style>
+    
+    <nuxeo-document id="doc" doc-id="[[document.uid]]"></nuxeo-document>
+
+    <template is="dom-if" if="[[!document.properties.file:content.data]]">
+      <iron-image position="center" sizing="contain" src="[[_thumbnail(document)]]"></iron-image>
+      <template is="dom-if" if="[[_isDropzoneAvailable(document)]]">
+        <nuxeo-dropzone value="{{document.properties.file:content}}"></nuxeo-dropzone>
+      </template>
+    </template>
+    <template is="dom-if" if="[[document.properties.file:content.data]]">
+      <nuxeo-document-preview document="[[document]]"></nuxeo-document-preview>
+      <iss-nuxeo-document-blob document="[[document]]"></iss-nuxeo-document-blob>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'iss-nuxeo-document-viewer',
+      behaviors: [Nuxeo.NotifyBehavior, Nuxeo.I18nBehavior, Nuxeo.FiltersBehavior],
+
+      properties: {
+        document: Object,
+      },
+
+      created() {
+        this._createMethodObserver('_valueChanged(document.properties.file:content)', true);
+      },
+
+      _valueChanged(e) {
+        if (!e || e.data) {
+          return;
+        }
+        const props = {};
+        props['file:content'] = this.document.properties['file:content'];
+        this.$.doc.data = {
+          'entity-type': 'document',
+          repository: this.document.repository,
+          uid: this.document.uid,
+          properties: props,
+        };
+
+        this.$.doc.put().then((response) => {
+          this.document = response;
+          this.notify({ message: this.i18n(this.uploadedMessage) });
+          this.fire('document-updated');
+        });
+      },
+
+      _thumbnail(doc) {
+        return doc &&
+          doc.uid &&
+          doc.contextParameters &&
+          doc.contextParameters.thumbnail &&
+          doc.contextParameters.thumbnail.url
+          ? doc.contextParameters.thumbnail.url
+          : '';
+      },
+
+      _isDropzoneAvailable(doc) {
+        return (
+          !this.isUnderRetentionOrLegalHold(doc) &&
+          this.hasPermission(doc, 'WriteProperties') &&
+          !this.isImmutable(doc) &&
+          !this.hasType(doc, 'Root') &&
+          !this.isTrashed(doc) &&
+          this.hasSchema(doc, 'file')
+        );
+      },
+    });
+  </script>
+</dom-module>

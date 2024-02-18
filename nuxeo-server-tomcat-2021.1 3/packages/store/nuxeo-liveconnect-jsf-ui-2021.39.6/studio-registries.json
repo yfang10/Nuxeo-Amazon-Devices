@@ -1,0 +1,1 @@
+{"facets":[{"schemas":["blobconversions"],"id":"BlobConversions"}],"schemas":{"blobconversions":{"@prefix":"blobconversions","conversions":{"type":"complex","fields":{"item":"conversion"}}}},"events":{"blobProviderDocumentUpdateEvent":"Blob provider document update event"}}

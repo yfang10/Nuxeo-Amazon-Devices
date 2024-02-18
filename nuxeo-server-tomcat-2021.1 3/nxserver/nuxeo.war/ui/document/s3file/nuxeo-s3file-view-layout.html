@@ -1,0 +1,31 @@
+<!--
+`nuxeo-s3file-view-layout`
+@group Nuxeo UI
+@element nuxeo-s3file-view-layout
+-->
+<dom-module id="nuxeo-s3file-view-layout">
+  <template>
+    <style include="nuxeo-styles"></style>
+    <nuxeo-document-viewer role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+    <nuxeo-document-attachments role="widget" document="[[document]]"></nuxeo-document-attachments>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-s3file-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype S3File
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

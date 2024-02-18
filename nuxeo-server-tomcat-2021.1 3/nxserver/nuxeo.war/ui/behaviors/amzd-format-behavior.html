@@ -1,0 +1,41 @@
+<script>
+  var AMZD = AMZD || {};
+  var Nuxeo = Nuxeo || {};
+  (function() {
+    AMZD.FormatBehavior = [Nuxeo.FormatBehavior, {
+      _formatSize(item) {
+        if (item.facets.indexOf("Folderish") > -1) {
+          return null;
+        }
+
+        let blob = item.properties["file:content"];
+        if (blob === null) {
+          return "0 Byte";
+        }
+        
+        let file_size = blob.length;
+        
+        const K = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+        
+        let i = Math.floor( Math.log(file_size) / Math.log(K));
+        let formatted = parseFloat( (file_size / Math.pow(K, i)).toFixed(2));
+
+        return formatted + sizes[i];
+      },
+
+      _onClick(e) {
+        e.stopPropagation();
+      },
+
+      _oversize(item) {
+        // folder size larger than or equal to 500MB
+        return item && item.contextParameters && item.contextParameters.documentSize && item.contextParameters.documentSize === "-1";
+      },
+
+      _showFolderCalcBtn(item) {
+        return this.hasFacet(item, "Folderish") && this._oversize(item);
+      }
+    }];
+  })();
+</script>

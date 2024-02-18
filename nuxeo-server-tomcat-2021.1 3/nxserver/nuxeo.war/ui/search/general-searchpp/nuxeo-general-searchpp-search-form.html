@@ -1,0 +1,239 @@
+<!--
+`nuxeo-general-searchpp-search-form`
+@group Nuxeo UI
+@element nuxeo-general-searchpp-search-form
+-->
+<dom-module id="nuxeo-general-searchpp-search-form">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{params.system_fulltext}}" label="All Text" type="text"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{keywordInput}}" label="Keywords" type="text"></nuxeo-input>
+
+    <div role="widget">
+      <label>Type </label>
+      <amzd-form-checkbox-aggregation value="{{params.system_primaryType_agg}}" data="[[aggregations.system_primaryType_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+    <div role="widget">
+      <label> State</label>
+      <amzd-form-checkbox-aggregation value="{{params.system_currentLifeCycleState_agg}}" data="[[aggregations.system_currentLifeCycleState_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+    <div role="widget">
+      <label>Content Location</label>
+      <amzd-form-checkbox-aggregation value="{{params.relations_workspaceLocation_agg}}" data="[[aggregations.relations_workspaceLocation_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+    <nuxeo-input role="widget" value="{{params.dublincore_title}}" label="Device Name" type="text"></nuxeo-input>
+
+
+    <div role="widget">
+      <label>Priority </label>
+      <amzd-form-checkbox-aggregation value="{{params.project_priority_agg}}" data="[[aggregations.project_priority_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+    <div role="widget">
+      <label>Asset Category </label>
+      <amzd-form-checkbox-aggregation value="{{params.amazon_asset_category_agg}}" data="[[aggregations.amazon_asset_category_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <nuxeo-date-picker value="{{params.project_review_date_min}}" label="Project Review Date Min" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-date-picker value="{{params.project_review_date_max}}" label="Project Review Date Max" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-date-picker value="{{params.project_delivery_date_min}}" label="Project Delivery Date Min" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-date-picker value="{{params.project_delivery_date_max}}" label="Project Delivery Date Max" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-date-picker value="{{params.project_live_send_date_min}}" label="Project Live Send Date Min" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-date-picker value="{{params.project_live_send_date_max}}" label="Project Live Send Date Max" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-input role="widget" value="{{params.amazon_original_creator_name}}" label="Amazon Original Creator Name" type="text"></nuxeo-input>
+    <div role="widget">
+      <label>Creator Role</label>
+      <amzd-form-checkbox-aggregation value="{{params.amazon_creator_role_agg}}" data="[[aggregations.amazon_creator_role_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+    <div role="widget">
+      <label>Content Language </label>
+      <amzd-form-checkbox-aggregation value="{{params.amazon_language_agg}}" data="[[aggregations.amazon_language_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+    <div role="widget">
+      <label>Is Retouched Version </label>
+      <amzd-form-checkbox-aggregation value="{{params.amazon_is_retouched_version_agg}}" data="[[aggregations.amazon_is_retouched_version_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+    <nuxeo-input role="widget" value="{{params.dublincore_publisher}}" label="Owner" type="text"></nuxeo-input>
+
+    <div role="widget">
+      <label>Rights Type</label>
+      <amzd-form-checkbox-aggregation value="{{params.usage_rights_type_agg}}" data="[[aggregations.usage_rights_type_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget"><label>Marketing Placement</label><amzd-form-checkbox-aggregation value="{{params.usage_usagechannel_channel_agg}}" data="[[aggregations.usage_usagechannel_channel_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget"><label>Approved SubPlacements</label><amzd-form-checkbox-aggregation value="{{params.usage_usagechannel_subchannel_agg}}" data="[[aggregations.usage_usagechannel_subchannel_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Approved Locations</label>
+      <amzd-form-checkbox-aggregation value="{{params.usage_geography_agg}}" data="[[aggregations.usage_geography_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <div role="widget">
+      <label>Approved Languages</label>
+      <amzd-form-checkbox-aggregation value="{{params.usage_language_agg}}" data="[[aggregations.usage_language_agg]]"></amzd-form-checkbox-aggregation>
+    </div>
+
+    <nuxeo-date-picker value="{{params.dublincore_expired_min}}" label="Expired Min" role="widget"></nuxeo-date-picker>
+
+    <nuxeo-date-picker value="{{params.dublincore_expired_max}}" label="Expired Max" role="widget"></nuxeo-date-picker>
+    <div role="widget">
+      <label>Agencies</label>
+      <amzd-checkbox-aggregation value="{{params.external_search_agencies_agg}}" data="[[aggregations.external_search_agencies_agg]]"></amzd-checkbox-aggregation>
+    </div>
+    <div role="widget">
+      <label>Retailers</label>
+      <amzd-checkbox-aggregation value="{{params.external_search_retailers_agg}}" data="[[aggregations.external_search_retailers_agg]]"></amzd-checkbox-aggregation>
+    </div>
+    <div role="widget">
+      <label>Vendors</label>
+      <amzd-checkbox-aggregation value="{{params.external_search_vendors_agg}}" data="[[aggregations.external_search_vendors_agg]]"></amzd-checkbox-aggregation>
+    </div>
+
+    <iron-location hash="{{hash}}" url-space-regex="^/search/general-searchpp"></iron-location>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-general-searchpp-search-form',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @search General-SearchPP
+         */
+      params: {
+        type: Object,
+        value: {},
+        notify: true,
+      },
+      
+      keywordInput: {
+          type: String,
+          observer: '_keywordInputChanged'
+      },
+
+      aggregations: {
+        type: Object,
+        value: {},
+        notify: true,
+      }
+    },
+    
+     observers: ['_locationStringChanged(hash)'],
+    
+     _locationStringChanged(hash) {
+        if (window.location.href.indexOf('/search/general-searchpp') > 0) {
+          this.async(function () {
+            const queryString = window.location.href.split("?")[1];
+            if (queryString) {
+              const urlParams = new URLSearchParams(queryString);
+              const keyword = urlParams.get('keyword')
+              if (keyword && keyword.length > 0) {
+                var generalSearchPP = this.drawerSlot?.querySelector("#drawer > #drawer-pages > nuxeo-search-form[provider='General-SearchPP']")
+                if (!generalSearchPP){
+                  console.error("The nuxeo-search-form > General-SearchPP is not found. May be due to some unexpected change in the naming of the elements.")
+                }else{
+                  generalSearchPP.displayFilters()
+                }
+                this.keywordInput = keyword
+              }
+            }
+          }, 1);
+        }
+      },
+    
+     _keywordInputChanged() {
+        let searchText = this.keywordInput.trim()
+        if (searchText.startsWith('AND') ||
+          searchText.startsWith('OR') ||
+          searchText.startsWith('NOT')) return
+        else if (searchText.endsWith('AND') ||
+          searchText.endsWith('OR') ||
+          searchText.endsWith('NOT')) return
+        else {
+          if (window.location.href.indexOf('/search/general-searchpp') > 0) {
+            var generalSearchMenu = this.drawerSlot?.querySelector("#menu > nuxeo-menu-icon[name='generalsearch']")
+            if (!generalSearchMenu){
+              console.error("The menu > generalsearch is not found. May be due to some unexpected change in the naming of the elements.")
+            }else if (generalSearchMenu.getAttribute("aria-selected") == 'false') {
+              generalSearchMenu.click()
+            }
+          }
+          this.set('params.facetedKeyword_keywords_label', this._escape(searchText));
+        }
+      },
+
+      _escape(searchText) {
+        let escapedStr = ''
+        for (const char of searchText) {
+          // ! & | ( ) { } [ ] ^ " ~ * ? : \ / +  
+          if (char == '!' || char == '&' || char == '|' || char == '(' || char == ')' ||
+            char == '{' || char == '}' || char == '[' || char == ']' || char == '^' ||
+            char == '"' || char == '~' || char == '*' || char == '?' || char == ':' ||
+            char == '\\' || char == '/' || char == '+') {
+
+            escapedStr += '\\'
+          }
+
+          escapedStr += char
+        }
+
+        return escapedStr
+      },
+
+
+      _isBracketsInvalid (str) {
+        var depth = 0
+        for (var i in str) {
+          if (str[i] == '(') {
+            depth++
+          } else if (str[i] == ')') {
+            depth--
+          }
+          //  if the depth is negative we have a closing parenthesis 
+          //  before any matching opening parenthesis
+          if (depth < 0) return true
+        }
+        // if the depth is not null then a closing parenthesis is missing
+        if (depth > 0) return true
+
+        // in case of empty string or only spaces in parentheses
+        let lastIndexOpen = str.lastIndexOf('(')
+        if (lastIndexOpen >= 0){
+          let firstIndexClose = str.indexOf(')')
+
+          if (str.substring(lastIndexOpen + 1, firstIndexClose).trim().length == 0){
+            return true
+          }
+        }
+        
+        return false;
+      },
+    
+     
+     attached() {
+        this.drawerSlot = document.querySelector("nuxeo-app")?.shadowRoot?.
+        querySelector("#drawerPanel")?.shadowRoot?.
+        querySelector("#drawer > #drawerSlot")?.assignedNodes()[0]
+        if (!this.drawerSlot){
+          console.error("The drawerSlot is not found. May be due to some unexpected change in the naming of the elements")
+        }
+     }
+    
+  });
+  </script>
+</dom-module>

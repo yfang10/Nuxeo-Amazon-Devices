@@ -1,0 +1,95 @@
+<!--
+`amzd-download-button`
+@group Nuxeo UI
+@element amzd-download-button
+-->
+<dom-module id="amzd-download-button">
+  <template>
+    <style include="nuxeo-action-button-styles"></style>
+    <nuxeo-operation id="op" input="[[document]]" op="AMZD.logEvent"></nuxeo-operation>
+    <dom-if if="[[_isAvailable(document)]]">
+      <template>
+        <div class="action" on-click="_download">
+          <paper-icon-button icon="[[icon]]" noink=""></paper-icon-button>
+          <span class="label" hidden\$="[[!showLabel]]">[[_label]]</span>
+        </div>
+        <nuxeo-tooltip>[[_label]]</nuxeo-tooltip>
+      </template>
+    </dom-if>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'amzd-download-button',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.FormatBehavior,Nuxeo.FiltersBehavior, Nuxeo.Element],
+      properties: {
+				icon: {
+          type: String,
+          value: 'nuxeo:download',
+        },
+				xpath: {
+          type: String,
+          value: 'file:content',
+        },
+        
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+        _label: {
+          type: String,
+          computed: '_computeLabel(i18n)',
+        },
+
+        document: {
+          type: Object
+        }
+      },
+
+      _isAvailable(doc) {
+        if(!this.hasContent(doc, this.formatPropertyXpath(this.xpath))) {
+          return false;
+        }
+        if(doc.contextParameters.permissions.indexOf("Download") == -1) {
+          return false;
+        }
+        return true;
+      },
+
+      _computeLabel() {
+        return this.i18n('downloadButton.tooltip');
+      },
+
+      _download() {
+        const blob = this.document && this._deepFind(this.document.properties, this.xpath);
+        if (blob) {
+          var url = new URL(blob.data);
+          url.searchParams.append('clientReason', 'userDownload');
+          location.href = url.href;
+
+          this.$.op.params = {
+            context: {input: this.document.uid},
+            event: "downloaded",
+            category: "userDownload",
+            comment: blob.name
+          };
+      
+          this.$.op.execute().then((res) => {
+
+          });
+        }
+      },
+
+      _deepFind(obj, props) {
+        for (let i = 0, path = props.split('/'), len = path.length; i < len; i++) {
+          if (!obj || obj === []) {
+            break;
+          }
+          obj = obj[path[i]];
+        }
+        return obj;
+      }
+
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,185 @@
+<!-- RESET.HTML --><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../bower_components/paper-password-input/paper-password-input.html">
+<link rel="import" href="../bower_components/paper-password-input/match-passwords-validator.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="./user-access-password-validator.html">
+<link rel="import" href="./dropdown-menu-filter.html">
+
+<dom-module id="my-app-reset">
+   <template>
+      <style include="iron-flex iron-flex-alignment paper-material-styles">
+         .form {
+            width: 50%;
+            height: 100%;
+            margin: 0 auto;
+         }
+
+         paper-card {
+            width: 100%;
+         }
+
+         .half {
+            max-width: 48%;
+         }
+
+         paper-input,
+         paper-textarea,
+         gold-email-input {
+            margin-left: 1%;
+            margin-right: 2%;
+            margin-top: 2%;
+            margin-bottom: 2%;
+         }
+
+         .card-content {
+            margin-bottom: 2%;
+         }
+
+         .flex {
+            min-width: 48%;
+         }
+
+         .logo {
+            margin: 0 auto;
+            margin-top: 5%;
+            margin-bottom: 5%;
+            display: block;
+         }
+
+         .result {
+            background-color: white;
+            height: 30vh;
+            align-items: center;
+            justify-content: center;
+         }
+
+         .footer {
+            height: 100px;
+         }
+
+         .center {
+         }
+
+         paper-button {
+            color: white;
+            background: #111111;
+         }
+
+         paper-button:hover {
+            background: #404040;
+         }
+
+         dropdown-menu-filter {
+            --dropdown-menu-filter-width: 400px;
+            --dropdown-menu-filter-list-height: 150px;
+         }
+
+         .hidden {
+            display: none;
+         }
+
+         .link {
+            text-decoration: none;
+         }
+
+         .error {
+            color: red;
+         }
+      </style>
+      <match-passwords-validator id="match-passwords-validator" password="[[params.password]]"></match-passwords-validator>
+      <user-access-password-validator id="user-access-password-validator" pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&amp;*]).{8,}$"></user-access-password-validator>
+      <iron-ajax id="xhr" url="/nuxeo/site/selfregistration/reset" method="POST" content-type="application/json" on-response="_handleResponse" on-error="_handleErrorResponse">
+      </iron-ajax>
+      <div class="form">
+         <img class="logo" src="/nuxeo/img/user-registration-logo.png">
+         <iron-pages selected="{{selected}}">
+            <paper-card heading="User Account Password Reset">
+               <div class="card-content">
+                  <iron-form id="form">
+                     <form>
+                        <paper-input class="hidden" id="resetKey" name="resetKey" type="hidden" value="{{params.resetKey}}"></paper-input>
+                        <div class="layout horizontal wrap">
+                           <paper-password-input class="flex" value="{{params.password}}" label="New Password" auto-validate="" validator="user-access-password-validator" error-message="Enter at least 8 characters and contain at least one number and one special character" required=""></paper-password-input>
+                        </div>
+                        <div class="layout horizontal wrap">
+                           <paper-password-input class="flex" label="Confirm Password" auto-validate="" validator="match-passwords-validator" error-message="Needs to Match first Entry" required="">
+                           </paper-password-input>
+                        </div>
+                     </form>
+                  </iron-form>
+                  <label class="error" hidden$="[[!error]]" id="error">[[error]]</label>
+               </div>
+               <div class="card-actions">
+                  <paper-button on-tap="_submitRequest">SUBMIT</paper-button>
+               </div>
+            </paper-card>
+            <paper-material class="result layout horizontal" elevation="1">
+               <div class="center">
+                  <p>The request to reset your User Account password has successfully been submitted.</p>
+                  <p><a class="link" href="/nuxeo/catalog/#/">Click here to login</a></p>
+               </div>
+            </paper-material>
+         </iron-pages>
+         <div class="footer"></div>
+      </div>
+      <div>
+      </div>
+   </template>
+   <script>
+      Polymer({
+         is: 'my-app-reset',
+         properties: {
+            error: {
+               type: String
+            },
+            params: {
+               type: Object,
+               value: {}
+            },
+            selected: {
+               type: Number,
+               value: 0
+            }
+         },
+
+         ready: function () {
+            var usp = new URLSearchParams(window.location.search);
+            this.set('params.resetKey', usp.get('key'));
+         },
+
+         _submitRequest: function () {
+            if (!this.$.form.validate()) return;
+            this.$.xhr.body = JSON.stringify(this.params);
+            this.$.xhr.generateRequest();
+         },
+
+         _handleResponse: function (e) {
+            this.selected = 1;
+         },
+
+         _handleErrorResponse: function (e) {
+            if (e.detail.request.xhr.status == '404') {
+               this.set("error", "Invalid Link (Link may have been previously used)");
+            } else {
+               this.set("error", "Error resetting user account password");
+            }
+         },
+
+         _isEqualTo(title, string) {
+            return title == string;
+         }
+
+      });
+   </script>
+</dom-module>

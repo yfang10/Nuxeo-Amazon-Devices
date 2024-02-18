@@ -1,0 +1,105 @@
+<!--
+`nuxeo-useraccess-create-layout`
+@group Nuxeo UI
+@element nuxeo-useraccess-create-layout
+-->
+<dom-module id="nuxeo-useraccess-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.userAccess:typeOfAccess}}" label="Access Type" required="true" directory-name="Access_Permissions" min-chars="0"></nuxeo-directory-suggestion>
+    
+    <nuxeo-input role="widget" value="{{document.properties.userAccess:company}}" label="Company" type="text" required="true"></nuxeo-input>
+    
+    <nuxeo-input role="widget" value="{{document.properties.userAccess:fName}}" label="First Name" type="text" required="true"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.userAccess:lName}}" label="Last Name" type="text" required="true"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.userAccess:email}}" label="Email Address" type="text" pattern="^[a-z0-9!#$%&amp;&#x27;*+/&#x3D;?^_&#x60;{|}~-]+(?:\.[a-z0-9!#$%&amp;&#x27;*+/&#x3D;?^_&#x60;{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$" required="true"></nuxeo-input>
+    
+    <nuxeo-input id="password" type="password" label="Password" value="{{document.properties.userAccess:password}}"  required="true">
+    </nuxeo-input>
+    
+    <nuxeo-input
+      id="passwordConfirmation"
+      type="password"
+      label="Confirm Password"
+      value="{{_confirmationPassword}}"
+      required
+      auto-validate
+      pattern="[[escapeRegExp(document.properties.userAccess:password)]]"
+      error-message="[[_computeErrorMessage(document.properties.userAccess:password)]]">
+    </nuxeo-input>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-useraccess-create-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype UserAccess
+         */
+        document: {
+          type: Object,
+        },
+        _confirmationPassword: {
+          type: String,
+        },
+
+      },
+      _computeErrorMessage(password) {
+        if (!password) {
+          return "Please enter the password";
+        } else {
+          return "Password needs to be matched";
+        }
+      },
+
+   		 _getValidity() {
+          return this.$.passwordConfirmation.validate();
+        },
+      
+        validate: function() {
+          this.set("document.properties.dc:title",
+            this.document.properties['userAccess:fName'] + this.document.properties['userAccess:lName'] + '-' + this.document.properties['userAccess:email']);
+
+          //TODO
+          //check email address existed in the system, return false
+          
+          let valid = true;
+          if (this) {
+            const elements = this._getValidatableElements(this.root);
+            for (let el, i = 0; i < elements.length; i++) {
+              el = elements[i];
+              valid = (el.validate ? el.validate() : el.checkValidity()) && valid;
+            }
+          }
+          if (!valid) {
+            return false;
+          }
+          return true;
+        },
+      
+        _getValidatableElements(parent) {
+          const nodes = parent.querySelectorAll('*');
+          const submittable = [];
+          for (let i = 0; i < nodes.length; i++) {
+            const node = nodes[i];
+            if (!node.disabled) {
+              if (node.validate || node.checkValidity) {
+                submittable.push(node);
+              } else if (node.root) {
+                Array.prototype.push.apply(submittable, this._getValidatableElements(node.root));
+              }
+            }
+          }
+          return submittable;
+        }
+   		});
+  </script>
+</dom-module>

@@ -1,0 +1,49 @@
+<!--
+***
+CUSTOM CODE SPACE
+***
+Use this file to put any custom code you want to deploy on top of Studio's automatically generated configuration.
+-->
+<link rel="import" href="studio-template-dam-dashboard/administration/dam-homepage-admin.html">
+<link rel="import" href="elements/iss-bulk-edit-keywords-button.html">
+<link rel="import" href="elements/iss-overall-readiness-button.html">
+<link rel="import" href="elements/iss-document-tree.html">
+
+<nuxeo-slot-content name="damHomePageAdmin" slot="ADMINISTRATION_MENU" order="10">
+  <template>
+    <nuxeo-menu-item label="Dashboard Configuration" name="home-page-admin" route="administration:home-page-admin"></nuxeo-menu-item>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="damHomePageAdmin" slot="ADMINISTRATION_PAGES">
+  <template>
+    <dam-homepage-admin name="home-page-admin"></dam-homepage-admin>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="bulkEditSelectionAction" slot="RESULTS_SELECTION_ACTIONS" order="5">
+  <template>
+    <nuxeo-filter group="administrators, Keyword_Mgmt" user="[[user]]">
+      <template>
+        <iss-bulk-edit-keywords-button documents="[[selectedItems]]"> </iss-bulk-edit-keywords-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="overallReadinessSelectionAction" slot="RESULTS_SELECTION_ACTIONS" order="6">
+  <template>
+    <iss-overall-readiness-button documents="[[selectedItems]]"> </iss-overall-readiness-button>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="browseDrawerPage" slot="DRAWER_PAGES">
+  <template>
+    <iss-document-tree
+      name="browser"
+      id="navTree"
+      label="app.browse"
+      current-document="[[document]]"
+    ></iss-document-tree>
+  </template>
+</nuxeo-slot-content>

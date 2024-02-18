@@ -1,0 +1,38 @@
+<!--
+`nuxeo-overallreadiness-edit-layout`
+@group Nuxeo UI
+@element nuxeo-overallreadiness-edit-layout
+-->
+<dom-module id="nuxeo-overallreadiness-edit-layout">
+  <template>
+    <style include="nuxeo-styles"></style>
+    <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true" name="title"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text" name="description"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.overallreadiness:skuLevel}}" label="Sku Level" type="text" name="skuLevel"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.overallreadiness:styleLevel}}" label="Style Level" type="text" name="styleLevel"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.overallreadiness:remark}}" label="Remark" type="text" name="remark"></nuxeo-input>
+
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-overallreadiness-edit-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype OverallReadiness
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

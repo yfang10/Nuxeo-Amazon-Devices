@@ -1,0 +1,139 @@
+<link rel="import" href="../../pclm/forms/pclm-relations-view-layout.html">
+<link rel="import" href="../../pclm/forms/pclm-usage-view-layout.html">
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/behaviors/pclm-form-behavior.html">
+
+<!--
+`nuxeo-request-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-request-metadata-layout
+-->
+<dom-module id="nuxeo-request-metadata-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+    
+    <div role="widget">
+      <label>[[i18n('title')]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'dc:description')]]">
+      <label>[[i18n('label.dublincore.description')]]</label>
+      <div name="dc:description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    <pclm-usage-view-layout document="[[document]]"></pclm-usage-view-layout>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'request:deliverables')]]">
+      <nuxeo-data-table name="request:deliverables" label="[[i18n('label.request.deliverables')]]"
+                        items="{{document.properties.request:deliverables}}">
+        <nuxeo-data-table-column name="Type">
+          <template>
+            <nuxeo-directory-suggestion role="widget" value="[[item.type]]"
+                                        readonly="true" directory-name="global_types">
+            </nuxeo-directory-suggestion>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.request.deliverables.description')]]">
+          <template>
+            [[item.description]]
+          </template>
+        </nuxeo-data-table-column>
+
+      </nuxeo-data-table>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'request:internal_participants')]]">
+      <nuxeo-data-table name="request:internal_participants" label="[[i18n('label.request.internal.participants')]]"
+                        items="{{document.properties.request:internal_participants}}">
+        <nuxeo-data-table-column name="[[i18n('label.request.participants.name')]]">
+          <template>
+            <nuxeo-user-suggestion role="widget" value="[[item.username]]"
+                                   readonly="true" search-type="USER_TYPE"></nuxeo-user-suggestion>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.request.participants.role')]]">
+          <template>
+            <nuxeo-directory-suggestion role="widget" value="[[item.role]]" readonly="true" directory-name="request_roles"></nuxeo-directory-suggestion>
+          </template>
+        </nuxeo-data-table-column>
+
+      </nuxeo-data-table>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'request:external_participants')]]">
+      <nuxeo-data-table name="request:external_participants"
+                        label="[[i18n('label.request.external.participants')]]"
+                        items="{{document.properties.request:external_participants}}">
+        <nuxeo-data-table-column name="[[i18n('label.request.participants.name')]]">
+          <template>
+            [[item.name]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.request.participants.email')]]">
+          <template>
+            [[item.email]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.request.participants.role')]]">
+          <template>
+            <nuxeo-directory-suggestion role="widget" value="[[item.role]]" readonly="true"
+                                        directory-name="request_roles"></nuxeo-directory-suggestion>
+          </template>
+        </nuxeo-data-table-column>
+
+      </nuxeo-data-table>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'request:additional_dates')]]">
+      <nuxeo-data-table  name="request:additional_dates" 
+                        label="[[i18n('label.request.additional_dates')]]"
+                        items="{{document.properties.request:additional_dates}}">
+        <nuxeo-data-table-column name="[[i18n('label.request.additional_dates.date')]]">
+          <template>
+            [[formatDate(item.date)]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="[[i18n('label.request.additional_dates.type')]]">
+          <template>
+            [[item.type]]
+          </template>
+        </nuxeo-data-table-column>
+
+      </nuxeo-data-table>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'request:purpose')]]">
+      <label>[[i18n('label.request.purpose')]]</label>
+      <div name="request:purpose">[[document.properties.request:purpose]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[!_hasValueForPrefix(document,'relations')]]">
+      <label>[[i18n('label.relations')]]</label>
+      <pclm-relations-view-layout document="[[document]]"></pclm-relations-view-layout>
+    </div>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-request-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior,Nuxeo.PclmFormBehavior],
+    properties: {
+
+      /**
+         * @doctype Request
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

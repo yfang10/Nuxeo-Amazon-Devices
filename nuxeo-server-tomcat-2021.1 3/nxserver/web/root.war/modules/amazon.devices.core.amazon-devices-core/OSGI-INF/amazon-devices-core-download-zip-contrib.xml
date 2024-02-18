@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<component name="amazon.devices.core.download">
+    <require>org.nuxeo.ecm.platform.rendition.download.contrib</require>
+    <extension target="org.nuxeo.ecm.platform.rendition.service.RenditionService"
+               point="defaultRendition">
+        <defaultRendition reason="download">
+            <script language="JavaScript">
+                function run() {
+                    if (Document.getFacets().contains("Asset")) {
+                        return 'mainBlob';
+                    } else if(Document.getFacets().contains("Folderish")) {
+                        return '';
+                    }else{
+                        return 'xmlExport';
+                    }
+                }
+            </script>
+        </defaultRendition>
+    </extension>
+</component>

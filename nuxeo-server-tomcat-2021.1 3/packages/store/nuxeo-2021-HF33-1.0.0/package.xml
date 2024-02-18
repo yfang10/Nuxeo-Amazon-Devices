@@ -1,0 +1,24 @@
+<package type="hotfix" name="nuxeo-2021-HF33" version="1.0.0">
+  <title>Nuxeo 2021-HF33</title>
+  <description>
+    Download and install the latest hotfix to keep your Nuxeo up-to-date.
+    Changes will take effects after restart.
+  </description>
+  <home-page>http://www.nuxeo.com/</home-page>
+  <vendor>Nuxeo</vendor>
+  <installer restart="true" />
+  <uninstaller restart="true" />
+  <hotreload-support>false</hotreload-support>
+  <nuxeo-validation>nuxeo_certified</nuxeo-validation>
+  <production-state>production_ready</production-state>
+  <supported>true</supported>
+  <platforms>
+    <platform>lts-2021.*</platform>
+  </platforms>
+  <dependencies>
+    <package>nuxeo-2021-HF32:1.0.0</package>
+  </dependencies>
+  <visibility>MARKETPLACE</visibility>
+  <license>LGPL</license>
+  <license-url>http://www.gnu.org/licenses/lgpl.html</license-url>
+</package>

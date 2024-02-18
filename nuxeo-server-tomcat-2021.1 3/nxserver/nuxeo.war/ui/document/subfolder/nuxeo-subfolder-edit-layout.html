@@ -1,0 +1,35 @@
+<!--
+`nuxeo-subfolder-edit-layout`
+@group Nuxeo UI
+@element nuxeo-subfolder-edit-layout
+-->
+<dom-module id="nuxeo-subfolder-edit-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" role="widget" label="[[i18n(&#x27;title&#x27;)]]" name="title" value="{{document.properties.dc:title}}" autofocus="" required=""></nuxeo-input>
+
+    <nuxeo-textarea role="widget" role="widget" label="[[i18n(&#x27;label.description&#x27;)]]" name="description" value="{{document.properties.dc:description}}"></nuxeo-textarea>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-subfolder-edit-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype SubFolder
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

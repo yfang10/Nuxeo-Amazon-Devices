@@ -1,0 +1,87 @@
+<component
+        name="amazon.devices.core.picture.conversion.contrib">
+    <require>
+        org.nuxeo.ecm.platform.picture.ImagingComponent.default.config
+    </require>
+    <require>org.nuxeo.ecm.platform.convert.commandline.imagemagick
+    </require>
+<!--    <require>org.nuxeo.ecm.platform.picture.ImagingComponent.default.config</require>-->
+    <extension
+            target="org.nuxeo.ecm.platform.picture.ImagingComponent"
+            point="pictureConversions">
+        <pictureConversion chainId="Image.Blob.Resize"
+                           default="true" description="Thumbnail size" id="Thumbnail"
+                           maxSize="100" order="0" rendition="true">
+        </pictureConversion>
+
+        <pictureConversion chainId="Image.Blob.Resize"
+                           default="true" description="Small size" id="Small" maxSize="560"
+                           order="100" rendition="true">
+        </pictureConversion>
+
+        <pictureConversion chainId="Image.Blob.Resize"
+                           default="true" description="Medium size" id="Medium" maxSize="1000"
+                           order="200" rendition="true">
+        </pictureConversion>
+
+        <pictureConversion chainId="Image.Blob.Resize"
+                           default="true" description="Full HD size" id="FullHD" maxSize="1920"
+                           order="300" rendition="true">
+        </pictureConversion>
+
+        <pictureConversion chainId="Image.Blob.Resize.Jpeg"
+                           default="true" description="Full Resolution JPG" id="OriginalJpeg"
+                           order="400" rendition="true">
+        </pictureConversion>
+
+        <pictureConversion chainId="Image.Blob.ConvertToPNG"
+                           default="true" description="Full Resolution PNG" id="OriginalPng"
+                           order="500" rendition="true">
+        </pictureConversion>
+
+        <!-- Keep rendition format as PNG when the original blob is PNG-->
+
+        <!--		<pictureConversion chainId="Image.Blob.ResizePNG"-->
+        <!--						   default="true" description="Thumbnail size" id="Thumbnail"-->
+        <!--						   maxSize="600" order="0" rendition="true" >-->
+        <!--			<filters>-->
+        <!--				<filter-id>onlyForPNG</filter-id>-->
+        <!--			</filters>-->
+        <!--		</pictureConversion>-->
+    </extension>
+
+    <extension
+            target="org.nuxeo.ecm.platform.commandline.executor.service.CommandLineExecutorComponent"
+            point="command">
+        <command name="changeFormat" enabled="true">
+            <commandLine>convert</commandLine>
+            <parameterString>#{sourceFilePath}[0] #{targetFilePath}.png
+            </parameterString>
+            <installationDirective>You need to install ImageMagick.
+            </installationDirective>
+        </command>
+    </extension>
+
+    <!--	<extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">-->
+
+    <!--		<filter id="notForPNG">-->
+    <!--			<rule grant="false">-->
+    <!--				<condition>#{currentDocument.file.content.mimeType == 'image/png'}</condition>-->
+    <!--			</rule>-->
+    <!--		</filter>-->
+
+
+    <!--    <extension target="org.nuxeo.ecm.platform.picture.ImagingComponent"-->
+    <!--               point="configuration">-->
+
+    <!--        <configuration>-->
+    <!--            <parameters>-->
+    <!--                &lt;!&ndash; global configuration variables &ndash;&gt;-->
+    <!--                <parameter name="conversionFormat">png</parameter>-->
+    <!--            </parameters>-->
+    <!--        </configuration>-->
+    <!--    </extension>-->
+
+
+</component>
+

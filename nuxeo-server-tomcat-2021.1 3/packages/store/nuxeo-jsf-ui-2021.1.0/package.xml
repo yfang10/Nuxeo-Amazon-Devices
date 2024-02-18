@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package type="addon" name="nuxeo-jsf-ui" version="2021.1">
+  <title>Nuxeo JSF UI</title>
+  <description>
+    <p>The JSF UI addon is a previously supported UI for the Nuxeo Platform. It is fully extensible and configurable. It includes forms, processes, and user actions.</p>
+  </description>
+  <vendor>Nuxeo</vendor>
+  <platforms>
+    <platform>lts-2021.1.19</platform>
+  </platforms>
+  <license>Apache 2.0</license>
+  <license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+</package>

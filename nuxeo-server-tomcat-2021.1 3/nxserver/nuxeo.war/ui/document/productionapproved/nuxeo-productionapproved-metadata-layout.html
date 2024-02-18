@@ -1,0 +1,42 @@
+<!--
+`nuxeo-productionapproved-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-productionapproved-metadata-layout
+-->
+<dom-module id="nuxeo-productionapproved-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>[[i18n(&#x27;label.dublincore.title&#x27;)]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>[[i18n(&#x27;label.dublincore.description&#x27;)]]</label>
+      <div name="description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-productionapproved-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype ProductionApproved
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

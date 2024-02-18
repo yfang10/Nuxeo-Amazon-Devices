@@ -1,0 +1,60 @@
+<!--
+`nuxeo-video-conversion`
+@group Nuxeo UI
+@element nuxeo-video-conversion
+-->
+<dom-module id="nuxeo-customized-video-conversions" assetpath="nuxeo-video/">
+  <template>
+    <style include="iron-flex">
+      a, a:active, a:visited, a:focus {
+        @apply --nuxeo-link;
+      }
+      a:hover {
+        @apply --nuxeo-link-hover;
+      }
+    </style>
+
+    <h3>[[label]]</h3>
+    <div>
+   <nuxeo-connection id="nxcon" user="{{user}}"></nuxeo-connection>
+   <nuxeo-resource id="user" path="/user"></nuxeo-resource>
+      <template is="dom-repeat" items="[[document.properties.vid:transcodedVideos]]" as="conversion">
+        <template is="dom-if" if="[[conversion.content]]">
+          <div class="layout horizontal center">
+            <label class="flex">[[conversion.name]]</label>
+            <div class="flex">[[conversion.info.width]] x [[conversion.info.height]]</div>
+            <div class="flex">[[formatSize(conversion.content.length)]]</div>
+             <nuxeo-filter document="[[document]]"user="[[user]]" permission="Download">
+          
+          <template>
+          <a id="download-[[index]]" href="[[item.data]]">
+            <iron-icon icon="nuxeo:download"></iron-icon>
+          </a>
+          <paper-tooltip for="download-[[index]]">[[i18n('pictureViewLayout.download.tooltip')]]</paper-tooltip>
+          </template>
+          
+          </nuxeo-filter>
+          </div>
+        </template>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-customized-video-conversions',
+      behaviors: [Nuxeo.I18nBehavior, Nuxeo.FormatBehavior],
+      properties: {
+        document: Object
+      },
+      ready() {
+      this.$.nxcon.connect().then((user) => {
+        this.user = user;
+        console.log("user is ")
+        console.log(user)
+      });
+   }
+    
+    });
+  </script>
+</dom-module>

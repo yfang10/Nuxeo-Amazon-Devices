@@ -1,0 +1,132 @@
+<!--
+***
+STUDIO CODE SPACE
+***
+Studio will use this file to generate your configuration.
+You may tweak it, but note that any configuration seen as invalid by Studio will automatically be removed.
+
+Should you wish to add custom code, we recommend using the nuxeo-iss-dm-demo-2020-custom-bundle.html file instead.
+-->
+<link rel="import" href="elements/add-to-favorites-collection.html">
+<link rel="import" href="elements/add-to-campaign-collection.html">
+<link rel="import" href="elements/campaign-collection-suggestion.html">
+<link rel="import" href="nuxeo-iss-dm-demo-2020-custom-bundle.html">
+<link rel="import" href="nuxeo-pclm-custom-bundle.html">
+<link rel="import" href="elements/nuxeo-customized-document-viewer.html">
+<link rel="import" href="elements/nuxeo-customized-picture-format.html">
+<link rel="import" href="elements/nuxeo-customized-video-conversions.html">
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="assetLibSearchMenuButton" slot="DRAWER_ITEMS" order="35">
+  <template>
+    <nuxeo-menu-icon id="assetLibSearchButton" name="assetLibSearch" icon="icons:perm-media" label="Asset Library Search"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="distributionLibSearchMenuButton" slot="DRAWER_ITEMS" order="40">
+  <template>
+    <nuxeo-menu-icon id="distributionLibSearchButton" name="distributionLibSearch" icon="icons:youtube-searched-for" label="Distribution Library Search"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="fullDAMSearchMenuButton" slot="DRAWER_ITEMS" order="30">
+  <template>
+    <nuxeo-menu-icon name="fullDAMSearch" label="General Search" icon="nuxeo:search"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="assetLibSearchMenuButton" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form provider="asset-library-search-pp" auto="true" schemas="dublincore,common,file,uid,picture,facetedKeyword,video" search-name="asset-library-search-pp" name="assetLibSearch"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="distributionLibSearchMenuButton" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form provider="distribution-library-search-pp" auto="true" schemas="dublincore,common,file,uid,picture,facetedKeyword,video" search-name="distribution-library-search-pp" name="distributionLibSearch"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="fullDAMSearchMenuButton" slot="DRAWER_PAGES">
+  <template>
+    <nuxeo-search-form provider="full-dam-search-pp" auto="true" schemas="dublincore,common,file,uid,collectionMember,facetedKeyword,commonFields" search-name="full-dam-search-pp" name="fullDAMSearch"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'add-to-campaign-collection' for slot 'RESULTS_SELECTION_ACTIONS' -->
+<nuxeo-slot-content name="publishToCampaignCollectionPage" slot="RESULTS_SELECTION_ACTIONS" order="10">
+  <template>
+    <add-to-favorites-collection  document="[[document]]" documents="[[selectedItems]]">
+    </add-to-favorites-collection>
+    <add-to-campaign-collection document="[[document]]" documents="[[selectedItems]]" icon="nuxeo:add" id="publishToPortalCollection">
+    </add-to-campaign-collection>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-download-button' for slot 'BLOB_ACTIONS' -->
+<nuxeo-slot-content name="downloadBlobAction" slot="BLOB_ACTIONS" order="30" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="!document.isProxy || (document.isProxy &amp;&amp; document.contextParameters.permissions.indexOf(&quot;Download&quot;) &gt; 0 &amp;&amp; (new Date(document.properties[&quot;dc:expired&quot;]).setHours(0, 0, 0, 0)) &gt;&#x3D; new Date().setHours(0, 0, 0, 0))" permission="Download" user="[[user]]">
+      <template>
+        <nuxeo-download-button document="[[document]]" xpath="[[xpath]]"></nuxeo-download-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-download-documents-button' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="downloadDocumentAction" slot="DOCUMENT_ACTIONS" order="90" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="(document.facets.indexOf(&#x27;Folderish&#x27;) !&#x3D;&#x3D; -1
+                                                   || document.facets.indexOf(&#x27;Collection&#x27;) !&#x3D;&#x3D; -1)
+                                                   &amp;&amp; document.contextParameters
+                                                   &amp;&amp; document.contextParameters.hasContent" permission="Download" user="[[user]]">
+      <template>
+        <nuxeo-download-documents-button document="[[document]]"> </nuxeo-download-documents-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="damSearchMenuButtons" slot="DRAWER_ITEMS" order="45" priority="1" disabled>
+  <template>
+    <nuxeo-menu-icon id="assetsSearchButton" name="assetsSearch" icon="icons:perm-media" label="dam.assets.heading"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="defaultSearchMenuButton" slot="DRAWER_ITEMS" order="30" priority="1" disabled>
+  <template>
+    <nuxeo-menu-icon name="defaultSearch" icon="nuxeo:search" label="app.search"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-menu-icon' for slot 'DRAWER_ITEMS' -->
+<nuxeo-slot-content name="expiredSearchMenuButton" slot="DRAWER_ITEMS" order="40" priority="1" disabled>
+  <template>
+    <nuxeo-menu-icon name="expiredSearch" icon="nuxeo:expired" label="app.expiredSearch"></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="damSearchMenuButtons" slot="DRAWER_PAGES" priority="1" disabled>
+  <template>
+    <nuxeo-search-form name="assetsSearch" search-name="assets" auto="" display-auto-control="" provider="assets_search" schemas="dublincore,common,file,uid,thumbnail,picture"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="defaultSearchMenuPage" slot="DRAWER_PAGES" priority="1" disabled>
+  <template>
+    <nuxeo-search-form provider="default_search" schemas="dublincore,common,file,uid" search-name="default" name="defaultSearch"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-search-form' for slot 'DRAWER_PAGES' -->
+<nuxeo-slot-content name="expiredSearchMenuPage" slot="DRAWER_PAGES" priority="1" disabled>
+  <template>
+    <nuxeo-search-form name="expiredSearch" search-name="expired" queue="" auto="" provider="expired_search" schemas="dublincore,common,uid" label="expiredSearch.expiredDocuments"></nuxeo-search-form>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-spreadsheet-button' for slot 'RESULTS_ACTIONS' -->
+<nuxeo-slot-content name="spreadsheetButton" slot="RESULTS_ACTIONS" order="-150" priority="1">
+  <template>
+    <nuxeo-filter document="[[document]]" path="/default-domain/workspaces">
+      <template>
+        <nuxeo-spreadsheet-button nx-provider="[[nxProvider]]" columns="[[columns]]"></nuxeo-spreadsheet-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+

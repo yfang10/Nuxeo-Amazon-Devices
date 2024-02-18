@@ -1,0 +1,278 @@
+<dom-module id="amzd-audit">
+  <template>
+    <style include="nuxeo-action-button-styles">
+      :host {
+        display: block;
+      }
+      nuxeo-data-table {
+        height: calc(100vh - 25em);
+        min-height: 15em;
+      }
+
+      .row-container {
+        @apply --layout-horizontal;
+        @apply --layout-wrap;
+      }
+
+      .resultActions, .viewModes, .rightHand {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+      }
+
+      .resultActions, .rightHand {
+        @apply --layout-wrap;
+      }
+
+      .rightHand {
+        @apply --layout-flex;
+        @apply --layout-end-justified;
+      }
+
+      .item {
+        flex: 1 0 0;
+        margin-right: 8px;
+      }
+
+      @media (max-width: 768px) {
+        .item {
+          min-width: 100%;
+        }
+
+        nuxeo-data-table {
+          height: calc(100vh - 33em);
+        }
+      }
+    </style>
+
+    <amzd-audit-page-provider id="provider" page-size="40" provider-name="ADMIN_AUDIT_PAGE"></amzd-audit-page-provider>
+    <nuxeo-page>
+      <div slot="header">
+        <span class="flex">[[i18n('audit.heading')]]</span>
+      </div>
+      <div>
+        <nuxeo-card>
+          <nuxeo-user-suggestion value="{{principalName}}" label="[[i18n('audit.username')]]" placeholder="[[i18n('audit.usernamePlaceholder')]]"></nuxeo-user-suggestion>
+
+          <div class="row-container">
+            <nuxeo-date-picker role="widget" class="item" value="{{startDate}}" label="[[i18n('audit.from')]]">
+            </nuxeo-date-picker>
+            <nuxeo-date-picker role="widget" class="item" value="{{endDate}}" default-time="23:59:59" label="[[i18n('audit.to')]]">
+            </nuxeo-date-picker>
+          </div>
+
+          <div class="row-container">
+            <nuxeo-directory-suggestion class="item" role="widget" label="[[i18n('audit.eventTypes')]]" directory-name="HistoryEventType" value="{{selectedEventTypes}}" multiple="true" placeholder="[[i18n('audit.selectEventTypes')]]" min-chars="0">
+            </nuxeo-directory-suggestion>
+
+            <nuxeo-directory-suggestion class="item" role="widget" label="[[i18n('audit.eventCategory')]]" directory-name="HistoryEventCategory" value="{{selectedEventCategory}}" placeholder="[[i18n('audit.selectEventCategory')]]" min-chars="0">
+            </nuxeo-directory-suggestion>
+          </div>
+        </nuxeo-card>
+        
+      <div class="rightHand">
+        <nuxeo-operation id="op" op="AMZD.ExportAuditLog" input="[[document]]" poll-interval="[[pollInterval]]">
+        </nuxeo-operation>
+
+        <div class="action" on-click="_execute">
+          <paper-icon-button id="bt" icon="[[buttonIcon]]"></paper-icon-button>
+        </div>
+        <nuxeo-tooltip>[[i18n(buttonLabel)]]</nuxeo-tooltip>
+      </div>
+
+        <nuxeo-card>
+          <nuxeo-data-table id="table" paginable="" nx-provider="provider" empty-label="[[i18n('audit.empty')]]">
+            <nuxeo-data-table-column name="[[i18n('audit.performedAction')]]" sort-by="eventId">
+              <template>[[_formati18n('activity.', item.eventId)]]</template>
+            </nuxeo-data-table-column>
+            <nuxeo-data-table-column name="[[i18n('audit.date')]]" sort-by="eventDate">
+              <template><nuxeo-date datetime="[[item.eventDate]]" format="LLL"></nuxeo-date></template>
+            </nuxeo-data-table-column>
+            <nuxeo-data-table-column name="[[i18n('audit.username')]]" sort-by="principalName">
+              <template>
+                <nuxeo-user-tag user="[[item.principalName]]"></nuxeo-user-tag>
+              </template>
+            </nuxeo-data-table-column>
+            <nuxeo-data-table-column name="[[i18n('audit.category')]]" sort-by="category">
+              <template>[[_formati18n('activity.', item.category)]]</template>
+            </nuxeo-data-table-column>
+            <nuxeo-data-table-column name="[[i18n('audit.document')]]">
+              <template>[[_formatDocument(item)]]</template>
+            </nuxeo-data-table-column>
+            <nuxeo-data-table-column name="[[i18n('audit.comment')]]">
+              <template>[[item.comment]]</template>
+            </nuxeo-data-table-column>
+          </nuxeo-data-table>
+      </nuxeo-card>
+      </div>
+    </nuxeo-page>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'amzd-audit',
+      behaviors: [Nuxeo.FormatBehavior],
+      properties: {
+        pollInterval: {
+          type: Number,
+          value: 1000,
+        },
+        buttonIcon: {
+          type: String,
+          value: 'nuxeo:csv-export'
+        },
+        visible: {
+          type: Boolean
+        },
+        entries: {
+          type: Array,
+          value: []
+        },
+        selectedEventTypes: {
+          type: Array,
+          value: []
+        },
+        selectedEventCategory: {
+          type: String,
+          value: ''
+        },
+        startDate: {
+          type: String,
+          value: ''
+        },
+        endDate: {
+          type: String,
+          value: ''
+        },
+        principalName: {
+          type: String,
+          value: ''
+        }
+      },
+      observers: [
+        '_refresh(startDate, endDate, selectedEventTypes.*, selectedEventCategory, principalName)'
+      ],
+      
+      ready() {
+        this.$.bt.addEventListener('poll-start', this._onPollStart.bind(this));
+        this.$.bt.addEventListener('response', this._onResponse.bind(this));
+      },
+
+      _formati18n: function(path, key) {
+        return key ? this.i18n(path + key) : '';
+      },
+
+      _formatDocument: function(item) {
+        if (item) {
+          return (item.docUUID || '') + (item.docType ? ' (' + item.docType + ') ' : '') + (item.docPath || '');
+        }
+      },
+
+      /* Builds the parameters object to be used on the query */
+      _buildParams: function() {
+        var params = {
+          principalNames: this.principalName? this.principalName: ""
+        };
+        if (this.startDate) {
+          params.startDate = this.startDate;
+        }
+        if (this.endDate) {
+          params.endDate = this.endDate;
+        }
+        if (this.selectedEventTypes && this.selectedEventTypes.length > 0) {
+          params.eventIds = this.selectedEventTypes.join();
+        }
+        if (this.selectedEventCategory) {
+          params.eventCategories = this.selectedEventCategory;
+        }
+        return params;
+      },
+
+      _refresh: function() {
+        if (this.visible) {
+          this.$.provider.params = this._buildParams();
+          this.$.table.fetch();
+        }
+      },
+      
+      _onPollStart() {
+        this.notify({ message: this.i18n('csvExportButton.action.poll') });
+      },
+
+      _onResponse() {
+        this.notify({ message: this.i18n('csvExportButton.action.completed') });
+      },
+      
+      _params(doc) {
+        return {
+        filename: "audit_history_report.csv",
+        providerName: "ADMIN_AUDIT_PAGE",
+        namedQueryParams: this._buildParams(),
+        currentPageIndex: 0,
+        pageSize: 40,
+        sortBy: "eventDate",
+        sortOrder: "desc"
+        };
+      },
+      
+      _execute() {
+        this.$.op.params = this._params(this.document);
+        this.$.op.execute().then((response) => {
+          if (this.notification) {
+            this.dispatchEvent(new CustomEvent('notify', {
+              composed: true,
+              bubbles: true,
+              detail: { message: this.i18n(this.notification) },
+            }));
+          }
+          let detail = { response };
+          if (this.detail) {
+            // if the supplied params are a string, parse them as JSON
+            detail = typeof this.detail === 'string' ? JSON.parse(this.detail) : this.detail;
+          }
+          this.dispatchEvent(new CustomEvent(this.event, {
+            composed: true,
+            bubbles: true,
+            detail,
+          }));
+          return this._download(response);
+        })
+          .catch((error) => {
+            this.dispatchEvent(new CustomEvent('notify', {
+              composed: true,
+              bubbles: true,
+              detail: { message: this.errorLabel ? this.i18n(this.errorLabel, error) : error },
+            }));
+            if (error.status !== 404) {
+              throw error;
+            }
+          });
+      },
+      
+      _download(response) {
+        const contentDisposition = response.headers.get('Content-Disposition');
+        if (contentDisposition) {
+          const filenameMatches = contentDisposition
+            .match(/filename[^;=\n]*=([^;\n]*''([^;\n]*)|[^;\n]*)/).filter((match) => !!match);
+          const filename = decodeURI(filenameMatches[filenameMatches.length - 1]);
+          return response.blob().then((blob) => {
+            if (navigator.msSaveBlob) {
+              // handle IE11 and Edge
+              navigator.msSaveBlob(blob, filename);
+            } else {
+              const a = document.createElement('a');
+              a.style = 'display: none';
+              a.download = filename;
+              a.href = URL.createObjectURL(blob);
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(a.href);
+            }
+          });
+        } else {
+          return Promise.reject(new Error('missing Content-Disposition header'));
+        }
+      }
+    });
+  </script>
+</dom-module>

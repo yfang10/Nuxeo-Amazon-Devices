@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package type="addon" name="nuxeo-liveconnect-jsf-ui" version="2021.39.6">
+  <title>Nuxeo Live Connect - JSF UI</title>
+  <description>This is the JSF UI package for Nuxeo Live Connect.</description>
+  <vendor>Nuxeo</vendor>
+  <platforms>
+    <platform>lts-2021.39.6</platform>
+  </platforms>
+  <dependencies>
+    <package>nuxeo-liveconnect</package>
+    <package>nuxeo-jsf-ui</package>
+  </dependencies>
+  <license>Apache 2.0</license>
+  <license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+</package>

@@ -1,0 +1,281 @@
+<!--
+`device-assets-listing`
+@group Nuxeo UI
+@element device-assets-listing
+-->
+<dom-module id="device-assets-listing">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      .results {
+        @apply --layout-vertical;
+        @apply --layout-flex;
+        min-height: var(--nuxeo-document-content-min-height, calc(100vh - 216px - var(--nuxeo-app-top)));
+        margin-bottom: var(--nuxeo-document-content-margin-bottom, 0);
+      }
+
+      .results.dragging{
+        border: 2px dashed var(--nuxeo-primary-color);
+      }
+
+      .ellipsis {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+        width: calc(100% - 38px);
+      }
+
+      .capitalize {
+        text-transform: capitalize;
+      }
+
+      nuxeo-tag {
+        margin-right: 2px;
+      }
+
+      nuxeo-justified-grid {
+        height: calc(100vh - 10em);
+      }
+
+    </style>
+    <nuxeo-page-provider id="nxProvider"
+                         provider="device-deviceAssets-pp"
+                         page-size="40"
+                         aggregations="{{aggregations}}"
+                         enrichers="thumbnail, permissions"
+                         params="[[params]]"
+                         schemas="dublincore,common,uid,file"
+                         headers='{ "X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label" }'
+                         fetch-aggregates>
+    </nuxeo-page-provider>
+
+    <nuxeo-results id="results"
+                   display-mode="table"
+                   name="[[document.uid]]"
+                   nx-provider="[[nxProvider]]"
+                   selected-items="{{selectedItems}}"
+                   document="[[document]]"
+                   display-quick-filters
+                   display-sort="[[_canSort(document, sortOptions)]]"
+                   sort-options="[[sortOptions]]"
+                   role="widget">
+
+      <nuxeo-data-table name="table" icon="nuxeo:view-list"
+                        class="results"
+                        settings-enabled
+                        selection-enabled
+                        on-row-clicked="_navigate"
+                        >
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.title')]]"
+                                 field="dc:title" sort-by="[[_displaySort(document, 'dc:title')]]"
+                                 filter-by="dublincore_title" flex="50">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail>
+            <a class="title ellipsis" href$="[[urlFor('browse', item.path)]]" on-tap="_navigate">[[item.properties.dc:title]]</a>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.type')]]" field="type" flex="50">
+          <template>
+            <nuxeo-tag>[[item.type]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="Description" field="dc:description" flex="50" filter-by="dublincore_description" sort-by="[[_displaySort(document, 'dc:description')]]">
+          <template>
+            [[item.properties.dc:description]]
+          </template>
+        </nuxeo-data-table-column>
+
+      </nuxeo-data-table>
+    </nuxeo-results>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'device-assets-listing',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        document: {
+          type: Object
+        },
+        /**
+       * `true` if the current element is visible, `false` otherwise.
+       */
+      visible: {
+        type: Boolean,
+        value: false,
+      },
+      /**
+       * The currently selected items in the results view.
+       */
+      selectedItems: {
+        type: Array,
+        notify: true,
+      },
+      params: {
+        type: Object,
+        computed: '_computeParams(document)',
+      },
+      /**
+       * The sort options.
+       */
+      sortOptions: {
+        type: Array,
+        computed: '_computeSortOptions()',
+      },
+      _dropTargetFilter: {
+        type: Function,
+        value() {
+          return this._dropTargetFilter.bind(this);
+        },
+      },
+    },
+    listeners: {
+      'document-created': '_handleDocumentCreated',
+      'iron-resize': '_computeVisible',
+    },
+
+    observers: ['_refresh(params, visible)'],
+
+    attached() {
+      this.nxProvider = this.pageProvider;
+      this._dragoverHandler = this._dragoverImport.bind(this);
+      this._dragleaveHandler = this._dragleaveImport.bind(this);
+      this._dropHandler = this._dropImport.bind(this);
+      this._setupDnD();
+    },
+
+    detached() {
+      this._teardownDnD();
+      this._dragoverHandler = null;
+      this._dragleaveHandler = null;
+      this._dropHandler = null;
+      this.nxProvider = null;
+    },
+
+    /**
+     * Gets the currently selected view.
+     */
+    get view() {
+      return this.$$('.results.iron-selected');
+    },
+
+    /**
+     * The `nuxeo-results` element.
+     */
+    get results() {
+      return this.$$('nuxeo-results');
+    },
+
+    /**
+     * The `nuxeo-page-provider` element.
+     */
+    get pageProvider() {
+      return this.$$('nuxeo-page-provider');
+    },
+
+    _navigate(e) {
+      this.fire('navigate', { doc: (e.model || e.detail).item });
+      e.stopPropagation();
+    },
+
+    _refresh() {
+      if (this.document && this.visible) {
+        this.results.fetch();
+      }
+    },
+
+    _canSort(document, options) {
+      return !(document && this.hasFacet(document, 'Orderable')) && options
+        ? Array.isArray(options) && options.length > 0
+        : true;
+    },
+
+    _displaySort(document, field) {
+      return this._canSort(document) ? field : undefined;
+    },
+
+    // function used by nuxeo-data-grid and nuxeo-data-table to check if a list item is a drop target
+    _dropTargetFilter(el, model) {
+      return model && (this.hasFacet(model.item, 'Folderish') || this.hasFacet(model.item, 'Collection'));
+    },
+
+    _hasWritePermission(doc) {
+      return doc && this.hasPermission(doc, 'Write');
+    },
+
+    _handleDocumentCreated() {
+      this.fire('document-updated');
+    },
+
+    _computeVisible() {
+      this.visible = Boolean(this.offsetWidth || this.offsetHeight);
+    },
+
+    _dragoverImport(e) {
+      e.preventDefault();
+      this.fire('notify', { message: this.i18n('documentContentView.drag.import'), duration: 0 });
+      this._toggleDragging(true);
+    },
+
+    _dragleaveImport() {
+      this.fire('notify', { close: true });
+      this._toggleDragging(false);
+    },
+
+    _dropImport(e) {
+      e.preventDefault();
+      this.fire('notify', { close: true });
+      this._toggleDragging(false);
+      this.fire('create-document', { files: e.dataTransfer.files });
+    },
+
+    _toggleDragging(flag) {
+      const { view } = this;
+      if (view) {
+        this.toggleClass('dragging', flag, view);
+      }
+    },
+
+    _setupDnD() {
+      const { results } = this;
+      if (results) {
+        results.addEventListener('dragover', this._dragoverHandler);
+        results.addEventListener('dragleave', this._dragleaveHandler);
+        results.addEventListener('drop', this._dropHandler);
+      }
+    },
+
+    _teardownDnD() {
+      const { results } = this;
+      if (results) {
+        results.removeEventListener('dragover', this._dragoverHandler);
+        results.removeEventListener('dragleave', this._dragleaveHandler);
+        results.removeEventListener('drop', this._dropHandler);
+      }
+    },
+
+    _computeParams(document) {
+      if (document) {
+        if (this.hasFacet(document, 'Orderable')) {
+          this.$.nxProvider.set('sort', { 'ecm:pos': 'ASC' });
+        } else {
+          this.$.nxProvider.set('sort', {});
+        }
+        return { system_parentId: document.uid };
+      }
+      return {};
+    },
+
+    _computeSortOptions() {
+      return [
+        { field: 'dc:title', label: "Title", order: 'asc' },
+        { field: 'dc:description', label: "Description", order: 'asc'},
+      ];
+    },
+    });
+  </script>
+</dom-module>

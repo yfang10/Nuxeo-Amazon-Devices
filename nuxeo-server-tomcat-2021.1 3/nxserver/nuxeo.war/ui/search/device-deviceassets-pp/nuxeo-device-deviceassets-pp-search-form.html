@@ -1,0 +1,47 @@
+<!--
+`nuxeo-device-deviceassets-pp-search-form`
+@group Nuxeo UI
+@element nuxeo-device-deviceassets-pp-search-form
+-->
+<dom-module id="nuxeo-device-deviceassets-pp-search-form">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" value="{{params.system_parentId}}" label="System Parent Id" type="text"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{params.dublincore_description}}" label="Dublincore Description" type="text"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{params.dublincore_title}}" label="Dublincore Title" type="text"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{params.system_fulltext}}" label="System Fulltext" type="text"></nuxeo-input>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-device-deviceassets-pp-search-form',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @search device-deviceAssets-pp
+         */
+        params: {
+          type: Object,
+          value: {},
+          notify: true,
+        },
+
+        aggregations: {
+          type: Object,
+          value: {},
+          notify: true,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

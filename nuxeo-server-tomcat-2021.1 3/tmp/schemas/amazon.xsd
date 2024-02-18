@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:nxs="http://www.nuxeo.org/ecm/project/schemas/amazon-devices-global-dam/amazon" xmlns:nxsv="http://www.nuxeo.org/ecm/schemas/core/validation/" xmlns:ref="http://www.nuxeo.org/ecm/schemas/core/external-references/" targetNamespace="http://www.nuxeo.org/ecm/project/schemas/amazon-devices-global-dam/amazon">  
+  <!-- helper XSD definitions for list types -->  
+  <xs:complexType name="content"> 
+    <xs:sequence> 
+      <xs:element name="encoding" type="xs:string"/>  
+      <xs:element name="mime-type" type="xs:string"/>  
+      <xs:element name="data" type="xs:base64Binary"/>  
+      <xs:element name="name" type="xs:string"/>  
+      <xs:element name="length" type="xs:long"/>  
+      <xs:element name="digest" type="xs:string"/> 
+    </xs:sequence> 
+  </xs:complexType>  
+  <xs:simpleType name="stringList"> 
+    <xs:list itemType="xs:string"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="doubleList"> 
+    <xs:list itemType="xs:double"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="dateList"> 
+    <xs:list itemType="xs:date"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="integerList"> 
+    <xs:list itemType="xs:integer"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="booleanList"> 
+    <xs:list itemType="xs:boolean"/> 
+  </xs:simpleType>  
+  <xs:complexType name="blobList"> 
+    <xs:sequence> 
+      <xs:element name="item" type="nxs:content" minOccurs="0" maxOccurs="unbounded"/> 
+    </xs:sequence> 
+  </xs:complexType>  
+  <xs:element name="Ownership">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Ownership"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="ThreeD_GLB_blob" type="nxs:content"/>
+  <xs:element name="activePeriod">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Active_Period"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="additional_participants" type="nxs:amz_additional_participantsListType"/>
+  <xs:complexType name="amz_additional_participantsListType">
+    <xs:sequence>
+      <xs:element name="item" type="nxs:amz_additional_participantsType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="amz_additional_participantsType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="role">
+        <xs:simpleType>
+          <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="roles"/>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="asin">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:pattern value="^[a-zA-Z0-9]*$"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="asset_category">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="amzdAssetCategory"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="asset_type">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Asset_Type"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="associatedEvent">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Associated_Event"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="codename" type="xs:string"/>
+  <xs:element name="creator_role">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="roles"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="is_retouched_version">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Is_Retouched_Version"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="language">
+    <xs:simpleType>
+      <xs:list>
+        <xs:simpleType>
+          <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Content_Language"/>
+        </xs:simpleType>
+      </xs:list>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="launchCollections" type="xs:string"/>
+  <xs:element name="launchcollection">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Launch_Collections"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="marketingStreetname" type="xs:string"/>
+  <xs:element name="notes" type="xs:string"/>
+  <xs:element name="original_creator_name" type="xs:string"/>
+  <xs:element name="placement">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Placement"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="preview_blob" type="nxs:content"/>
+  <xs:element name="projectNumber" type="xs:string"/>
+  <xs:element name="retailAssetTypes">
+    <xs:simpleType>
+      <xs:list>
+        <xs:simpleType>
+          <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Retail_Asset_Type"/>
+        </xs:simpleType>
+      </xs:list>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="retailAssetUse">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Retail_Asset_Use"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="standardAngles">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Standard_Angles"/>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="status">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" ref:resolver="directoryResolver" ref:directory="Status"/>
+    </xs:simpleType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,343 @@
+<!--
+`pclm-asset-analytics`
+@group Nuxeo UI
+@element pclm-asset-analytics.html
+-->
+
+<link rel="import" href="../behaviors/pclm-analytics-dashboard-behavior.html">
+<link rel="import" href="../behaviors/pclm-analytics-format-behavior.html">
+<link rel="import" href="../styles/pclm-analytics-styles.html">
+<link rel="import" href="../styles/pclm-grid-styles.html">
+
+<dom-module id="pclm-asset-analytics">
+  <template>
+    <style include="iron-flex iron-flex-alignment pclm-grid-styles pclm-analytics-styles">
+      .cell {
+        min-height:300px;
+      }
+
+    </style>
+
+    <nuxeo-connection id="nx"></nuxeo-connection>
+
+    <!-- Total Asset -->
+    <nuxeo-repository-data class="data"
+                           ecm-primary-type="[[_assetTypeFilter]]"
+                           metrics="value_count(ecm:primaryType)"
+                           date-field="dc:created"
+                           data="{{totalAsset}}"
+                           where="[[_onlyLiveDocumentQuery]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+    
+    <!-- Total Version Asset -->
+    <nuxeo-repository-data class="data"
+                           ecm-primary-type="[[_assetTypeFilter]]"
+                           metrics="value_count(ecm:primaryType)"
+                           date-field="dc:created"
+                           data="{{totalVersions}}"
+                           where="[[_onlyVersionDocumentQuery]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+    
+        <!-- Total Published Asset -->
+    <nuxeo-repository-data class="data"
+                           ecm-primary-type="[[_assetTypeFilter]]"
+                           metrics="value_count(ecm:primaryType)"
+                           date-field="dc:created"
+                           data="{{totalPublished}}"
+                           where="[[_onlyPublishedDocumentQuery]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+    
+    
+    <!-- Asset Media Type -->
+    <nuxeo-repository-data class="data"
+                           ecm-primary-type="[[_assetTypeFilter]]"
+                           grouped-by="ecm:primaryType"
+                           group-limit="20"
+                           date-field="dc:created"
+                           data="{{assetByType}}"
+                           where="[[_onlyLiveDocumentQuery]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+
+    <!-- Asset Type -->
+    <nuxeo-repository-data class="data"
+                           ecm-primary-type="[[_assetTypeFilter]]"
+                           grouped-by="ecm:mixinType"
+                           group-limit="20"
+                           date-field="dc:created"
+                           data="{{assetByFacet}}"
+                           where="[[_onlyLiveDocumentQuery]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+
+
+    <!-- Asset by file format -->
+    <nuxeo-repository-data class="data"
+                           ecm-primary-type="[[_assetTypeFilter]]"
+                           grouped-by="dc:format"
+                           group-limit="10"
+                           date-field="dc:created"
+                           data="{{filesByMimeType}}"
+                           where="[[_onlyLiveDocumentQuery]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+
+    <!-- Asset by Status -->
+    <nuxeo-repository-data class="data"
+                           ecm-primary-type="[[_assetTypeFilter]]"
+                           grouped-by="ecm:currentLifeCycleState"
+                           group-limit="10"
+                           date-field="dc:created"
+                           data="{{assetByLifeCycleState}}"
+                           where="[[_onlyLiveDocumentQuery]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+    
+
+    <div class="container">
+
+      <div class="layout horizontal wrap">
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.asset.total')]]">
+            <div class="numberContainer">
+              <div class="layout vertical flex">
+                <h1 class="number">[[totalAsset]]</h1>
+                <h2>[[totalVersions]] [[i18n('analytics.asset.total.versions')]]</h2>
+                <h2>[[totalPublished]] [[i18n('analytics.asset.total.published')]]</h2>
+              </div>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.asset.media.type')]]">
+            <chart-bar class="chart"
+                       data="[[_formatSingleDatasetforBarChart(_assetFacets, 0, 'label.ui.aggregate.')]]"
+                       options="[[defaultBarChartOptions]]">
+            </chart-bar>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.asset.type')]]">
+            <chart-bar class="chart"
+                       data="[[_formatSingleDatasetforBarChart(assetByType, 5, 'label.ui.aggregate.')]]"
+                       options="[[defaultBarChartOptions]]">
+            </chart-bar>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.asset.format')]]">
+            <chart-bar class="chart"
+                       data="[[_formatSingleDatasetforBarChart(filesByMimeType,10)]]"
+                       options="[[defaultBarChartOptions]]">
+            </chart-bar>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.asset.lifecyclestate')]]">
+            <chart-bar class="chart"
+                       data="[[_formatSingleDatasetforBarChart(assetByLifeCycleState,15,'label.ui.state.')]]"
+                       options="[[defaultBarChartOptions]]">
+            </chart-bar>
+          </nuxeo-card>
+        </div>
+        
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.asset.size')]]">
+            <div class="numberContainer">
+              <div class="layout vertical flex">
+                <h1 class="number">[[formatSize(totalAssetSize)]]</h1>
+                <h2>[[i18n('analytics.asset.size.live.assets')]]: [[formatSize(liveAssetSize)]]</h2>
+              </div>
+            </div>
+          </nuxeo-card>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer"></div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-asset-analytics',
+      behaviors: [
+        Nuxeo.PclmAnalyticsDashboardBehavior,Nuxeo.PclmAnalyticsFormatBehavior,
+        Nuxeo.I18nBehavior
+      ],
+      properties: {
+
+        _assetTypeFilter: {
+          type: String,
+          value: "Asset,CompoundAsset,BrandAsset,CreativeAsset,DeviceAsset,IPAsset,ProductionAsset,RetailExperienceAsset,ThreeDCreativeAsset,Audio,File,Note,Picture,Video"
+        },
+
+        _assetFacets: {
+          type: Array,
+          computed: "_setAssetFacets(assetByFacet)"
+        },
+
+        _onlyLiveDocumentQuery: {
+          type: Array,
+          value: [
+            {
+              "term": {
+                "ecm:isProxy": false
+              }
+            },
+            {
+              "term": {
+                "ecm:isVersion": false
+              }
+            }
+          ]
+        },
+        
+        _onlyVersionDocumentQuery: {
+          type: Array,
+          value: [
+            {
+              "term": {
+                "ecm:isProxy": false
+              }
+            },
+            {
+              "term": {
+                "ecm:isVersion": true
+              }
+            }
+          ]
+        },
+        
+        _onlyPublishedDocumentQuery: {
+          type: Array,
+          value: [
+            {
+              "term": {
+                "ecm:isProxy": true
+              }
+            },
+            {
+              "term": {
+                "ecm:mixinType": "Immutable"
+              }
+            }
+          ]
+        }
+       
+      },
+
+      _setAssetFacets: function(assetByFacet) {
+        return assetByFacet.filter(function(entry) {
+          return ["Video","Picture","ThreeD","Audio"].indexOf(entry.key)>=0;
+        })
+      },
+      
+      _getAssetSizeQueryTemplate: function() {
+        return {
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "terms": {
+                    "ecm:primaryType": [
+                      "Asset",
+                      "CompoundAsset",
+                      "BrandAsset",
+                      "BrandLink",
+                      "CreativeAsset",
+                      "DeviceAsset",
+                      "IPAsset",
+                      "ProductionAsset",
+                      "RetailExperienceAsset",
+                      "ThreeDCreativeAsset",
+                      "Audio",
+                      "File",
+                      "Note",
+                      "Picture",
+                      "Video",
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "aggs": {
+            "digests": {
+              "terms": {
+                "field": "file:content.digest",
+                "size": 1000000000
+              },
+              "aggs": {
+                "max": {
+                  "max": {
+                    "field": "file:content.length"
+                  }
+                }
+              }
+            },
+            "total_size": {
+              "sum_bucket": {
+                "buckets_path": "digests>max"
+              }
+            }
+          }
+        }
+      },
+      
+      _fetch: function(body,success) {
+        let url = [this.$.nx.client._baseURL, 'site/es', this.index, '_search'].join('/');
+        url = url.replace(/(^\/+)|([^:])\/\/+/g, '$2/');
+        url += `?filter_path=aggregations.total_size`;
+
+        const options = {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: body,
+          url
+        };
+        return this.$.nx.request().then(function(request) {
+          return request.execute(options);
+        }).then(success).catch(function(error){
+          //this._handleError.bind(this))
+        });
+      },
+      
+
+      _fetchLiveAssetTotalSize: function() {
+        var body = this._getAssetSizeQueryTemplate();
+        body.query.bool.must.push({
+          "term": {
+            "ecm:isVersion": false
+          }
+        });
+        
+        this._fetch(body,function(response){
+          this.liveAssetSize = response.aggregations.total_size.value;
+        }.bind(this));
+      },
+      
+      _fetchAssetTotalSize: function() {
+        var body = this._getAssetSizeQueryTemplate();
+        this._fetch(body,function(response){
+          this.totalAssetSize = response.aggregations.total_size.value;
+        }.bind(this));
+      },
+      
+      _refresh: function() {
+        this._fetchAssetTotalSize();
+        this._fetchLiveAssetTotalSize();
+      }
+
+    });
+  </script>
+</dom-module>

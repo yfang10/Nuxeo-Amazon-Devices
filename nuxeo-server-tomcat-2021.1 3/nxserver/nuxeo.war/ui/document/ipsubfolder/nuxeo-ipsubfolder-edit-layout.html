@@ -1,0 +1,34 @@
+<!--
+`nuxeo-ipsubfolder-edit-layout`
+@group Nuxeo UI
+@element nuxeo-ipsubfolder-edit-layout
+-->
+<dom-module id="nuxeo-ipsubfolder-edit-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+   <nuxeo-input role="widget" value="{{document.properties.dc:title}}" label="Title" type="text" required="true"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.dc:description}}" label="Description" type="text"></nuxeo-input>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-ipsubfolder-edit-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype IPSubFolder
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

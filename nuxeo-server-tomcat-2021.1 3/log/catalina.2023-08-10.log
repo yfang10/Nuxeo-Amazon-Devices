@@ -1,0 +1,3 @@
+2023-08-10 09:40:37 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-10 09:44:08 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[665]毫秒内初始化
+2023-08-10 09:45:07 信息 [main] org.apache.catalina.startup.Catalina.start [59630]毫秒后服务器启动

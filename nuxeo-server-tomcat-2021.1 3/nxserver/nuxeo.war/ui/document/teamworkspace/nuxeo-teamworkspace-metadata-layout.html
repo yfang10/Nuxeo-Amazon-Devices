@@ -1,0 +1,41 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/behaviors/pclm-form-behavior.html">
+
+<!--
+`nuxeo-teamworkspace-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-teamworkspace-metadata-layout
+-->
+<dom-module id="nuxeo-teamworkspace-metadata-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <div role="widget">
+      <label>[[i18n('title')]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'dc:description')]]">
+      <label>[[i18n('label.dublincore.description')]]</label>
+      <div name="dc:description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-teamworkspace-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.PclmFormBehavior],
+      properties: {
+
+        /**
+         * @doctype TeamWorkspace
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

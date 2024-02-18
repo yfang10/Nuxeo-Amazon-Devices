@@ -1,0 +1,17 @@
+Nuxeo home:          /Users/issuser/Work/project/amazon/nuxeo-server-tomcat-2021.1
+Nuxeo configuration: /Users/issuser/Work/project/amazon/nuxeo-server-tomcat-2021.1/bin/nuxeo.conf
+Include template: /Users/issuser/Work/project/amazon/nuxeo-server-tomcat-2021.1/templates/common-base
+Include template: /Users/issuser/Work/project/amazon/nuxeo-server-tomcat-2021.1/templates/common
+Include template: /Users/issuser/Work/project/amazon/nuxeo-server-tomcat-2021.1/templates/default
+Include template: /Users/issuser/Work/project/amazon/nuxeo-server-tomcat-2021.1/templates/pclm-package
+Include template: /Users/issuser/Work/project/amazon/nuxeo-server-tomcat-2021.1/templates/drive
+Include template: /Users/issuser/Work/project/amazon/nuxeo-server-tomcat-2021.1/templates/amazon-devices-saml-uat
+Include template: /Users/issuser/Work/project/amazon/nuxeo-server-tomcat-2021.1/templates/amazon-devices-package
+Nuxeo Dev mode is enabled
+Stopping server.......
+Stopped in 0min06s
+Configuration files generation (nuxeo.force.generation=true)...
+FreeMarker variables: ignored 'java.version' conflicting with 'java.version.[date]'
+Configuration files generated.
+Server started with process ID: 37703
+Go to http://localhost:8080/nuxeo

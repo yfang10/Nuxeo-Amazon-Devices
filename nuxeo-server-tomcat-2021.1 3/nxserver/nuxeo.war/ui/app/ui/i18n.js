@@ -1,0 +1,1 @@
+export function i18n(n){const t=(window.parent||window).nuxeo;return t&&t.I18n&&t.I18n.translate&&t.I18n.translate(`spreadsheet.${n}`)||n}

@@ -1,0 +1,68 @@
+<link rel="import" href="../../elements/nuxeo-se-collapse.html">
+
+<!--
+`nuxeo-productionproject-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-productionproject-metadata-layout
+-->
+<dom-module id="nuxeo-productionproject-metadata-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <div role="widget">
+      <label>Title</label>
+      <div>[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Description</label>
+      <div>[[document.properties.dc:description]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion role="widget" value="[[document.properties.project:priority]]" label="Priority" readonly="true" directory-name="priority"></nuxeo-directory-suggestion>
+
+    <div role="widget">
+      <label>Requested Review Date</label>
+      <div>[[formatDate(document.properties.project:review_date)]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Final Delivery Date</label>
+      <div>[[formatDate(document.properties.project:delivery_date)]]</div>
+    </div>
+
+    <div role="widget">
+      <label>Live Send Date</label>
+      <div>[[formatDate(document.properties.project:live_send_date)]]</div>
+    </div>
+
+    <system-document-suggestion role="widget" value="{{document.properties.project:vendors}}" label="Vendors" multiple="true" readonly="true" min-chars="0" page-provider="vendors-suggestions"></system-document-suggestion>
+
+    <system-document-suggestion role="widget" value="{{document.properties.project:agencies}}" label="Agencies" multiple="true" readonly="true" min-chars="0" page-provider="agencies-suggestions"></system-document-suggestion>
+
+    <system-document-suggestion role="widget" value="{{document.properties.project:retailers}}" label="Retailers" multiple="true" readonly="true" min-chars="0" page-provider="retails-suggestions"></system-document-suggestion>
+
+    <amzd-amazon-metadata-layout role="widget" document="[[document]]"></amzd-amazon-metadata-layout>
+
+    <pclm-relations-view-layout role="widget" document="[[document]]"></pclm-relations-view-layout>
+
+    <pclm-usage-view-layout role="widget" document="[[document]]"></pclm-usage-view-layout>
+
+    <amzd-project-approval-schema-view-layout role="widget" document="[[document]]"></amzd-project-approval-schema-view-layout>
+  </template> 
+
+  <script>
+  Polymer({
+    is: 'nuxeo-productionproject-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      document: {
+        type: Object,
+      },
+    }
+  });
+  </script>
+</dom-module>

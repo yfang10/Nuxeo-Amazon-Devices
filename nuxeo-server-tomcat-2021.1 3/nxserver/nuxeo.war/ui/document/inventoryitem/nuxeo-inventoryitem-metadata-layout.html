@@ -1,0 +1,127 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/behaviors/pclm-form-behavior.html">
+
+<!--
+`nuxeo-inventoryitem-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-inventoryitem-metadata-layout
+-->
+<dom-module id="nuxeo-inventoryitem-metadata-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <div role="widget">
+      <label>[[i18n('title')]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'dc:description')]]">
+      <label>[[i18n('label.dublincore.description')]]</label>
+      <div name="dc:description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:alternateName')]]">
+      <label>[[i18n('label.product.alternateName')]]</label>
+      <div name="product:alternateName">[[document.properties.product:alternateName]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:brand')]]">
+      <label>[[i18n('label.product.brand')]]</label>
+      <div name="product:brand">[[document.properties.product:brand]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:color')]]">
+      <label>[[i18n('label.product.color')]]</label>
+      <div name="product:color">[[document.properties.product:color]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:color_code')]]">
+      <label>[[i18n('label.product.color_code')]]</label>
+      <div name="product:color_code">[[document.properties.product:color_code]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:features')]]">
+    <nuxeo-data-table name="product:features" label="[[i18n('label.product.features')]]"
+    items="{{document.properties.product:features}}">
+      <nuxeo-data-table-column name="[[i18n('label.product.feature')]]">
+        <template>
+          [[item.description]]
+        </template>
+      </nuxeo-data-table-column>
+    </nuxeo-data-table>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:gtin13')]]">
+      <label>[[i18n('label.product.gtin13')]]</label>
+      <div name="product:gtin13">[[document.properties.product:gtin13]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:height')]]">
+      <label>[[i18n('label.product.height')]]</label>
+      <div name="product:height">[[document.properties.product:height]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:manufacturer')]]">
+      <label>[[i18n('label.product.manufacturer')]]</label>
+      <div name="product:manufacturer">[[document.properties.product:manufacturer]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:model')]]">
+      <label>[[i18n('label.product.model')]]</label>
+      <div name="product:model">[[document.properties.product:model]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:mpn')]]">
+      <label>[[i18n('label.product.mpn')]]</label>
+      <div name="product:mpn">[[document.properties.product:mpn]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:product_id')]]">
+      <label>[[i18n('label.product.product_id')]]</label>
+      <div name="product:product_id">[[document.properties.product:product_id]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:production_date')]]">
+      <label>[[i18n('label.product.production_date')]]</label>
+      <div name="product:production_date">[[formatDate(document.properties.product:production_date)]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:purchase_date')]]">
+      <label>[[i18n('label.product.purchase_date')]]</label>
+      <div name="product:purchase_date">[[formatDate(document.properties.product:purchase_date)]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:sku')]]">
+      <label>[[i18n('label.product.sku')]]</label>
+      <div name="product:sku">[[document.properties.product:sku]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:weight')]]">
+      <label>[[i18n('label.product.weight')]]</label>
+      <div name="product:weight">[[document.properties.product:weight]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[_isEmpty(document,'product:width')]]">
+      <label>[[i18n('label.product.width')]]</label>
+      <div name="product:width">[[document.properties.product:width]]</div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-inventoryitem-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.PclmFormBehavior],
+      properties: {
+
+        /**
+         * @doctype Product
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

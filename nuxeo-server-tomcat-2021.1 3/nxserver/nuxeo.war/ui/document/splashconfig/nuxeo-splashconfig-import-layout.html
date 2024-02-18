@@ -1,0 +1,41 @@
+<!--
+`nuxeo-splashconfig-import-layout`
+@group Nuxeo UI
+@element nuxeo-splashconfig-import-layout
+-->
+<dom-module id="nuxeo-splashconfig-import-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    <nuxeo-input role="widget" role="widget" label="[[i18n(&#x27;title&#x27;)]]" name="title" value="{{document.properties.dc:title}}" autofocus="" required=""></nuxeo-input>
+
+    <nuxeo-textarea role="widget" role="widget" label="[[i18n(&#x27;label.description&#x27;)]]" name="dc:description" value="{{document.properties.dc:description}}"></nuxeo-textarea>
+
+    <nuxeo-input role="widget" value="{{document.properties.quickLink:order}}" required="true" label="Order" type="number" min="1" name="order"></nuxeo-input>
+    <div role="widget">
+      <label>Active</label>
+      <paper-checkbox checked="{{document.properties.quickLink:active}}" name="active"></paper-checkbox>
+    </div>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-splashconfig-import-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype SplashConfig
+         */
+      document: {
+        type: Object,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

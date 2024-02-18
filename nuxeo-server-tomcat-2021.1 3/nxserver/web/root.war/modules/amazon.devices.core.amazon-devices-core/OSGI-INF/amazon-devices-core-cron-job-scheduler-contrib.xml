@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<component
+	name="amazon.devices.core.cron.job.scheduler.contrib">
+
+	<extension
+		target="org.nuxeo.ecm.core.scheduler.SchedulerService"
+		point="schedule">
+		<schedule id="weekly_update">
+			<eventId>deleteTrashedBatch</eventId>
+			<!-- Every week at Sunday night 9pm -->
+			<!-- <cronExpression>0 0 19 * * ?</cronExpression>  -->
+			<cronExpression>${amazon.devices.core.delete.trashed.batch.scheduler}
+			</cronExpression>
+		</schedule>
+	</extension>
+</component> 
+

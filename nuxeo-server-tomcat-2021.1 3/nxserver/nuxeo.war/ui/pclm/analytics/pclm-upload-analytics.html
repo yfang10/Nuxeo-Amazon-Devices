@@ -1,0 +1,144 @@
+<!--
+`pclm-upload-analytics`
+@group Nuxeo UI
+@element pclm-upload-analytics.html
+-->
+
+<link rel="import" href="../behaviors/pclm-analytics-dashboard-behavior.html">
+<link rel="import" href="../behaviors/pclm-analytics-format-behavior.html">
+<link rel="import" href="../styles/pclm-analytics-styles.html">
+<link rel="import" href="../styles/pclm-grid-styles.html">
+<link rel="import" href="../tools/pclm-es-bucket-docid-label-enricher.html">
+
+<dom-module id="pclm-upload-analytics">
+  <template>
+    <style include="iron-flex iron-flex-alignment pclm-grid-styles pclm-analytics-styles">
+      .cell {
+        min-height:300px;
+      }
+
+    </style>
+
+    <!-- number of asset created by day -->
+    <nuxeo-repository-data class="data"
+                           start-date="[[startDate]]" end-date="[[endDate]]"
+                           ecm-primary-type="[[_assetTypeFilter]]"
+                           date-format="[[dateFormat]]"
+                           with-date-intervals="day"
+                           date-field="dc:created"
+                           data="{{assetCreatedPerDay}}"
+                           where="[[_onlyLiveDocumentQuery]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+
+    <!-- Total new asset -->
+    <nuxeo-repository-data class="data"
+                           ecm-primary-type="[[_assetTypeFilter]]"
+                           metrics="value_count(ecm:primaryType)"
+                           start-date="[[startDate]]"
+                           end-date="[[endDate]]"
+                           date-field="dc:created"
+                           data="{{totalNewAsset}}"
+                           where="[[_onlyLiveDocumentQuery]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+
+    <!-- Top 10 creators -->
+    <nuxeo-repository-data class="data"
+                           ecm-primary-type="[[_assetTypeFilter]]"
+                           start-date="[[startDate]]" end-date="[[endDate]]"
+                           grouped-by="dc:creator"
+                           group-limit="10"
+                           where="[[_onlyLiveDocumentQuery]]"
+                           data="{{topCreators}}"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+
+
+    <div class="container">
+
+      <div class="layout horizontal wrap">
+
+        <div class="row">
+          <nuxeo-card class="dates">
+            <div class="horizontal flex end-justified layout wrap">
+              <nuxeo-date-picker value="{{startDate}}"
+                                 label="[[i18n('label.date.interval.from')]]"
+                                 default-time="00:00:00"></nuxeo-date-picker>
+              <nuxeo-date-picker value="{{endDate}}"
+                                 label="[[i18n('label.date.interval.to')]]"
+                                 default-time="23:59:59"></nuxeo-date-picker>
+              <paper-icon-button class="refresh" icon="icons:refresh" on-tap="refresh"></paper-icon-button>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="row">
+          <nuxeo-card heading="[[i18n('analytics.asset.new.per.day')]]">
+            <chart-line id="newApplicationChart"
+                        class="chart"
+                        labels="[[_formatDateLabels(assetCreatedPerDay,'L')]]"
+                        values="[[_values(assetCreatedPerDay)]]"
+                        options="[[defaultLineChartOptions]]">
+            </chart-line>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.asset.new.total')]]">
+            <div class="numberContainer">
+              <h1 class="number">[[totalNewAsset]]</h1>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('repositoryAnalytics.topNCreators.heading', '10')]]">
+            <chart-bar class="chart"
+                       data="[[_formatSingleDatasetforBarChart(topCreators,0)]]"
+                       options="[[defaultBarChartOptions]]">
+            </chart-bar>
+          </nuxeo-card>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer"></div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-upload-analytics',
+      behaviors: [
+        Nuxeo.PclmAnalyticsDashboardBehavior,Nuxeo.PclmAnalyticsFormatBehavior,
+        Nuxeo.I18nBehavior
+      ],
+      properties: {
+
+        _assetTypeFilter: {
+          type: String,
+          value: "Asset,CompoundAsset,BrandAsset,CreativeAsset,DeviceAsset,IPAsset,ProductionAsset,RetailExperienceAsset,ThreeDCreativeAsset,Audio,File,Note,Picture,Video"
+        },
+
+        _onlyLiveDocumentQuery: {
+          type: Array,
+          value: [
+            {
+              "term": {
+                "ecm:isProxy": false
+              }
+            },
+            {
+              "term": {
+                "ecm:isVersion": false
+              }
+            }
+          ]
+        }
+      }
+
+    });
+  </script>
+</dom-module>

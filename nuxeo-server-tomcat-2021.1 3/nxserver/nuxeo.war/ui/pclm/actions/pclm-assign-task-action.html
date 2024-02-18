@@ -1,0 +1,140 @@
+<!--
+`pclm-assign-task-action`
+@group Nuxeo UI
+@element pclm-assign-task-action
+-->
+<dom-module id="pclm-assign-task-action">
+  <template>
+    <style include="nuxeo-action-button-styles">
+      .content {
+        @apply(--layout-vertical);
+      }
+    </style>
+
+    <nuxeo-operation id="taskOp" op="javascript.api_create_task" 
+                     input="[[input]]" params="[[params]]">
+    </nuxeo-operation>
+    
+    <div class="action" on-tap="_toggleDialog">
+      <paper-icon-button id="bt" icon="[[icon]]"></paper-icon-button>
+      <span class="label" hidden$="[[!showLabel]]">[[i18n(label)]]</span>
+    </div>
+    <paper-tooltip for="bt">[[i18n(label)]]</paper-tooltip>
+
+    <nuxeo-dialog id="dialog" on-iron-overlay-closed="_dialogClosed" with-backdrop>
+      <h2>[[i18n(label)]]</h2>
+      <div class="content">
+        <iron-form id="form">
+          <form>
+            <nuxeo-user-suggestion role="widget" value="{{recipient}}"
+                                   label="[[i18n('label.action.assign.task.recipient')]]"
+                                   search-type="USER_TYPE" required></nuxeo-user-suggestion>
+            
+            <nuxeo-date-picker role="widget"
+                               label="[[i18n('label.action.assign.task.duedate')]]"
+                               value="{{duedate}}">
+            </nuxeo-date-picker>
+            
+            <nuxeo-textarea role="widget"
+                            label="[[i18n('label.action.assign.task.directive')]]"
+                            value="{{directive}}"
+                            required>
+            </nuxeo-textarea>
+            
+            
+          </form>
+        </iron-form>
+      </div>
+      <div class="buttons">
+        <paper-button noink dialog-dismiss on-tap="_close">
+          [[i18n('label.dialog.button.cancel')]]
+        </paper-button>
+        <paper-button noink class="primary" on-tap="_ok">
+          [[i18n('label.dialog.button.proceed')]]
+        </paper-button>
+      </div>
+    </nuxeo-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-assign-task-action',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        document: {
+          type: Object
+        },
+        
+        /**
+         * Label to display in the action button.
+         */
+        label: {
+          type: String,
+          value: 'Action Label'
+        },
+
+        /**
+         * `true` if the action should display the label, `false` otherwise.
+         */
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        /**
+         * Icon to use (iconset_name:icon_name) in the action button.
+         */
+        icon: {
+          type: String,
+          value: 'iconset_name:icon_name'
+        }
+      },
+
+      _toggleDialog: function() {
+        this.$.dialog.toggle();
+      },
+
+      /**
+       * Callback executed when the user presses the "ok" button.
+       */
+      _ok: function() {
+        if (!this.$.form.validate()) return;
+        this.params = {
+          recipient: this.recipient
+        };
+        if (this.duedate){
+          this.params.duedate = this.duedate
+        };
+        if (this.directive) {
+          this.params.directive = this.directive
+        }
+        this.input = 'doc:'+this.document.uid;
+        this.$.taskOp.execute().then(function(response) {
+          this.fire('notify', { message: this.i18n('label.action.assign.task.success') });
+          this._toggleDialog();
+        }.bind(this),function(error) {
+          this.fire('notify', { message: this.i18n('label.action.assign.task.failure') });
+        }.bind(this));;
+      },
+
+      /**
+       * Callback executed when the user presses the "close" button.
+       *
+       * Note that the "close" button already have a "dialog-dismiss" property that makes the button close the dialog
+       * when clicked. If you don't need to perform additional actions, this method is not needed.
+       */
+      _close: function() {
+        // implement me
+      },
+
+      /**
+       * Useful callback to execute some action after the dialog is closed. Can be removed if it's not necessary.
+       */
+      _dialogClosed: function() {
+        // implement me
+      }
+    });
+  </script>
+</dom-module>

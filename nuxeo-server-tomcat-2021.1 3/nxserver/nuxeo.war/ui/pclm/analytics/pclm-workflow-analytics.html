@@ -1,0 +1,219 @@
+<link rel="import" href="../behaviors/pclm-analytics-dashboard-behavior.html">
+<link rel="import" href="../behaviors/pclm-analytics-format-behavior.html">
+<link rel="import" href="../styles/pclm-analytics-styles.html">
+<link rel="import" href="../styles/pclm-grid-styles.html">
+
+<!--
+`pclm-workflow-analytics`
+@group Nuxeo UI
+@element pclm-workflow-analytics
+-->
+<dom-module id="pclm-workflow-analytics">
+  <template>
+    <style include="iron-flex iron-flex-alignment pclm-grid-styles pclm-analytics-styles">
+      .workflows {
+        width:15em;
+        margin-right:8px;
+      }
+
+      iron-icon {
+        color: #0f9d58;
+        --iron-icon-width: 144px;
+        --iron-icon-height: 144px;
+        margin-top: 16px;
+      }
+
+      .timer {
+        text-align: center;
+      }
+
+    </style>
+
+    <nuxeo-resource auto path="workflowModel"
+                    on-response="_handleWorkflowModelResponse">
+    </nuxeo-resource>
+
+    <!-- Average wf duration -->
+    <nuxeo-workflow-data class="data"
+                         workflow="[[workflow]]"
+                         event="afterWorkflowFinish"
+                         metrics="avg(timeSinceWfStarted)"
+                         start-date="[[startDate]]"
+                         end-date="[[_extendEndDate(endDate)]]"
+                         data="{{avgWorkflowLength}}"
+                         >
+    </nuxeo-workflow-data>
+
+    <!-- nb wf started -->
+    <nuxeo-workflow-data class="data"
+                         workflow="[[workflow]]"
+                         event="afterWorkflowStarted"
+                         metrics="value_count(modelName)"
+                         start-date="[[startDate]]"
+                         end-date="[[endDate]]"
+                         data="{{nbWorkflowStarted}}"
+                         >
+    </nuxeo-workflow-data>
+
+    <!-- nb wf completed -->
+    <nuxeo-workflow-data class="data"
+                         workflow="[[workflow]]"
+                         event="afterWorkflowFinish"
+                         metrics="value_count(modelName)"
+                         start-date="[[startDate]]"
+                         end-date="[[endDate]]"
+                         data="{{nbWorkflowCompleted}}"
+                         >
+    </nuxeo-workflow-data>
+
+    <!-- Average task duration per task type -->
+    <nuxeo-workflow-data class="data"
+                         workflow="[[workflow]]"
+                         event="afterWorkflowTaskEnded"
+                         grouped-by="taskName"
+                         metrics="avg(timeSinceTaskStarted)"
+                         start-date="[[startDate]]"
+                         end-date="[[endDate]]"
+                         data="{{avgTaskDurationPerType}}"
+                         >
+    </nuxeo-workflow-data>
+
+    <!-- Average task duration per user -->
+    <nuxeo-workflow-data class="data"
+                         workflow="[[workflow]]"
+                         event="afterWorkflowTaskEnded"
+                         grouped-by="taskActor"
+                         metrics="count(modelName)"
+                         start-date="[[startDate]]"
+                         end-date="[[endDate]]"
+                         data="{{nbTaskPerUser}}"
+                         >
+    </nuxeo-workflow-data>
+
+
+    <div class="container">
+
+      <div class="layout horizontal wrap">
+
+        <div class="row">
+          <nuxeo-card class="dates">
+            <div class="horizontal flex end-justified layout wrap">
+              <nuxeo-select
+                            label="[[i18n('analytics.workflow')]]"
+                            placeholder="[[i18n('analytics.workflow')]]"
+                            selected="{{workflow}}"
+                            options="[[workflows]]"
+                            class="workflows">
+              </nuxeo-select>
+							<nuxeo-date-picker value="{{startDate}}"
+                                 label="[[i18n('label.date.interval.from')]]"
+                                 default-time="00:00:00"></nuxeo-date-picker>
+              <nuxeo-date-picker value="{{endDate}}"
+                                 label="[[i18n('label.date.interval.to')]]"
+                                 default-time="23:59:59"></nuxeo-date-picker>
+              <paper-icon-button class="refresh" icon="icons:refresh" on-tap="refresh"></paper-icon-button>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="tiny">
+          <nuxeo-card heading="[[i18n('analytics.workflow.average.duration.heading')]]" class="timer">
+            <iron-icon icon="image:timer"></iron-icon>
+            <h1>[[_FormatDuration(avgWorkflowLength)]]</h1>
+          </nuxeo-card>
+        </div>
+
+        <div class="tiny">
+          <nuxeo-card heading="[[i18n('analytics.workflow.number.started.heading')]]" class="timer">
+            <div class="numberContainer">
+              <h1 class="number">[[nbWorkflowStarted]]</h1>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="tiny">
+          <nuxeo-card heading="[[i18n('analytics.workflow.number.completed.heading')]]" class="timer">
+            <div class="numberContainer">
+              <h1 class="number">[[nbWorkflowCompleted]]</h1>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.workflow.average.task.duration.heading')]]">
+            <nuxeo-data-table items="[[_durationTable(avgTaskDurationPerType)]]">
+              <nuxeo-data-table-column name="[[i18n('analytics.workflow.average.task.duration.task')]]">
+                <template>[[i18n(item.key)]]</template>
+              </nuxeo-data-table-column>
+              <nuxeo-data-table-column name="[[i18n('analytics.workflow.average.task.duration.duration')]]">
+                <template>[[item.value]]</template>
+              </nuxeo-data-table-column>
+            </nuxeo-data-table>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.workflow.user.activity.heading')]]">
+            <nuxeo-data-table items="[[_countTable(nbTaskPerUser)]]">
+              <nuxeo-data-table-column name="[[i18n('analytics.workflow.user')]]">
+                <template>[[item.key]]</template>
+              </nuxeo-data-table-column>
+              <nuxeo-data-table-column name="[[i18n('analytics.workflow.number.completed.heading')]]">
+                <template>[[item.value]]</template>
+              </nuxeo-data-table-column>
+            </nuxeo-data-table>
+          </nuxeo-card>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer"></div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pclm-workflow-analytics',
+      behaviors: [
+        Nuxeo.PclmAnalyticsDashboardBehavior,Nuxeo.PclmAnalyticsFormatBehavior,
+        Nuxeo.I18nBehavior
+      ],
+      properties: {
+        workflow: {
+          type:String,
+          value: ""
+        }
+      },
+
+      _handleWorkflowModelResponse(response) {
+        const _workflowModels = response.detail.response.entries.filter(function(entry){
+          return entry.name !== "SerialDocumentReview" && entry.name !== "ParallelDocumentReview"
+        });
+
+        this.workflows = _workflowModels.map((wfm) => {
+          return {
+            id: wfm.name,
+            label: this.i18n(wfm.name),
+          };
+        });
+        this.workflow = this.workflows[0].id;
+      },
+
+      _durationTable(data) {
+        return data.sort((a, b) => {
+          return b.value - a.value;
+        }).map((e) => {
+          return { key: e.key, value: this._FormatDuration(e.value)};
+        });
+      },
+
+      _countTable(data) {
+        return data.map((e) => {
+          return { key: e.key, value: e.value[0].value};
+        });
+      }
+
+    });
+  </script>
+</dom-module>

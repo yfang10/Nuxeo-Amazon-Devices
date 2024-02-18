@@ -1,0 +1,405 @@
+<!--
+`nuxeo-shoot-view-layout`
+@group Nuxeo UI
+@element nuxeo-shoot-view-layout
+-->
+<dom-module id="nuxeo-shoot-view-layout">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      .results {
+        @apply --layout-vertical;
+        @apply --layout-flex;
+        min-height: var(--nuxeo-document-content-min-height, calc(100vh - 216px - var(--nuxeo-app-top)));
+        margin-bottom: var(--nuxeo-document-content-margin-bottom, 0);
+      }
+
+      .results.dragging{
+        border: 2px dashed var(--nuxeo-primary-color);
+      }
+
+      .ellipsis {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+        width: calc(100% - 38px);
+      }
+
+      .capitalize {
+        text-transform: capitalize;
+      }
+
+      nuxeo-tag {
+        margin-right: 2px;
+      }
+
+      nuxeo-justified-grid {
+        height: calc(100vh - 10em);
+      }
+
+    </style>
+    <nuxeo-page-provider id="nxProvider"
+                         provider="advanced_document_content"
+                         page-size="40"
+                         aggregations="{{aggregations}}"
+                         enrichers="thumbnail, permissions"
+                         params="[[params]]"
+                         schemas="dublincore,common,uid,file,amazon,usage,approval,relations"
+                         headers='{ "X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label" }'
+                         fetch-aggregates>
+    </nuxeo-page-provider>
+
+    <nuxeo-results id="results"
+                   display-mode="table"
+                   name="[[document.uid]]"
+                   nx-provider="[[nxProvider]]"
+                   selected-items="{{selectedItems}}"
+                   document="[[document]]"
+                   display-quick-filters
+                   display-sort="[[_canSort(document, sortOptions)]]"
+                   sort-options="[[sortOptions]]"
+                   role="widget">
+
+      <nuxeo-data-grid name="grid" icon="nuxeo:view-thumbnails"
+                       class="results"
+                       selection-enabled
+                       draggable$="[[_hasWritePermission(document)]]" drop-target-filter="[[_dropTargetFilter]]">
+        <template>
+          <amzd-document-grid-thumbnail class="grid-box"
+                                         tabindex$="{{tabIndex}}"
+                                         selected$="{{selected}}"
+                                         index="[[index]]"
+                                         doc="[[item]]" on-navigate="_navigate"
+                                         selected-items="[[selectedItems]]">
+          </amzd-document-grid-thumbnail>
+        </template>
+      </nuxeo-data-grid>
+
+      <nuxeo-data-table name="table" icon="nuxeo:view-list"
+                        class="results"
+                        settings-enabled
+                        selection-enabled
+                        on-row-clicked="_navigate"
+                        draggable$="[[_hasWritePermission(document)]]" drop-target-filter="[[_dropTargetFilter]]">
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.title')]]"
+                                 field="dc:title" sort-by="[[_displaySort(document, 'dc:title')]]"
+                                 filter-by="title" flex="100">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail>
+            <a class="title ellipsis" href$="[[urlFor('browse', item.path)]]" on-tap="_navigate">[[item.title]]</a>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.type')]]" field="type" hidden>
+          <template>
+            <nuxeo-tag>[[item.type]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.modified')]]"
+                                 field="dc:modified" sort-by="[[_displaySort(document, 'dc:modified')]]"
+                                 filter-by="dc_modified_agg"
+                                 flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                    placeholder="[[i18n('documentContentView.datatable.header.modified')]]"
+                    data="[[aggregations.dc_modified_agg]]"
+                    value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-date datetime="[[item.properties.dc:modified]]"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.lastContributor')]]"
+                                 filter-by="dc_last_contributor_agg" field="dc:lastContributor"
+                                 sort-by="[[_displaySort(document, 'dc:lastContributor')]]" flex="50">
+          <template is="header">
+            <nuxeo-dropdown-aggregation
+                    placeholder="[[i18n('documentContentView.datatable.header.lastContributor')]]"
+                    data="[[aggregations.dc_last_contributor_agg]]"
+                    value="{{column.filterValue}}" multiple>
+            </nuxeo-dropdown-aggregation>
+          </template>
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:lastContributor]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.state')]]"
+                                 field="currentLifeCycleState" hidden>
+          <template><span class="capitalize">[[formatLifecycleState(item.state)]]</span></template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.version')]]"
+                                 field="versionLabel" hidden>
+          <template>
+            [[formatVersion(item)]]
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.created')]]"
+                                 field="dc:created" sort-by="[[_displaySort(document, 'dc:created')]]" flex="50" hidden>
+          <template>
+            <nuxeo-date datetime="[[item.properties.dc:created]]"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.author')]]"
+                                 field="dc:creator" sort-by="[[_displaySort(document, 'dc:creator')]]" hidden>
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:creator]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+        
+        <!-- ACXL-33 -->
+        <nuxeo-data-table-column name="Description"
+                                 field="dc:description" sort-by="[[_displaySort(document, 'dc:description')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'dc:description')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Derivative of"
+                                 field="relations:derivative_of" sort-by="[[_displaySort(document, 'relations:derivative_of')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'relations:derivative_of')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Translation of"
+                                 field="relations:translation_of" sort-by="[[_displaySort(document, 'relations:translation_of')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'relations:translation_of')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Need Copy Appproval"
+                                 field="approval:need_copy" sort-by="[[_displaySort(document, 'approval:need_copy')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:need_copy')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Need Requester Approval"
+                                 field="approval:need_requester" sort-by="[[_displaySort(document, 'approval:need_requester')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:need_requester')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Need Utterance Approval"
+                                 field="approval:need_utterance" sort-by="[[_displaySort(document, 'approval:need_utterance')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:need_utterance')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Need Legal Approval"
+                                 field="approval:need_legal" sort-by="[[_displaySort(document, 'approval:need_legal')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:need_legal')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Need Trademark Approval"
+                                 field="approval:need_tm" sort-by="[[_displaySort(document, 'approval:need_tm')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:need_tm')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Need Accessibility Standards Approval"
+                                 field="approval:need_accessibility" sort-by="[[_displaySort(document, 'approval:need_accessibility')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:need_accessibility')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Need Retailer Approval"
+                                 field="approval:need_retailer" sort-by="[[_displaySort(document, 'approval:need_retailer')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:need_retailer')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Related Device"
+                                 field="relations:product" sort-by="[[_displaySort(document, 'relations:product')]]" hidden>
+          <template>
+            <nuxeo-document-suggestion value="[[item.properties.relations:product]]" readonly multiple></nuxeo-document-suggestion>
+          </template>
+        </nuxeo-data-table-column>
+        
+        <nuxeo-data-table-column name="Retail Asset Types"
+          field="amz:retailAssetTypes" sort-by="[[_displaySort(document, 'amz:retailAssetTypes')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:retailAssetTypes')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Retail Asset Use"
+          field="amz:retailAssetUse" sort-by="[[_displaySort(document, 'amz:retailAssetUse')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:retailAssetUse')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <!-- end of ACXL-33 -->
+       
+				<!-- AMZ -->
+        <nuxeo-data-table-column name="Asset Category"
+                                 field="amz:asset_category" sort-by="[[_displaySort(document, 'amz:asset_category')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:asset_category')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Asset Type"
+                                 field="amz:asset_type" sort-by="[[_displaySort(document, 'amz:asset_type')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:asset_type')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Original Creator Name"
+                                 field="amz:original_creator_name" sort-by="[[_displaySort(document, 'amz:original_creator_name')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:original_creator_name')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Original Creator Role"
+                                 field="amz:creator_role" sort-by="[[_displaySort(document, 'amz:creator_role')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:creator_role')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Content Language"
+                                 field="amz:language" sort-by="[[_displaySort(document, 'amz:language')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:language')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Is Retouched Version"
+                                 field="amz:is_retouched_version" sort-by="[[_displaySort(document, 'amz:is_retouched_version')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'amz:is_retouched_version')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <!-- END AMZ -->
+
+        <!-- USAGE -->
+        <nuxeo-data-table-column name="Owner or Source"
+                                 field="dc:publisher" sort-by="[[_displaySort(document, 'dc:publisher')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'dc:publisher')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        
+        <nuxeo-data-table-column name="Rights Type"
+                                 field="usage:rights_type" sort-by="[[_displaySort(document, 'usage:rights_type')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:rights_type')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        
+        <nuxeo-data-table-column name="Approved Locations"
+                                 field="usage:geography" sort-by="[[_displaySort(document, 'usage:geography')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:geography')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        
+        <nuxeo-data-table-column name="Approved Languages"
+                                 field="usage:language" sort-by="[[_displaySort(document, 'usage:language')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'usage:language')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        
+        <nuxeo-data-table-column name="Expiration Date"
+                                 field="dc:expired" sort-by="[[_displaySort(document, 'dc:expired')]]" hidden>
+          <template>
+            <nuxeo-date datetime="[[item.properties.dc:expired]]"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+        
+        <nuxeo-data-table-column name="Restrictions"
+                                 field="dc:rights" sort-by="[[_displaySort(document, 'dc:rights')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'dc:rights')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <!-- END USAGE -->
+
+        <!-- DISTRIBUTION -->
+        <nuxeo-data-table-column name="Distribute Content to Amazon Device Hub"
+                                 field="approval:distribute_ADH" sort-by="[[_displaySort(document, 'approval:distribute_ADH')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:distribute_ADH')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Distribute Selects for CXLab Use"
+                                 field="approval:distribute_selects" sort-by="[[_displaySort(document, 'approval:distribute_selects')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:distribute_selects')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Distribute Final Content for CXLab Use"
+                                 field="approval:distribute_CXLabs" sort-by="[[_displaySort(document, 'approval:distribute_CXLabs')]]" hidden>
+          <template>
+            <nuxeo-tag>[[_getProp(item, 'approval:distribute_CXLabs')]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <!-- END DISTRIBUTION -->
+
+
+
+      </nuxeo-data-table>
+    </nuxeo-results>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-shoot-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior,Nuxeo.DocumentContentBehavior],
+      properties: {
+
+        /**
+         * @doctype Shoot
+         */
+        document: {
+          type: Object,
+        },
+
+      },
+
+      _getProp(item, prop) {
+        if (prop == 'usage:geography' || prop == 'usage:language' || prop == 'amz:retailAssetTypes' || prop == 'relations:product') {
+          var locations = '';
+          if(item.properties && item.properties[prop]) {
+            for (var i = 0; i <= item.properties[prop].length-1; i++) {
+              locations += item.properties[prop][i].properties.label + ', ';
+            }
+
+            return locations.substr(0, locations.length - 2);
+          }
+          else {
+            return locations;
+          }
+        } else {
+          if (item.properties && item.properties[prop]) {
+            if (item.properties[prop].properties) {
+              return item.properties[prop].properties.label;
+            } else {
+              return item.properties[prop];
+            }
+          }
+        }
+      }
+      
+      
+    });
+  </script>
+</dom-module>

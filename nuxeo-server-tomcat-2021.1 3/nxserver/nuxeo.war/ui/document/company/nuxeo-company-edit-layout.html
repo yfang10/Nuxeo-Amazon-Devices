@@ -1,0 +1,34 @@
+<!--
+`nuxeo-company-edit-layout`
+@group Nuxeo UI
+@element nuxeo-company-edit-layout
+-->
+<dom-module id="nuxeo-company-edit-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+    
+    Editing is not supported at this point.
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-company-edit-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype Company
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

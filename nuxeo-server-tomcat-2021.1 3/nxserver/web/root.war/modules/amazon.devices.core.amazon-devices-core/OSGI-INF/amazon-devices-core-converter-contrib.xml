@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<component name="amazon.devices.core.converter.contrib">
+
+	<extension
+		target="org.nuxeo.ecm.core.convert.service.ConversionServiceImpl"
+		point="converter">
+		<converter name="changeFormat"
+			class="org.nuxeo.ecm.platform.convert.plugins.CommandLineConverter">
+			<sourceMimeType>image/*</sourceMimeType>
+			<destinationMimeType>image/png</destinationMimeType>
+			<parameters>
+				<parameter name="CommandLineName">changeFormat</parameter>
+			</parameters>
+		</converter>
+
+			<converter name="resizePNG" class="org.nuxeo.ecm.platform.picture.convert.ResizePictureConverter">
+				<sourceMimeType>image/png</sourceMimeType>
+				<destinationMimeType>image/png</destinationMimeType>
+				<parameters>
+					<parameter name="conversionFormat">png</parameter>
+				</parameters>
+			</converter>
+
+	</extension>
+
+</component>
+

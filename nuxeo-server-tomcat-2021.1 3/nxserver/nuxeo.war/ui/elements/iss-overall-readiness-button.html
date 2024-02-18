@@ -1,0 +1,197 @@
+<dom-module id="iss-overall-readiness-button">
+    <template>
+        <style include="iron-flex iron-flex-alignment nuxeo-action-button-styles">
+            .container {
+                padding: 1em 0 2em;
+            }
+
+            .buttons {
+                @apply --buttons-bar;
+            }
+
+            label {
+                @apply --nuxeo-label;
+            }
+        </style>
+        <nuxeo-operation id="getTemplatesOp" op="javascript.FilterTemplatesByType"></nuxeo-operation>
+        <nuxeo-operation id="renderOR" op="RenderOverallReadiness" input="[[_input(document, documents)]]"
+            params="[[_params(document, documents)]]"></nuxeo-operation>
+
+        <!-- <nuxeo-operation-button id="btn" operation="RenderOverallReadiness" input="[[_input(document, documents)]]"
+            params="[[_params(document, documents)]]" icon="icons:assessment" label="Overall Readiness Report"
+            show-label$="[[showLabel]]" error-label="error" async download
+            hidden$="[[!_isAvailable(documents.splices, view)]]"></nuxeo-operation-button> -->
+
+
+        <div id="generateOverallReadiness" class="action" on-tap="_toggleDialog">
+            <paper-icon-button noink icon="icons:assessment" aria-labelledby="label"></paper-icon-button>
+            <span class="label" hidden$="[[!showLabel]]" id="label">Overall Readiness Report</span>
+            <paper-tooltip>Overall Readiness Report</paper-tooltip>
+        </div>
+
+
+        <nuxeo-dialog id="dialog" modal no-auto-focus>
+            <h2>Overrall Readiness</h2>
+            <paper-dialog-scrollable>
+                <div class="container layout vertical">
+                    <paper-dropdown-menu label="Select a Template" class="typeDropdown" noink always-float-label
+                        horizontal-align="left">
+                        <paper-listbox slot="dropdown-content" selected="{{selectedTemplate}}" attr-for-selected="key">
+                            <template is="dom-repeat" items="[[_templates]]">
+                                <paper-item key="[[item]]">[[item.properties.dc:title]]</paper-item>
+                            </template>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+
+                </div>
+            </paper-dialog-scrollable>
+            <div class="buttons horizontal end-justified layout">
+                <div class="flex start-justified">
+                    <paper-button noink dialog-dismiss class="secondary">[[i18n('command.cancel')]]</paper-button>
+                </div>
+                <paper-button noink class="primary" on-tap="_render">
+                    [[i18n('renderTemplateButton.dialog.render')]]
+                </paper-button>
+            </div>
+        </nuxeo-dialog>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'iss-overall-readiness-button',
+            behaviors: [Nuxeo.NotifyBehavior, Nuxeo.I18nBehavior, Nuxeo.FiltersBehavior],
+            properties: {
+                documents: {
+                    type: Array,
+                    notify: true,
+                    value: [],
+                },
+
+                document: {
+                    type: Object,
+                },
+
+                /**
+                 * `true` if the action should display the label, `false` otherwise.
+                 */
+                showLabel: {
+                    type: Boolean,
+                    value: false,
+                },
+
+                _templates: {
+                    type: Array,
+                    value: []
+                },
+
+                skipRenderPopup: {
+                    type: Boolean,
+                    value: !1
+                }
+            },
+
+            ready() {
+                // this.$.btn.addEventListener('poll-start', this._onPollStart.bind(this));
+                // this.$.btn.addEventListener('response', this._onResponse.bind(this));
+            },
+
+            _isAvailable() {
+                return true
+            },
+
+            _toggleDialog() {
+                this.set("_templates", [])
+                this.set("selectedTemplate", "")
+
+                this.$.getTemplatesOp.input = this.documents[0]
+
+                this.$.getTemplatesOp.execute().then((e => {
+                    e.entries && this.set("_templates", e.entries), 0 === this._templates.length ?
+                        this._toast(this.i18n("renderTemplateButton.toast.noTemplates")) : (this
+                            .set("selectedTemplate", this._templates[0]), this.skipRenderPopup &&
+                            1 === this._templates.length ? this._render() : this.$.dialog.toggle())
+                }))
+            },
+            _params() {
+                const params = {};
+                // console.log(this.selectedTemplate);
+                // params.templateName = 'OverallReadiness'
+                // if (this.document && (this.hasFacet(this.document, 'Collection') || this.hasFacet(this.document,
+                //         'Folderish'))) {
+                //     params.filename = `${this.document.title}_${new Date().getTime()}.zip`;
+                // } else {
+                //     params.filename =
+                //         `${this.i18n('bulkDownload.filename.selection')}-${new Date().getTime()}.zip`;
+                // }
+                return params;
+            },
+
+            _render() {
+                this._renderOpWithParams();
+                this.$.dialog.opened && this.$.dialog.toggle()
+            },
+
+            _renderOpWithParams() {
+                return this.$.renderOR.params = {
+                        templateName: this.selectedTemplate.properties["tmpl:templateName"]
+                    }, this._toast(this.i18n("renderTemplateButton.toast.rendering"), 0), this.$
+                    .renderOR.execute().then((e => this._download(e).then((() => {
+                        this._toast(this.i18n("renderTemplateButton.toast.rendered", this
+                                .selectedTemplate.properties["dc:title"])), this
+                            .selectedTemplate.properties["tmpl:allowOverride"] && this.fire(
+                                "document-updated")
+                    })))).catch((e => {
+                        this._toast(this.i18n("renderTemplateButton.toast.render.error", e.message))
+                    }))
+            },
+            _toast(e, t) {
+                this.notify({
+                    message: e,
+                    close: !0,
+                    duration: t
+                })
+            },
+            _download(e) {
+                const t = e.headers.get("Content-Disposition");
+                if (t) {
+                    const a = t.match(/filename[^;=\n]*=([^;\n]*''([^;\n]*)|[^;\n]*)/).filter((e => !!e)),
+                        i = decodeURI(a[a.length - 1]);
+                    return e.blob().then((e => {
+                        if (navigator.msSaveBlob) navigator.msSaveBlob(e, i);
+                        else {
+                            const t = document.createElement("a");
+                            t.style = "display: none", t.download = i, t.href = URL.createObjectURL(
+                                    e), document.body.appendChild(t), t.click(), document.body
+                                .removeChild(t), URL.revokeObjectURL(t.href)
+                        }
+                    }))
+                }
+                return Promise.reject(new Error("missing Content-Disposition header"))
+            },
+
+
+            _input() {
+                if (this._isAvailable()) {
+                    return `docs:${(this.document ? [this.document] : this.documents).map((doc) => doc.uid).join(',')}`;
+                }
+            },
+
+            _onPollStart() {
+                this.notify({
+                    message: 'Preparing Overall Readiness Report',
+                    duration: 0,
+                    dismissible: true
+                });
+            },
+
+            _onResponse() {
+                this.notify({
+                    message: 'Overall Readiness Report is Completed',
+                    close: true
+                });
+            }
+        });
+    </script>
+
+</dom-module>

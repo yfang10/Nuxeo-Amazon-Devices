@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: issuser
+Build-Jdk: 11.0.15.1
+Bundle-ManifestVersion: 2
+Bundle-Version: 1.0.0
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Bundle-Vendor: amazon.devices.core
+Bundle-Name: amazon-devices-core
+Bundle-SymbolicName: amazon.devices.core.amazon-devices-core;singleton
+ =true
+Nuxeo-WebModule: org.nuxeo.ecm.webengine.app.WebEngineModule;name=self
+ registration;extends=base;headless=true;package=amazon/devices/core/e
+ ndpoint
+Nuxeo-Component: OSGI-INF/amazon-devices-core-versioning-policies.xml,
+ OSGI-INF/amazon-devices-core-permission.xml,OSGI-INF/amazon-devices-c
+ ore-registration-point-auth-contrib.xml,OSGI-INF/amazon-devices-core-
+ operation-contrib.xml,OSGI-INF/amazon-devices-core-listener-contrib.x
+ ml,OSGI-INF/amazon-devices-core-adapter-contrib.xml,OSGI-INF/amazon-d
+ evices-core-enricher-contrib.xml,OSGI-INF/amazon-devices-core-web-ui-
+ configuration-contrib.xml,OSGI-INF/amazon-devices-core-elasticsearch-
+ contrib.xml,OSGI-INF/amazon-devices-core-cron-job-scheduler-contrib.x
+ ml,OSGI-INF/amazon-devices-core-file-manager-contrib.xml,OSGI-INF/ama
+ zon-devices-core-security-policy-contrib.xml,OSGI-INF/amazon-devices-
+ core-pageprovider-contrib.xml,OSGI-INF/amazon-devices-core-picture-co
+ nversion-contrib.xml,OSGI-INF/amazon-devices-core-converter-contrib.x
+ ml,OSGI-INF/amazon-devices-core-download-zip-contrib.xml,OSGI-INF/ama
+ zon-devices-core-metadata-service-contrib.xml,OSGI-INF/amazon-devices
+ -core-audit-search-contrib.xml,OSGI-INF/amazon-devices-core-audit-pag
+ eprovider-contrib.xml,OSGI-INF/amazon-devices-core-binding-contrib.xm
+ l,OSGI-INF/amazon-devices-core-keyword-contrib.xml,OSGI-INF/amazon-de
+ vices-core-download-service.xml
+

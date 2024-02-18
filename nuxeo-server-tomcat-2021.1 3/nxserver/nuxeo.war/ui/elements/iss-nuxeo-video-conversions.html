@@ -1,0 +1,71 @@
+<!--
+`iss-nuxeo-video-conversions`
+@group Nuxeo UI
+@element iss-nuxeo-video-conversions
+-->
+<dom-module id="iss-nuxeo-video-conversions">
+  <template>
+        <style>
+          a,
+          a:active,
+          a:visited,
+          a:focus {
+            @apply --nuxeo-link;
+          }
+          a:hover {
+            @apply --nuxeo-link-hover;
+          }
+          .properties label {
+            @apply --nuxeo-label;
+            min-width: 10rem;
+            margin-inline-end: 12px;
+          }
+          .properties .item {
+            @apply --layout-horizontal;
+            @apply --layout-flex;
+            @apply --layout-justified;
+            line-height: 2.2rem;
+          }
+        </style>
+
+        <dom-if if="[[label]]">
+          <template>
+            <h3>[[label]]</h3>
+          </template>
+        </dom-if>
+        <div class="properties">
+          <dom-repeat items="[[document.properties.vid:transcodedVideos]]" as="conversion">
+            <dom-if if="[[conversion.content]]">
+              <template>
+                <div class="item">
+                  <label>[[conversion.name]]</label>
+                  <span>[[conversion.info.width]] x [[conversion.info.height]]</span>
+                  <span>[[formatSize(conversion.content.length)]]</span>
+                  <nuxeo-filter document="[[document]]" user="[[user]]" permission="Download" 		                                                         expression="!document.isProxy || (document.isProxy &amp;&amp; 
+                                            (new Date(document.properties[&quot;dc:expired&quot;]).setHours(0, 0, 0, 0))                                               &gt;&#x3D; new Date().setHours(0, 0, 0, 0))">
+                  <template> 
+                  <a href="[[conversion.content.downloadUrl]]">
+                    <iron-icon icon="nuxeo:download"></iron-icon>
+                    <nuxeo-tooltip>[[i18n('videoViewLayout.download.tooltip')]]</nuxeo-tooltip>
+                  </a>
+                </template> 
+                </nuxeo-filter>
+                </div>
+              </template>
+            </dom-if>
+          </dom-repeat>
+        </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'iss-nuxeo-video-conversions',
+      behaviors: [Nuxeo.I18nBehavior, Nuxeo.FormatBehavior],
+     properties: {
+      label: String,
+      document: Object,
+      
+      },
+    });
+  </script>
+</dom-module>

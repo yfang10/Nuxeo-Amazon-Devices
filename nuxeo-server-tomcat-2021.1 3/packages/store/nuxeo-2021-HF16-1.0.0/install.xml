@@ -1,0 +1,7 @@
+<install>
+  <update upgradeOnly="true" file="${package.root}/install/bundlesupdate/nxserver/bundles" todir="${env.server.home}/nxserver/bundles" />
+  <update upgradeOnly="true" file="${package.root}/install/bundlesupdate/nxserver/lib" todir="${env.server.home}/nxserver/lib" />
+  <copy overwrite="true" file="${package.root}/templates" todir="${env.server.home}" />
+  <update file="${package.root}/install/libsadd/nxserver/lib" todir="${env.server.home}/nxserver/lib" />
+  <delete file="${env.server.home}/nxserver/lib/opencensus-contrib-log-correlation-log4j2-0.27.1.jar" />
+</install>

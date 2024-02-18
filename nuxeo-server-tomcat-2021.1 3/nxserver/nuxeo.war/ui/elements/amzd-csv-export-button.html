@@ -1,0 +1,143 @@
+<dom-module id="amzd-csv-export-button">
+  <template>
+    <style>
+      :host {
+        display: block;
+        line-height: 60px;
+      }
+
+      .header {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        margin-bottom: 16px;
+      }
+
+      .header>iron-icon {
+        padding: 8px;
+      }
+
+      .form-buttons {
+        margin-top: 16px;
+      }
+
+      #errors {
+        color: red;
+        margin: 1em 0;
+      }
+
+      /* buttons */
+      paper-button.primary {
+        background-color: var(--nuxeo-button-primary, #00adff);
+        color: #fff;
+      }
+
+      paper-button.primary:hover,
+      paper-button.primary:focus {
+        background-color: var(--nuxeo-button-primary-focus, #0079b3);
+        font-weight: inherit;
+        color: #fff !important;
+      }
+    </style>
+
+    <nuxeo-operation-button id="btn" input="[[provider]]" operation="Bulk.RunAction"
+      params="[[_params(provider, schemas, fields)]]" icon="nuxeo:csv-export" label="csvExportButton.label"
+      show-label$="[[showLabel]]" poll-interval="[[pollInterval]]" error-label="csvExportButton.action.error" async
+      download>
+    </nuxeo-operation-button>
+  </template>
+
+  <script>
+    Polymer({
+      is: "amzd-csv-export-button",
+      behaviors: [
+        Nuxeo.NotifyBehavior,
+        Nuxeo.I18nBehavior,
+        Nuxeo.FiltersBehavior,
+      ],
+      properties: {
+        /**
+         * Page provider from which results are to be exported.
+         */
+        provider: {
+          type: Object,
+        },
+        /**
+         * The interval to poll for the result, in milliseconds.
+         */
+        pollInterval: {
+          type: Number,
+          value: 1000,
+        },
+        /**
+         * A comma separated list of schemas to be used to get the results.
+         * If `null` or `undefined`, the `provider`'s schemas will be used.
+         */
+        schemas: {
+          type: String,
+        },
+        /**
+         * A comma separated list of fields to be be exported.
+         */
+        fields: {
+          type: String,
+        },
+        /**
+         * `true` if the action should display the label, `false` otherwise.
+         */
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        /**
+         * Current action status.
+         */
+        status: {
+          type: Object,
+          notify: true,
+        },
+      },
+      // observers: [
+      //   '_refresh(params)'
+      // ],
+      _refresh: function() {
+        // console.log("舰艇====",this.$)
+      },
+      ready() {
+        this.$.btn.addEventListener('poll-start', this._onPollStart.bind(this));
+        this.$.btn.addEventListener('response', this._onResponse.bind(this));
+      },
+
+      _params() {
+        // console.log("_params---",this.params)
+        const actionParams = {};
+        const schemas = this.schemas != null ? this.schemas : this.provider && this.provider.schemas;
+        if (schemas) {
+          actionParams.schemas = schemas.split(',').map((s) => s.trim());
+        }
+        
+        if (this.fields) {
+          actionParams.xpaths = this.fields.split(',').map((s) => s.trim());
+        }
+
+        return Object.assign({}, {
+          action: 'csvExport',
+          parameters: JSON.stringify(actionParams),
+          currentPageIndex:0,
+          offset:0,
+          pageSize:40,
+          providerName: this.provider,
+          queryParams: []
+        }, this.params);
+      },
+
+      _onPollStart() {
+        this.notify({ message: this.i18n('csvExportButton.action.poll') });
+      },
+
+      _onResponse(e) {
+        this.notify({ message: this.i18n('csvExportButton.action.completed') });
+      },
+    });
+  </script>
+</dom-module>

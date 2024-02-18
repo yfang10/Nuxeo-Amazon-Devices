@@ -1,0 +1,121 @@
+<!--
+`amzd-bulk-archive-button`
+@group Nuxeo UI
+@element amzd-bulk-archive-button
+-->
+<dom-module id="amzd-bulk-archive-button">
+  <template>
+    <style include="iron-flex iron-flex-alignment iron-flex-factors nuxeo-styles">
+      :host {
+        display: block;
+        @apply --layout-flex;
+        @apply --layout-horizontal;
+      }
+
+      .container {
+        margin: 2rem;
+        padding: 0 1rem 0 0;
+        display: inline-block;
+        @apply --layout-flex;
+        @apply --layout-vertical;
+      }
+
+      paper-menu-button {
+        --paper-menu-button: {
+          padding: 0;
+        };
+      }
+      paper-dropdown-menu{
+        display: flow-root;
+      }
+      paper-listbox {
+        --paper-listbox: {
+          padding: 0;
+        };
+      }
+
+      .versions,
+      .options {
+        margin-left: 3em;
+      }
+
+      label {
+        @apply --nuxeo-label;
+      }
+
+      .error {
+        border-left: 4px solid var(--nuxeo-warn-text);
+        color: var(--nuxeo-text-default);
+        padding-left: 8px;
+        margin-bottom: 8px;
+      }
+    </style>
+    <nuxeo-operation-button id="btn" operation="[[operation]]"  input="[[input]]"
+      params="[[params]]"
+      icon="[[icon]]"
+      label="[[label]]"
+      show-label="[[showLabel]]"
+      poll-interval="[[pollInterval]]"
+      notification ="[[notification]]"
+      tooltip="[[tooltip]]">
+    </nuxeo-operation-button>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'amzd-bulk-archive-button',
+      properties: {
+
+        /**
+         * Label to display in the action button.
+         */
+        label: {
+          type: String,
+        },
+        /* The parameters to send. */
+        params: Object,
+        
+        /* The id of the operation, automation chain or script to call. */
+        operation: String,
+
+        input: Object,
+        
+       /* The text or i18n key to display in the notification. */
+        notification: {
+          type: String,
+        },
+        
+        /* Tooltip label. If `undefined`, `label` will be used instead. */
+        tooltip: String,
+        
+        /**
+         * `true` if the action should display the label, `false` otherwise.
+         */
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        /**
+         * Icon to use (iconset_name:icon_name) in the action button.
+         */
+        icon: {
+          type: String,
+          value: 'iconset_name:icon_name'
+        }
+      },
+
+      ready() {
+        //this.$.btn.addEventListener('poll-start', this._onPollStart.bind(this));
+        this.$.btn.addEventListener('response', this._onResponse.bind(this));
+      },
+      
+
+      _onResponse() {
+        //this.notify({ message: "Documents Archived" });
+        
+      },
+    });
+  </script>
+</dom-module>

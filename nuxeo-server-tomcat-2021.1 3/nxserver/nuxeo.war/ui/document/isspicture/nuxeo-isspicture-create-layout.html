@@ -1,0 +1,67 @@
+<!--
+`nuxeo-isspicture-create-layout`
+@group Nuxeo UI
+@element nuxeo-isspicture-create-layout
+-->
+<dom-module id="nuxeo-isspicture-create-layout">
+  <template>
+    <style include="nuxeo-styles"></style>
+    <nuxeo-input role="widget" role="widget" label="[[i18n(&#x27;title&#x27;)]]" name="title" value="{{document.properties.dc:title}}" autofocus="" required=""></nuxeo-input>
+
+    <nuxeo-textarea role="widget" role="widget" label="[[i18n(&#x27;label.description&#x27;)]]" name="description" value="{{document.properties.dc:description}}"></nuxeo-textarea>
+
+    <nuxeo-dropzone role="widget" role="widget" label="[[i18n(&#x27;file.content&#x27;)]]" name="content" document="[[document]]"></nuxeo-dropzone>
+
+    <nuxeo-directory-suggestion role="widget" role="widget" label="[[i18n(&#x27;label.dublincore.nature&#x27;)]]" name="nature" directory-name="nature" value="{{document.properties.dc:nature}}" placeholder="[[i18n(&#x27;dublincoreEdit.directorySuggestion.placeholder&#x27;)]]" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" role="widget" label="[[i18n(&#x27;label.dublincore.subjects&#x27;)]]" directory-name="l10nsubjects" name="subjects" value="{{document.properties.dc:subjects}}" multiple="true" dbl10n="true" placeholder="[[i18n(&#x27;dublincoreEdit.directorySuggestion.placeholder&#x27;)]]" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" role="widget" label="[[i18n(&#x27;label.dublincore.coverage&#x27;)]]" directory-name="l10ncoverage" name="coverage" value="{{document.properties.dc:coverage}}" dbl10n="true" placeholder="[[i18n(&#x27;dublincoreEdit.directorySuggestion.placeholder&#x27;)]]" min-chars="0"></nuxeo-directory-suggestion>
+
+    <nuxeo-date-picker role="widget" role="widget" label="[[i18n(&#x27;label.dublincore.expire&#x27;)]]" name="expired" value="{{document.properties.dc:expired}}"></nuxeo-date-picker>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.commonFields:approved_locations}}" label="Approved Locations" min-chars="0" directory-name="approved_locations" name="approved_locations" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.commonFields:aprroved_languages}}" label="Aprroved Languages" min-chars="0" directory-name="approved_languages" name="aprroved_languages" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.commonFields:brands}}" label="Brands" min-chars="0" directory-name="brands" name="brands" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.commonFields:content_language}}" label="Content Language" min-chars="0" directory-name="content_language" name="content_language" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-input role="widget" value="{{document.properties.commonFields:image_alt_text}}" label="Image Alt Text" type="text" name="image_alt_text" role="widget"></nuxeo-input>
+
+    <nuxeo-input role="widget" value="{{document.properties.commonFields:image_description}}" label="Image Description" type="text" name="image_description" role="widget"></nuxeo-input>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.commonFields:marketing_placement}}" label="Marketing Placement" min-chars="0" directory-name="marketing_placement" name="marketing_placement" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.commonFields:product_category}}" label="Product Category" min-chars="0" directory-name="product_category" name="product_category" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.commonFields:product_line}}" label="Product Line" min-chars="0" directory-name="product_line" name="product_line" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.commonFields:publish_status}}" label="Publish Status" min-chars="0" directory-name="publish_status" name="publish_status" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-input role="widget" value="{{document.properties.commonFields:rights_owner}}" label="Rights Owner" type="text" name="rights_owner" role="widget"></nuxeo-input>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.commonFields:rights_type}}" label="Rights Type" min-chars="0" directory-name="rights_type" name="rights_type" role="widget"></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion role="widget" value="{{document.properties.commonFields:topic}}" label="Topic" min-chars="0" directory-name="topic" name="topic" role="widget"></nuxeo-directory-suggestion>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-isspicture-create-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @doctype issPicture
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

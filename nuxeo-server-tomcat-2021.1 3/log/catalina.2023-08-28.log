@@ -1,0 +1,71 @@
+2023-08-28 10:57:27 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[681]毫秒内初始化
+2023-08-28 10:58:29 信息 [main] org.apache.catalina.startup.Catalina.start [61838]毫秒后服务器启动
+2023-08-28 10:58:29 严重 [http-nio-0.0.0.0-8080-Acceptor] org.apache.tomcat.util.net.NioEndpoint.setSocketOptions 设置套接字选项时出错
+	java.net.SocketException: Invalid argument
+		at java.base/sun.nio.ch.Net.setIntOption0(Native Method)
+		at java.base/sun.nio.ch.Net.setSocketOption(Net.java:373)
+		at java.base/sun.nio.ch.SocketChannelImpl.setOption(SocketChannelImpl.java:234)
+		at java.base/sun.nio.ch.SocketAdaptor.setIntOption(SocketAdaptor.java:280)
+		at java.base/sun.nio.ch.SocketAdaptor.setSoLinger(SocketAdaptor.java:315)
+		at org.apache.tomcat.util.net.SocketProperties.setProperties(SocketProperties.java:219)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:503)
+		at org.apache.tomcat.util.net.NioEndpoint.setSocketOptions(NioEndpoint.java:79)
+		at org.apache.tomcat.util.net.Acceptor.run(Acceptor.java:149)
+		at java.base/java.lang.Thread.run(Thread.java:834)
+2023-08-28 11:03:12 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 11:07:01 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[593]毫秒内初始化
+2023-08-28 11:07:55 信息 [main] org.apache.catalina.startup.Catalina.start [53835]毫秒后服务器启动
+2023-08-28 11:16:20 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 11:20:10 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[691]毫秒内初始化
+2023-08-28 11:21:01 信息 [main] org.apache.catalina.startup.Catalina.start [50711]毫秒后服务器启动
+2023-08-28 14:14:13 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 14:16:25 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[598]毫秒内初始化
+2023-08-28 14:17:19 信息 [main] org.apache.catalina.startup.Catalina.start [53910]毫秒后服务器启动
+2023-08-28 14:24:37 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 14:27:07 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[694]毫秒内初始化
+2023-08-28 14:27:58 信息 [main] org.apache.catalina.startup.Catalina.start [50547]毫秒后服务器启动
+2023-08-28 14:34:02 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 14:37:30 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[620]毫秒内初始化
+2023-08-28 14:38:23 信息 [main] org.apache.catalina.startup.Catalina.start [53499]毫秒后服务器启动
+2023-08-28 14:45:38 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 15:35:29 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[682]毫秒内初始化
+2023-08-28 15:36:28 信息 [main] org.apache.catalina.startup.Catalina.start [58697]毫秒后服务器启动
+2023-08-28 15:38:43 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 15:48:34 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[674]毫秒内初始化
+2023-08-28 15:49:35 信息 [main] org.apache.catalina.startup.Catalina.start [61044]毫秒后服务器启动
+2023-08-28 15:54:00 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 15:55:12 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[633]毫秒内初始化
+2023-08-28 15:56:09 信息 [main] org.apache.catalina.startup.Catalina.start [56744]毫秒后服务器启动
+2023-08-28 15:57:01 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 16:01:53 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[691]毫秒内初始化
+2023-08-28 16:02:52 信息 [main] org.apache.catalina.startup.Catalina.start [58856]毫秒后服务器启动
+2023-08-28 16:13:44 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 16:14:21 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[599]毫秒内初始化
+2023-08-28 16:15:15 信息 [main] org.apache.catalina.startup.Catalina.start [54245]毫秒后服务器启动
+2023-08-28 16:20:35 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 16:22:21 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[632]毫秒内初始化
+2023-08-28 16:23:15 信息 [main] org.apache.catalina.startup.Catalina.start [53654]毫秒后服务器启动
+2023-08-28 16:32:34 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 16:36:41 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[645]毫秒内初始化
+2023-08-28 16:37:33 信息 [main] org.apache.catalina.startup.Catalina.start [51939]毫秒后服务器启动
+2023-08-28 16:43:13 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 16:46:02 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[673]毫秒内初始化
+2023-08-28 16:46:57 信息 [main] org.apache.catalina.startup.Catalina.start [54713]毫秒后服务器启动
+2023-08-28 16:50:31 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 16:53:49 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[613]毫秒内初始化
+2023-08-28 16:54:42 信息 [main] org.apache.catalina.startup.Catalina.start [53774]毫秒后服务器启动
+2023-08-28 17:07:38 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 17:08:24 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[664]毫秒内初始化
+2023-08-28 17:09:18 信息 [main] org.apache.catalina.startup.Catalina.start [54279]毫秒后服务器启动
+2023-08-28 17:15:02 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 17:17:14 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[737]毫秒内初始化
+2023-08-28 17:18:12 信息 [main] org.apache.catalina.startup.Catalina.start [57420]毫秒后服务器启动
+2023-08-28 17:20:15 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 17:21:59 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[626]毫秒内初始化
+2023-08-28 17:22:50 信息 [main] org.apache.catalina.startup.Catalina.start [51008]毫秒后服务器启动
+2023-08-28 17:24:19 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 17:40:25 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[570]毫秒内初始化
+2023-08-28 17:41:21 信息 [main] org.apache.catalina.startup.Catalina.start [55968]毫秒后服务器启动
+2023-08-28 17:42:53 警告 [main] org.apache.tomcat.util.net.Acceptor.stop 接收器线程[http-nio-0.0.0.0-8080-Acceptor]未能干净的停止
+2023-08-28 17:52:36 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[582]毫秒内初始化
+2023-08-28 17:53:29 信息 [main] org.apache.catalina.startup.Catalina.start [52921]毫秒后服务器启动

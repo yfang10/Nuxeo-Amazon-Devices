@@ -1,0 +1,8 @@
+import{Polymer}from"@polymer/polymer/lib/legacy/polymer-fn.js";import{html}from"@polymer/polymer/lib/utils/html-tag.js";import{LiveConnectBehavior}from"./nuxeo-liveconnect-behavior.js";const script=document.createElement("script");script.src="https://app.box.com/js/static/select.js",document.head.appendChild(script),Polymer({_template:html`
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+    <nuxeo-resource id="oauth2"></nuxeo-resource>
+  `,is:"nuxeo-liveconnect-box-provider",behaviors:[LiveConnectBehavior],properties:{providerId:{value:"box"}},openPicker(){this.updateProviderInfo().then(this._init.bind(this))},_init(){this.isUserAuthorized?this._showPicker():this.openPopup(this.authorizationURL,{onMessageReceive:this._parseMessage.bind(this),onClose:this._onOAuthPopupClose.bind(this)})},_parseMessage(e){const i=JSON.parse(e.data);this.accessToken=i.token},_onOAuthPopupClose(){this.accessToken&&(this.userId?this._showPicker():this.updateProviderInfo().then((()=>{if(!this.userId)throw new Error("No username available.");this._showPicker()})))},_showPicker(){const e={clientId:this.clientId,linkType:"direct",multiselect:!0},i=new BoxSelect(e);i.success((e=>{const i=[];e.forEach((e=>{i.push({providerId:this.providerId,providerName:"Box",user:this.userId,fileId:e.id.toString(),name:e.name,size:e.size,key:this.generateBlobKey(e.id)})})),this.notifyBlobPick(i)})),i.launchPopup()}});

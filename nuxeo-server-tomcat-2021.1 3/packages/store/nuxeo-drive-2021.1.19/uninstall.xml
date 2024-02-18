@@ -1,0 +1,12 @@
+<uninstall>
+  <config rmtemplate="drive"/>
+  <delete file="${env.server.home}/templates/drive/nxserver/config/nuxeo-drive-config.json" md5="30d6691c42ec18a391b22fc423e3f4ef"/>
+  <delete file="${env.server.home}/templates/drive/nxserver/config/nuxeo-drive-cache-config.xml.nxftl" md5="6c385a39f0597525cca4f621933ac3e4"/>
+  <delete file="${env.server.home}/templates/drive/nuxeo.defaults" md5="812c85f37b31d1405490d9f01acc9c62"/>
+  <rollback key="nxserver/lib/protobuf-java" pkgId="nuxeo-drive-2021.1.19" version="3.7.1"/>
+  <rollback key="nxserver/bundles/nuxeo-drive-operations" pkgId="nuxeo-drive-2021.1.19" version="2021.1.19"/>
+  <rollback key="nxserver/bundles/nuxeo-drive-core" pkgId="nuxeo-drive-2021.1.19" version="2021.1.19"/>
+  <rollback key="nxserver/bundles/nuxeo-drive-mongodb" pkgId="nuxeo-drive-2021.1.19" version="2021.1.19"/>
+  <rollback key="nxserver/bundles/nuxeo-drive-rest-api" pkgId="nuxeo-drive-2021.1.19" version="2021.1.19"/>
+  <rollback key="nxserver/bundles/nuxeo-drive-elasticsearch" pkgId="nuxeo-drive-2021.1.19" version="2021.1.19"/>
+</uninstall>

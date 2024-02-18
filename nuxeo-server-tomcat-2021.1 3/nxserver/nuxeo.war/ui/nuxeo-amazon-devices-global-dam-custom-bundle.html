@@ -1,0 +1,70 @@
+<link rel="import" href="elements/amzd-download-documents-button.html">
+<link rel="import" href="elements/amzd-collection-download.html">
+<link rel="import" href="behaviors/amzd-format-behavior.html">
+<link rel="import" href="elements/amzd-calculate-folder-size.html">
+<!--
+***
+CUSTOM CODE SPACE
+***
+Use this file to put any custom code you want to deploy on top of Studio's automatically generated configuration.
+-->
+<nuxeo-slot-content name="collectiondownload" slot="RESULTS_SELECTION_ACTIONS" order="1">
+  <template>
+    <nuxeo-filter type="Collection">
+      <template>
+        <amzd-collection-download documents="[[selectedItems]]"></amzd-collection-download>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="downloadDocumentAction" slot="DOCUMENT_ACTIONS" order="90" disabled>
+  <template>
+    <nuxeo-filter document="[[document]]" expression="(document.facets.indexOf('Folderish') !== -1
+                                                   || document.facets.indexOf('Collection') !== -1)
+                                                   &amp;&amp; document.contextParameters
+                                                   &amp;&amp; document.contextParameters.hasContent">
+      <template>
+        <nuxeo-download-documents-button document="[[document]]">
+        </nuxeo-download-documents-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+
+<nuxeo-slot-content name="downloadDocumentAction" slot="DOCUMENT_ACTIONS" order="90">
+  <template>
+    <nuxeo-filter document="[[document]]" expression="(document.facets.indexOf('Folderish') !== -1
+                                                   || document.facets.indexOf('Collection') !== -1)
+                                                   &amp;&amp; document.contextParameters
+                                                   &amp;&amp; document.contextParameters.hasContent">
+      <template>
+        <amzd-download-documents-button document="[[document]]">
+        </amzd-download-documents-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="downloadSelectionAction" slot="RESULTS_SELECTION_ACTIONS" order="5" disabled>
+  <template>
+    <nuxeo-download-documents-button documents="[[selectedItems]]">
+    </nuxeo-download-documents-button>
+  </template>
+</nuxeo-slot-content>
+
+
+<nuxeo-slot-content name="downloadSelectionAction" slot="RESULTS_SELECTION_ACTIONS" order="5" >
+      <template>
+        <amzd-download-documents-button documents="[[selectedItems]]"></amzd-download-documents-button>
+      </template>
+</nuxeo-slot-content> 
+
+
+<!-- ACXL-53 customize document history tab -->
+<nuxeo-slot-content name="documentHistoryPage" slot="DOCUMENT_VIEWS_PAGES" order="30">
+  <template>
+    <amzd-document-history name="history" document="[[document]]"></amzd-document-history>
+  </template>
+</nuxeo-slot-content>

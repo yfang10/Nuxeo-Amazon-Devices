@@ -1,0 +1,106 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/forms/pclm-relations-edit-layout.html">
+<link rel="import" href="../../pclm/forms/pclm-usage-edit-layout.html">
+<link rel="import" href="../../elements/nuxeo-se-collapse.html">
+
+<!--
+`nuxeo-ipasset-create-layout`
+@group Nuxeo UI
+@element nuxeo-ipasset-create-layout
+-->
+<dom-module id="nuxeo-ipasset-create-layout">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <nuxeo-input role="widget" label="[[i18n('title')]]" name="title" value="{{document.properties.dc:title}}" autofocus="" required=""></nuxeo-input>
+    <nuxeo-textarea role="widget" label="[[i18n('label.description')]]" name="dc:description" value="{{document.properties.dc:description}}"></nuxeo-textarea>
+    <nuxeo-dropzone role="widget" label="[[i18n('file.content')]]" name="content" document="[[document]]"></nuxeo-dropzone>
+
+    <nuxeo-directory-suggestion value="{{document.properties.amz:asset_category}}" label="Asset Category" directory-name="IPAssets" role="widget" min-chars="0"></nuxeo-directory-suggestion>
+
+    <amzd-amazon-create-layout document="{{document}}"></amzd-amazon-create-layout>
+
+    <pclm-usage-edit-layout document="{{document}}"></pclm-usage-edit-layout>
+
+    <pclm-relations-edit-layout document="{{document}}"></pclm-relations-edit-layout>
+
+
+    <!--template is="dom-if" if="{{_isEqualToEither(document.properties.amz:asset_category, 'Book', 'Periodical')}}"-->
+      <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
+                         heading="[[i18n('label.collapseheaders.book')]]"
+                         headingstyle="[[headingstyle]]"
+                         opened$="[[_false]]"
+                         >
+        <nuxeo-directory-suggestion role="widget" value="{{document.properties.ipasset:book_genre}}" label="Book Genre" directory-name="BookGenres" min-chars="0"></nuxeo-directory-suggestion>
+        <nuxeo-input role="widget" value="{{document.properties.ipasset:book_author}}" label="Book Author" type="text"></nuxeo-input>
+        <nuxeo-input role="widget" value="{{document.properties.ipasset:book_publisher}}" label="Book Publisher" type="text"></nuxeo-input>
+        <nuxeo-directory-suggestion role="widget" value="{{document.properties.ipasset:book_3rdPartyUse}}" label="Book - Third Party Use" directory-name="Is_Retouched_Version" min-chars="0"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion role="widget" value="{{document.properties.ipasset:book_amountApproved}}" label="Amount of book approved for use" directory-name="PercentApprovedForUse" min-chars="0"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion role="widget" value="{{document.properties.ipasset:book_coverOrInterior}}" label="Cover or Interior" directory-name="CoverInterior" min-chars="0"></nuxeo-directory-suggestion>
+      </nuxeo-se-collapse>
+    <!--/template-->
+
+    <!--template is="dom-if" if="[[_isEqualTo(document.properties.amz:asset_category, 'Music')]]"-->
+      <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
+                         heading="[[i18n('label.collapseheaders.music')]]"
+                         headingstyle="[[headingstyle]]"
+                         opened$="[[_false]]"
+                         >
+        <nuxeo-input role="widget" value="{{document.properties.ipasset:music_artist}}" label="Artist/Composer" type="text"></nuxeo-input>
+        <nuxeo-input role="widget" value="{{document.properties.ipasset:music_label}}" label="Music Label" type="text"></nuxeo-input>
+        <nuxeo-directory-suggestion role="widget" value="{{document.properties.ipasset:music_cover}}" label="Music Cover - 3 Album Restriction" directory-name="Is_Retouched_Version" min-chars="0"></nuxeo-directory-suggestion>
+        <nuxeo-directory-suggestion role="widget" value="{{document.properties.ipasset:music_lyrics}}" label="Music Cover - Lyrics Approved" directory-name="Is_Retouched_Version" min-chars="0"></nuxeo-directory-suggestion>
+        <nuxeo-input role="widget" value="{{document.properties.ipasset:music_publisher}}" label="Music Publisher" type="text"></nuxeo-input>
+        <nuxeo-input role="widget" value="{{document.properties.ipasset:music_length}}" label="Approved Audio Length" type="text"></nuxeo-input>
+      </nuxeo-se-collapse>
+    <!--/template-->
+
+    <amzd-approval-schema-edit-layout role="widget" document="{{document}}"></amzd-approval-schema-edit-layout>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-ipasset-create-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @doctype IPAsset
+         */
+      collapsestyle: {
+        type: String,
+        value: "border:0px solid #f5f5f5;margin-left:0em;"
+      },
+      headingstyle: {
+        type: String,
+        value: "font-size:1rem;font-weight:700;text-transform:uppercase;"
+      },
+      _false: {
+        type: Boolean,
+        value: false
+      },
+      _true: {
+        type: Boolean,
+        value: true
+      },
+      document: {
+        type: Object,
+      },
+
+    },
+
+    _isEqualTo(title, string) {
+      return title == string;
+    },
+
+    _isEqualToEither(title, string1, string2) {
+      return title == string1 || title == string2;
+    }
+  });
+  </script>
+</dom-module>

@@ -1,0 +1,44 @@
+<link rel="import" href="../../pclm/styles/pclm-form-styles.html">
+<link rel="import" href="../../pclm/tools/pclm-comment-validator.html">
+
+<!--
+`nuxeo-twostageapproval-20190628100844581-simple-task-layout`
+@group Nuxeo UI
+@element nuxeo-twostageapproval-20190628100844581-simple-task-layout
+-->
+<dom-module id="nuxeo-twostageapproval-20190628100844581-simple-task-layout">
+  <template>
+    <style include="nuxeo-styles pclm-form-styles"></style>
+
+    <div role="widget">[[i18n(task.directive)]]</div>
+
+    <pclm-comment-validator role="widget">
+        <nuxeo-document-comment-thread uid="[[task.workflowInstanceId]]"></nuxeo-document-comment-thread>
+    </pclm-comment-validator>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-twostageapproval-20190628100844581-simple-task-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /**
+         * @task var_TwoStageApproval-20190628100844581-simple-task
+         */
+        task: {
+          type: Object,
+        },
+
+        /**
+         * @schema dublincore
+         */
+        document: {
+          type: Object,
+        },
+
+      }
+    });
+  </script>
+</dom-module>

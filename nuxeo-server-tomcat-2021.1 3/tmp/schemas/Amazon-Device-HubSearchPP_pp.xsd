@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:nxs="http://www.nuxeo.org/ecm/project/schemas/amazon-devices-global-dam/Amazon-Device-HubSearchPP_pp" xmlns:nxsv="http://www.nuxeo.org/ecm/schemas/core/validation/" xmlns:ref="http://www.nuxeo.org/ecm/schemas/core/external-references/" targetNamespace="http://www.nuxeo.org/ecm/project/schemas/amazon-devices-global-dam/Amazon-Device-HubSearchPP_pp">  
+  <!-- helper XSD definitions for list types -->  
+  <xs:complexType name="content"> 
+    <xs:sequence> 
+      <xs:element name="encoding" type="xs:string"/>  
+      <xs:element name="mime-type" type="xs:string"/>  
+      <xs:element name="data" type="xs:base64Binary"/>  
+      <xs:element name="name" type="xs:string"/>  
+      <xs:element name="length" type="xs:long"/>  
+      <xs:element name="digest" type="xs:string"/> 
+    </xs:sequence> 
+  </xs:complexType>  
+  <xs:simpleType name="stringList"> 
+    <xs:list itemType="xs:string"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="doubleList"> 
+    <xs:list itemType="xs:double"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="dateList"> 
+    <xs:list itemType="xs:date"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="integerList"> 
+    <xs:list itemType="xs:integer"/> 
+  </xs:simpleType>  
+  <xs:simpleType name="booleanList"> 
+    <xs:list itemType="xs:boolean"/> 
+  </xs:simpleType>  
+  <xs:complexType name="blobList"> 
+    <xs:sequence> 
+      <xs:element name="item" type="nxs:content" minOccurs="0" maxOccurs="unbounded"/> 
+    </xs:sequence> 
+  </xs:complexType>  
+  <xs:element name="system_primaryType_agg" type="nxs:stringList"/>
+  <xs:element name="system_currentLifeCycleState_agg" type="nxs:stringList"/>
+  <xs:element name="project_priority_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_asset_category_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_language_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_is_retouched_version_agg" type="nxs:stringList"/>
+  <xs:element name="usage_rights_type_agg" type="nxs:stringList"/>
+  <xs:element name="usage_geography_agg" type="nxs:stringList"/>
+  <xs:element name="usage_language_agg" type="nxs:stringList"/>
+  <xs:element name="relations_workspaceLocation_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_creator_role_agg" type="nxs:stringList"/>
+  <xs:element name="usage_usagechannel_channel_agg" type="nxs:stringList"/>
+  <xs:element name="usage_usagechannel_subchannel_agg" type="nxs:stringList"/>
+  <xs:element name="external_search_agencies_agg" type="nxs:stringList"/>
+  <xs:element name="external_search_retailers_agg" type="nxs:stringList"/>
+  <xs:element name="external_search_vendors_agg" type="nxs:stringList"/>
+  <xs:element name="picture_info_format_agg" type="nxs:stringList"/>
+  <xs:element name="product_search_brand_agg" type="nxs:stringList"/>
+  <xs:element name="product_search_category_agg" type="nxs:stringList"/>
+  <xs:element name="product_search_color_agg" type="nxs:stringList"/>
+  <xs:element name="product_search_generation_agg" type="nxs:stringList"/>
+  <xs:element name="product_search_launch_countries_agg" type="nxs:stringList"/>
+  <xs:element name="product_search_pl_agg" type="nxs:stringList"/>
+  <xs:element name="product_search_product_type_agg" type="nxs:stringList"/>
+  <xs:element name="product_search_size_agg" type="nxs:stringList"/>
+  <xs:element name="product_search_version_agg" type="nxs:stringList"/>
+  <xs:element name="product_search_year_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_retailAssetUse_agg" type="nxs:stringList"/>
+  <xs:element name="es_market_names_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_retailAssetTypes_agg" type="nxs:stringList"/>
+  <xs:element name="es_related_devices_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_asset_type_agg" type="nxs:stringList"/>
+  <xs:element name="product_product_type_agg" type="nxs:stringList"/>
+  <xs:element name="product_category_agg" type="nxs:stringList"/>
+  <xs:element name="codename_market_name_agg" type="nxs:stringList"/>
+  <xs:element name="codename_device_agg" type="nxs:stringList"/>
+  <xs:element name="product_brand_agg" type="nxs:stringList"/>
+  <xs:element name="brandlink_brand_name_agg" type="nxs:stringList"/>
+  <xs:element name="codename_specific_names_name_codename_agg" type="nxs:stringList"/>
+  <xs:element name="codename_specific_names_name_value_agg" type="nxs:stringList"/>
+  <xs:element name="approval_has_accessibility_agg" type="nxs:stringList"/>
+  <xs:element name="approval_accessibility_approvers_agg" type="nxs:stringList"/>
+  <xs:element name="project_agencies_agg" type="nxs:stringList"/>
+  <xs:element name="project_retailers_agg" type="nxs:stringList"/>
+  <xs:element name="product_supported_device_agg" type="nxs:stringList"/>
+  <xs:element name="product_pl_agg" type="nxs:stringList"/>
+  <xs:element name="product_product_id_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_placement_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_standardAngles_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_associatedEvent_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_activePeriod_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_status_agg" type="nxs:stringList"/>
+  <xs:element name="approval_distribution_agg" type="nxs:stringList"/>
+  <xs:element name="usage_usageRightsStatement_agg" type="nxs:stringList"/>
+  <xs:element name="approval_approved_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_Ownership_agg" type="nxs:stringList"/>
+  <xs:element name="amazon_original_creator_name_agg" type="nxs:stringList"/>
+  <xs:element name="relations_referenceItem_agg" type="nxs:stringList"/>
+  <xs:element name="relations_product_agg" type="nxs:stringList"/>
+  <xs:element name="system_fulltext" type="xs:string"/>
+  <xs:element name="dublincore_title" type="xs:string"/>
+  <xs:element name="amazon_original_creator_name" type="xs:string"/>
+  <xs:element name="project_review_date_min" type="xs:date"/>
+  <xs:element name="project_review_date_max" type="xs:date"/>
+  <xs:element name="project_delivery_date_min" type="xs:date"/>
+  <xs:element name="project_delivery_date_max" type="xs:date"/>
+  <xs:element name="project_live_send_date_min" type="xs:date"/>
+  <xs:element name="project_live_send_date_max" type="xs:date"/>
+  <xs:element name="product_product_id" type="xs:string"/>
+  <xs:element name="product_purchase_date_min" type="xs:date"/>
+  <xs:element name="product_purchase_date_max" type="xs:date"/>
+  <xs:element name="product_production_date_min" type="xs:date"/>
+  <xs:element name="product_production_date_max" type="xs:date"/>
+  <xs:element name="es_related_devices" type="xs:string"/>
+  <xs:element name="facetedKeyword_keywords_label" type="xs:string"/>
+</xs:schema>
